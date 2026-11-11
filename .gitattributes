@@ -1,0 +1,4 @@
+# Los CSV se versionan byte a byte: Git no convierte sus saltos de línea (LF ↔ CRLF).
+# Sin esto, Git para Windows (core.autocrlf=true) cambia los bytes del CSV original al
+# clonar y la huella SHA-256 deja de coincidir con la registrada en src/utilidades.py.
+*.csv -text
