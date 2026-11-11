@@ -1,0 +1,20 @@
+elemento_mapa,tipo,estado,evidencia
+"A · Situación, problema, pregunta y dataset",Proceso,Implementado,§1–3 de este notebook; README
+"B① Definición: problema, pregunta y alcance",Proceso,Implementado,§1–3
+B② Obtención: CSV oficial en data/raw (inmutable),Flujo reproducible,Implementado,§4: huella SHA-256 verificada
+"B③ Exploración: tipos, faltantes y anomalías",Proceso,Implementado,§6–7 (descriptiva); F2 §2
+B④ Transformación → data/processed,Proceso,Implementado en F2,F2 §3–8; data/processed/
+B⑤ Análisis · B⑥ Comunicación,Proceso,Proyectado (F3–F4),
+C · Python + .venv + requirements.txt,Herramienta,Implementado,§5: kernel y versiones verificadas
+"C · pandas, NumPy, scikit-learn, Matplotlib",Herramienta,Implementado,§4–7; F2 (escaladores y gráficos de control)
+C · JupyterLab (Restart & Run All),Herramienta,Implementado,Contadores de ejecución consecutivos
+"C · Git, GitHub, ramas y Pull Requests",Herramienta,Implementado,"§9: rama, commit e identidad; PR #1 y #2"
+"D · data/raw, data/processed, docs/, README, requirements, .gitignore",Organización del repositorio,Implementado,§9: validar_fase1
+D · src/ (funciones reutilizables),Organización del repositorio,Implementado,§4: src/utilidades.py importado y probado
+D · notebooks/,Organización del repositorio,Ajustado a F1/ y F2/,Estructura exigida por el entregable
+D · results/ (tablas y figuras),Organización del repositorio,Proyectado (F4),
+D · Convención de commits docs/data/feat/fix,Decisión técnica,Implementado,Historial y README
+D · nbstripout antes del commit,Decisión técnica,Descartado para la entrega,Las salidas son evidencia evaluada
+E · Celdas Markdown que justifican + código + salidas,Estructura del notebook,Implementado,Narrativa antes de cada bloque
+E · README + docs/ (diccionario y decisiones),Documentación,Implementado,docs/diccionario_variables.csv; docs/bitacora_f2.md
+E · Referencias en APA 7,Documentación,Implementado,§7.2 y cierre; informe

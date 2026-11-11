@@ -1,0 +1,46 @@
+variable,grupo,descripcion_preliminar,rol_analitico,tipo_pandas,no_nulos,faltantes,porcentaje_faltante,valores_unicos,rol_curso
+OBJECTID,Identificación y clasificación,Identificador interno de objeto geográfico,Identificador técnico,int64,26180,0,0.0,26078,identificador
+Id,Identificación y clasificación,Identificador auxiliar,Identificador técnico,int64,26180,0,0.0,1,constante
+COD_GLA,Identificación y clasificación,Código del glaciar,Identificador principal,str,26180,0,0.0,26180,identificador
+NOMBRE,Identificación y clasificación,Nombre registrado del glaciar,Descriptiva,str,26180,0,0.0,431,alta cardinalidad
+CLASIFICA,Identificación y clasificación,Clasificación del glaciar,Categórica principal,str,26180,0,0.0,5,nominal
+AREA_KM2,Propiedades físicas,Superficie (km²),Numérica principal,float64,26180,0,0.0,2323,continua
+REGION,Territorio e hidrografía,Región administrativa,Categórica principal,str,26180,0,0.0,16,nominal
+PROVINCIA,Territorio e hidrografía,Provincia,Categórica,str,26180,0,0.0,40,alta cardinalidad
+COMUNA,Territorio e hidrografía,Comuna,Categórica,str,26180,0,0.0,84,alta cardinalidad
+DATUM,Coordenadas,Datum geodésico declarado,Metadato espacial,str,26180,0,0.0,1,constante
+HUSO,Coordenadas,Huso de referencia declarado,Metadato espacial,str,26180,0,0.0,1,constante
+NORTE,Coordenadas,Coordenada UTM norte,Espacial,int64,26180,0,0.0,25948,continua
+ESTE,Coordenadas,Coordenada UTM este,Espacial,int64,26180,0,0.0,24677,continua
+FUENTE_DIG,Metadatos y clasificación WGI,Fuente de digitalización,Metadato,str,26180,0,0.0,19,alta cardinalidad
+FUEN_FECHA,Metadatos y clasificación WGI,Fecha de la fuente,Metadato temporal,str,26180,0,0.0,264,fecha
+INVE_FECHA,Metadatos y clasificación WGI,Año de inventario,Metadato temporal,int64,26180,0,0.0,5,discreta
+NOM_CUEN,Territorio e hidrografía,Nombre de cuenca,Categórica principal,str,26180,0,0.0,55,alta cardinalidad
+COD_CUEN,Territorio e hidrografía,Código de cuenca,Código categórico,int64,26180,0,0.0,55,alta cardinalidad
+COD_SCUEN,Territorio e hidrografía,Código de subcuenca,Código categórico,int64,26180,0,0.0,179,alta cardinalidad
+COD_SSCUEN,Territorio e hidrografía,Código de subsubcuenca,Código categórico,int64,26180,0,0.0,484,alta cardinalidad
+MZON_GLAC,Territorio e hidrografía,Macrozona glaciar,Categórica principal,str,26180,0,0.0,4,ordinal
+CH_CASQ,Estimaciones de hielo y agua,Código asociado a campo de hielo; significado por verificar,Categórica complementaria,str,723,25457,97.24,6,nominal
+CUBIERTO,Campos auxiliares,Campo cubierto; significado por verificar,Por evaluar,float64,0,26180,100.0,0,vacía
+LATITUD,Coordenadas,Latitud geográfica,Espacial,str,26180,0,0.0,26180,continua
+LONGITUD,Coordenadas,Longitud geográfica,Espacial,str,26180,0,0.0,26180,continua
+PERIMETRO,Propiedades físicas,Perímetro; unidad pendiente de confirmar,Numérica complementaria,float64,26180,0,0.0,6757,continua
+ORIENTA,Propiedades físicas,Orientación,Categórica complementaria,str,26180,0,0.0,9,nominal
+HMEDIA,Propiedades físicas,Altitud media; unidad por verificar,Numérica complementaria,float64,26180,0,0.0,25996,continua
+HMAX,Propiedades físicas,Altitud máxima; unidad por verificar,Numérica complementaria,float64,26180,0,0.0,4441,continua
+HMIN,Propiedades físicas,Altitud mínima; unidad por verificar,Numérica complementaria,float64,26180,0,0.0,4492,continua
+PENDIENTE,Propiedades físicas,Pendiente; unidad por confirmar,Numérica complementaria,float64,26180,0,0.0,16897,continua
+ESP_MED,Propiedades físicas,Espesor medio estimado; unidad por verificar,Numérica complementaria,float64,26180,0,0.0,14779,continua
+F_ESP_MED,Estimaciones de hielo y agua,Referencia del método de espesor,Metadato metodológico,str,26180,0,0.0,1,constante
+VOL_km3,Estimaciones de hielo y agua,Volumen estimado (km³),Numérica principal,float64,26180,0,0.0,3441,continua
+EQ_AGUAKM3,Estimaciones de hielo y agua,Equivalente en agua (km³),Numérica principal,float64,26180,0,0.0,3262,continua
+WGI_1,Metadatos y clasificación WGI,Código WGI nivel 1; significado por verificar,Código categórico,int64,26180,0,0.0,5,nominal
+WGI_2,Metadatos y clasificación WGI,Código WGI nivel 2; significado por verificar,Código categórico,int64,26180,0,0.0,10,nominal
+WGI_3,Metadatos y clasificación WGI,Código WGI nivel 3; significado por verificar,Código categórico,int64,26180,0,0.0,15,nominal
+FRENTE_TER,Metadatos y clasificación WGI,Tipo de terminación del glaciar,Categórica complementaria,str,26180,0,0.0,3,nominal
+RESOL_IMG,Metadatos y clasificación WGI,Resolución de imagen; unidad por verificar,Metadato técnico,float64,26180,0,0.0,14,discreta
+ERROR,Propiedades físicas,Campo de error; definición por verificar,Técnica,float64,26180,0,0.0,7378,continua
+OBSERVACIO,Campos auxiliares,Observaciones,Por evaluar,float64,0,26180,100.0,0,vacía
+CUT_REG,Territorio e hidrografía,Código administrativo regional,Código categórico,int64,26180,0,0.0,16,nominal
+CUT_PROV,Territorio e hidrografía,Código administrativo provincial,Código categórico,int64,26180,0,0.0,40,alta cardinalidad
+CUT_COM,Territorio e hidrografía,Código administrativo comunal,Código categórico,int64,26180,0,0.0,84,alta cardinalidad
