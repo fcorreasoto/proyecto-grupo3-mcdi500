@@ -13,7 +13,6 @@ from pathlib import Path
 
 import pandas as pd
 
-SEMILLA = 42  # declarada para cualquier proceso aleatorio de las fases siguientes
 ARCHIVO_INVENTARIO = "Inventario_Publico_de_Glaciares_2022.csv"
 HUELLA_INVENTARIO = "5691de5d7d7ffe2c8586a7066e227ac5cc91fa1ec69f54096e937a054c283f1d"
 
