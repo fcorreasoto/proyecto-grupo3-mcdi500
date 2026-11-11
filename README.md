@@ -2,7 +2,7 @@
 
 Proyecto del curso **MCDI500 Programación para la Ciencia de Datos**, Magíster en Ciencia de Datos e Inteligencia Artificial, Universidad Andrés Bello. Docente: Dr. Omar Salinas Silva.
 
-**Integrantes:** Aníbal Reyes · Francisco Correa Soto · Gustavo Aloy · Roberto Gaubert
+**Integrantes:** Francisco Correa Soto · Gustavo Aloy Angella · Roberto Gaubert Urbina
 
 | Fase | Estado | Producto |
 |---|---|---|
