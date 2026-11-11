@@ -184,9 +184,9 @@ Ningún glaciar se elimina: el resultado conserva las 26.180 filas. Las cifras y
 
 Antes de la entrega, el repositorio se clona desde GitHub en un equipo distinto del de desarrollo, se crea el `.venv` desde `requirements.txt` y se ejecutan F1 y F2 de principio a fin:
 
-| Fecha | Verificación | Sistema operativo y Python | F1 | F2 | Observaciones |
+| Fecha | Integrante | Sistema operativo y Python | F1 | F2 | Observaciones |
 |---|---|---|---|---|---|
-| 11-11-2026 18:26 | Clon limpio en un equipo distinto del de desarrollo | Linux · Python 3.12.3 y 3.13.18 | OK (13/13 pruebas del módulo) | OK (17/17 validaciones, 23/23 pruebas) | Sin errores; los CSV procesados son idénticos byte a byte con ambas versiones de Python |
+| | | | | | |
 
 ## Criterios de reproducibilidad
 

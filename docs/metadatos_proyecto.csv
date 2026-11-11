@@ -26,10 +26,10 @@ decisiones.ordinales.MZON_GLAC,"MACROZONA NORTE, MACROZONA CENTRO, MACROZONA SUR
 decisiones.ordinales.CLASE_TAMANO,"< 0,01, 0,01–0,1, 0,1–1, 1–10, > 10"
 decisiones.one_hot,"CLASIFICA, FRENTE_TER, REGION, FUENTE_GRUPO"
 decisiones.escalador.metodo,robust
-decisiones.escalador.variables,"LOG_AREA, LOG_VOL, HMEDIA, RANGO_ALT, PENDIENTE, ESP_MED"
+decisiones.escalador.variables,"LOG_AREA, HMEDIA, RANGO_ALT, PENDIENTE"
 resultados.limpio.filas,26180
 resultados.limpio.columnas,48
 resultados.modelo.filas,26180
-resultados.modelo.columnas,49
+resultados.modelo.columnas,47
 resultados.validaciones_ok,17
-resultados.pruebas_ok,21
+resultados.pruebas_ok,23
