@@ -17,7 +17,7 @@ Informe técnico de la Sumativa 1: [`docs/informe/mcdi500_sumativa1_grupo3.pdf`]
 
 Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica el inventario oficial (26.180 glaciares, 45 variables) y sus totales, pero no un cálculo reproducible de **cuán concentrado está el hielo**. Además, su CSV no es directamente analizable: tiene columnas vacías, coordenadas leídas como texto, fechas en formatos mixtos y faltantes encubiertos. **Nuestro aporte** es medir esa concentración con un procedimiento reproducible de punta a punta: dato verificado, pipeline versionado y probado.
 
-**Pregunta de investigación:** ¿Qué tan concentrado está el volumen de hielo estimado en pocos glaciares y regiones, y cambia esa concentración según la clasificación del glaciar? La exploración la sustenta: el 1 % de los glaciares reúne el 93,8 % del volumen, y Magallanes y Aysén el 97,9 %.
+**Pregunta de investigación:** ¿Qué tan concentrado está el volumen de hielo estimado en pocos glaciares y regiones, y cambia esa concentración según la clasificación del glaciar? La exploración la sustenta: el 1 % de los glaciares reúne el 93,8 % del volumen, y Magallanes y Aysén el 97,9 % (F2, sección 2.2.1).
 
 **Objetivo general:** Medir, mediante un flujo reproducible en Python, cuán concentrados están el volumen estimado y la superficie de los glaciares de Chile en pocos glaciares y regiones, y cómo varía esa concentración según la clasificación del glaciar.
 
@@ -41,8 +41,8 @@ Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica el
 | Licencia | La página de descarga de la DGA no declara una licencia (revisada el 11-11-2026). Se usa como dato público con fines académicos, citando la fuente |
 | Archivo original | `data/raw/Inventario_Publico_de_Glaciares_2022.csv` (26.180 filas × 45 columnas, 9,46 MB) |
 | Huella SHA-256 | `5691de5d7d7ffe2c8586a7066e227ac5cc91fa1ec69f54096e937a054c283f1d` |
-| Datos limpios (F2) | `data/processed/glaciares_limpio.csv` (26.180 × 48): variables en unidades físicas, banderas y derivadas. Entrada de F3 y F4 |
-| Matriz numérica (F2) | `data/processed/glaciares_modelo.csv` (26.180 × 49): ordinales, seno/coseno, one-hot, banderas y continuas escaladas |
+| Datos limpios (F2) | `data/processed/glaciares_limpio.csv` (26.180 × 48): variables en unidades físicas, banderas y derivadas. Entrada de F3 y F4; leerlo con `utl.cargar_limpio`, que restaura el orden de las ordinales y los códigos como texto |
+| Matriz numérica (F2) | `data/processed/glaciares_modelo.csv` (26.180 × 47): ordinales, seno/coseno, one-hot, banderas y 4 continuas escaladas (sin `LOG_VOL` ni `ESP_MED`, redundantes con el área) |
 | Perfil de calidad | [`docs/validacion_dataset.md`](docs/validacion_dataset.md) (original, generado con `python validar_dataset.py data/raw/Inventario_Publico_de_Glaciares_2022.csv --informe docs/validacion_dataset.md`) y `data/processed/perfil_glaciares_limpio.csv` (procesado) |
 | Evaluación del dataset | [`docs/evaluacion_criterios_dataset.csv`](docs/evaluacion_criterios_dataset.csv): requisitos del curso; cumple los obligatorios con 2 avisos (variables sobre 60 % de faltantes y licencia no declarada) |
 | Diccionario de variables | [`docs/diccionario_variables.csv`](docs/diccionario_variables.csv): 45 variables con su rol analítico |
@@ -62,7 +62,7 @@ proyecto-grupo3-mcdi500/
 │   ├── raw/                         # CSV original de la DGA (inmutable)
 │   └── processed/                   # Salidas de F2 (se regeneran al ejecutar el notebook)
 ├── src/
-│   └── utilidades.py                # Módulo compartido: rutas, huella, carga, entorno, Git, Bitacora
+│   └── utilidades.py                # Módulo compartido: rutas, huella, carga, entorno, Git, pruebas, Bitacora
 ├── docs/
 │   ├── validacion_dataset.md        # Perfil de las 45 variables (validar_dataset.py)
 │   ├── diccionario_variables.csv    # Generado por F1
@@ -133,7 +133,7 @@ jupyter lab
    - Incluye gráficos de control (imputación, transformación y escalamiento) y una sección de recursividad.
    - Nunca modifica `original`: cada etapa produce su propio DataFrame. El CSV original se verifica con su huella SHA-256 al inicio y al final.
    - Exporta `glaciares_limpio.csv` y `glaciares_modelo.csv` a `data/processed/`, y la bitácora y los metadatos a `docs/`.
-   - Resultado esperado: 17/17 validaciones OK, 21/21 pruebas OK, 8 pruebas de las funciones recursivas OK y «F2 finalizada».
+   - Resultado esperado: 17/17 validaciones OK, 23/23 pruebas OK, 8 pruebas de las funciones recursivas OK y «F2 finalizada».
 
 También pueden ejecutarse sin abrir JupyterLab:
 
@@ -165,7 +165,9 @@ Los notebooks pueden ejecutarse desde su propia carpeta o desde la raíz del rep
 | 362 `VOL_km3 = 0` y 668 `EQ_AGUAKM3 = 0` (redondeo) | Se recalculan con la fórmula del propio inventario (factores distintos para glaciares rocosos); bandera de recálculo |
 | 33 `HMIN = 0` en frentes de tierra o lago (faltante encubierto) | Se imputan con `HMEDIA − desnivel mediano por comuna`: es el único método sin violaciones físicas y con menor cambio de desviación (−0,003 %). Eliminar filas perdería 967,5 km² de hielo |
 | 1 glaciar con `HMEDIA < HMIN` | Punto medio `(HMIN + HMAX) / 2`, con bandera |
-| Área y volumen muy asimétricos (asimetría 43 y 54) | No se eliminan atípicos. Se aplica log10 (asimetría 0,6–0,7) y luego RobustScaler, elegido tras comparar los tres escaladores |
+| Área y volumen muy asimétricos (asimetría 43 y 54): el 1 % mayor reúne el 93,8 % del volumen | No se eliminan atípicos. Se aplica log10 (asimetría 0,6–0,7) y luego RobustScaler, elegido tras comparar los tres escaladores porque `RANGO_ALT` (4,05) y `HMEDIA` (1,45) conservan colas largas |
+| `LOG_VOL` y `ESP_MED` son funciones del área (Spearman ≈ 1 con `LOG_AREA`) | Se excluyen de la matriz escalada; se conservan en `glaciares_limpio` |
+| El CSV no conserva tipos: las ordinales se releen en orden alfabético y los códigos como enteros | `utl.cargar_limpio` restaura el orden declarado y los tipos; F2 lo comprueba al releer |
 | Nominales, ordinal (`MZON_GLAC`) y cíclica (`ORIENTA`) | One-hot (32 columnas), orden geográfico declarado y seno/coseno |
 
 Ningún glaciar se elimina: el resultado conserva las 26.180 filas. Las cifras y la justificación de cada decisión están en el notebook F2 y en [`docs/bitacora_f2.md`](docs/bitacora_f2.md).

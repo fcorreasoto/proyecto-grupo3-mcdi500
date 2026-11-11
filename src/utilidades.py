@@ -1,12 +1,14 @@
 """Utilidades compartidas del proyecto MCDI500 · Grupo 3.
 
-Inventario Público de Glaciares de Chile 2022. Este módulo reúne lo que usan varias
-fases (rutas, integridad del dato, entorno, trazabilidad y bitácora), para que cada
-función se escriba y se pruebe una sola vez. F1 lo importa y lo prueba (sección 4.1) y F2 lo
-reutiliza; las fases siguientes lo importarán del mismo modo.
+Inventario Público de Glaciares de Chile 2022. Este módulo reúne lo que usan varias fases
+(rutas, integridad del dato, carga de los datos procesados, entorno, trazabilidad, pruebas y
+bitácora), para que cada función se escriba y se pruebe una sola vez. F1 lo importa y lo prueba
+(sección 4.1) y F2 lo reutiliza; las fases siguientes lo importarán del mismo modo.
 """
 
+import contextlib
 import hashlib
+import io
 import re
 import subprocess
 from pathlib import Path
@@ -16,6 +18,13 @@ import pandas as pd
 SEMILLA = 42  # declarada para cualquier proceso aleatorio de las fases siguientes
 ARCHIVO_INVENTARIO = "Inventario_Publico_de_Glaciares_2022.csv"
 HUELLA_INVENTARIO = "5691de5d7d7ffe2c8586a7066e227ac5cc91fa1ec69f54096e937a054c283f1d"
+
+# Tipos que F2 declara y que un CSV no conserva: cargar_limpio() los restaura al releer.
+ORDEN_MACROZONA = ["MACROZONA NORTE", "MACROZONA CENTRO", "MACROZONA SUR", "MACROZONA AUSTRAL"]
+ETIQUETAS_TAMANO = ["< 0,01", "0,01–0,1", "0,1–1", "1–10", "> 10"]          # clases de AREA_KM2 (km²)
+ORDINALES_LIMPIO = {"MZON_GLAC": ORDEN_MACROZONA, "CLASE_TAMANO": ETIQUETAS_TAMANO}
+COLUMNAS_CODIGO = ["COD_CUEN", "COD_SCUEN", "COD_SSCUEN", "CUT_REG", "CUT_PROV", "CUT_COM", "WGI_2", "WGI_3"]
+NOMINALES_LIMPIO = ["CLASIFICA", "REGION", "FRENTE_TER", "FUENTE_GRUPO"]
 
 
 class ProyectoError(Exception):
@@ -70,6 +79,36 @@ def cargar_inventario(ruta):
     return pd.read_csv(ruta, encoding="utf-8-sig", low_memory=False)
 
 
+def cargar_limpio(ruta):
+    """Lee data/processed/glaciares_limpio.csv restaurando los tipos que el CSV no conserva.
+
+    - Ordinales (`MZON_GLAC`, `CLASE_TAMANO`) como categorías con el orden declarado, no alfabético.
+    - Códigos (`COD_*`, `CUT_*`, `WGI_*`) e identificador como texto, no como enteros.
+    - `FUEN_FECHA` como fecha, `FUEN_ANIO` como entero con nulos y nominales como categoría.
+
+    Lanza
+    -----
+    ProyectoError
+        Si una ordinal contiene una categoría sin orden declarado.
+    """
+    tipos = {columna: "string" for columna in ["COD_GLA", *COLUMNAS_CODIGO]}
+    df = pd.read_csv(ruta, dtype=tipos, low_memory=False)
+    if "FUEN_FECHA" in df:
+        df["FUEN_FECHA"] = pd.to_datetime(df["FUEN_FECHA"], format="%Y-%m-%d", errors="coerce")
+    if "FUEN_ANIO" in df:
+        df["FUEN_ANIO"] = df["FUEN_ANIO"].astype("Int64")
+    for columna, orden in ORDINALES_LIMPIO.items():
+        if columna in df:
+            desconocidas = set(df[columna].dropna()) - set(orden)
+            if desconocidas:
+                raise ProyectoError(f"{columna} tiene categorías sin orden declarado: {sorted(desconocidas)}")
+            df[columna] = pd.Categorical(df[columna], categories=orden, ordered=True)
+    for columna in NOMINALES_LIMPIO:
+        if columna in df:
+            df[columna] = df[columna].astype("category")
+    return df
+
+
 # ------------------------------------------------------------------------- entorno
 def leer_requirements(ruta):
     """Devuelve {paquete en minúsculas: versión} a partir de las líneas 'paquete==versión'."""
@@ -116,6 +155,38 @@ def identidad_git(raiz):
     except (OSError, subprocess.SubprocessError):
         return {"user.name": None, "user.email": None, "email_valido": False}
     return {"user.name": nombre, "user.email": email, "email_valido": email_valido(email)}
+
+
+# ------------------------------------------------------------------------- pruebas
+def espera_error(tipo_error, funcion, *args, **kwargs):
+    """Pasa si `funcion` lanza `tipo_error`; lanza AssertionError si no lanza nada."""
+    try:
+        funcion(*args, **kwargs)
+    except tipo_error:
+        return
+    raise AssertionError(f"Se esperaba {tipo_error.__name__}")
+
+
+def prueba(condicion, mensaje="resultado inesperado"):
+    """Aserción con mensaje, utilizable dentro de una lambda."""
+    assert condicion, mensaje
+
+
+def ejecutar_pruebas(pruebas):
+    """Ejecuta (tipo, nombre, función) y devuelve una tabla OK / FALLA sin detenerse en la primera.
+
+    Silencia lo que impriman las funciones probadas (por ejemplo, los registros de la bitácora).
+    """
+    filas = []
+    for tipo, nombre, funcion in pruebas:
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                funcion()
+            resultado = "OK"
+        except AssertionError as error:
+            resultado = f"FALLA: {error}"
+        filas.append({"tipo": tipo, "prueba": nombre, "resultado": resultado})
+    return pd.DataFrame(filas, columns=["tipo", "prueba", "resultado"])
 
 
 # ------------------------------------------------------------------------ bitácora

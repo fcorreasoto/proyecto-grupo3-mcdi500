@@ -2,8 +2,10 @@ Datos procesados por F2/F2_Procesamiento.ipynb (se regeneran al ejecutar el note
 
 - glaciares_limpio.csv          26.180 × 48 · variables limpias en unidades físicas, con banderas de
                                 imputación/recálculo y variables derivadas. Entrada de F3 y F4.
-- glaciares_modelo.csv          26.180 × 49 · matriz 100 % numérica (ordinales, seno/coseno, one-hot,
-                                banderas y 6 continuas con RobustScaler); COD_GLA como clave.
+                                Leer con utl.cargar_limpio (src/utilidades.py) para recuperar el orden
+                                de MZON_GLAC y CLASE_TAMANO y los códigos como texto.
+- glaciares_modelo.csv          26.180 × 47 · matriz 100 % numérica (ordinales, seno/coseno, one-hot,
+                                banderas y 4 continuas con RobustScaler); COD_GLA como clave.
 - perfil_glaciares_limpio.csv   tipo, no nulos, % faltante y valores únicos de cada columna de glaciares_limpio.
 
 El archivo original permanece sin cambios en data/raw/. Decisiones y cifras: docs/bitacora_f2.md
