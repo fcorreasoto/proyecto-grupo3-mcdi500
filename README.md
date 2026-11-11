@@ -38,10 +38,12 @@ Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica un
 | Huella SHA-256 | `5691de5d7d7ffe2c8586a7066e227ac5cc91fa1ec69f54096e937a054c283f1d` |
 | Datos limpios (F2) | `data/processed/glaciares_limpio.csv` (26.180 × 48): variables en unidades físicas, banderas y derivadas. Entrada de F3 y F4 |
 | Matriz numérica (F2) | `data/processed/glaciares_modelo.csv` (26.180 × 49): ordinales, seno/coseno, one-hot, banderas y continuas escaladas |
-| Perfil de calidad | [`docs/validacion_dataset.md`](docs/validacion_dataset.md) (original) y `data/processed/perfil_glaciares_limpio.csv` (procesado) |
-| Bitácora de decisiones | [`docs/bitacora_f2.md`](docs/bitacora_f2.md), generada por F2 con las cifras de cada decisión |
+| Perfil de calidad | [`docs/validacion_dataset.md`](docs/validacion_dataset.md) (original, generado con `python validar_dataset.py data/raw/Inventario_Publico_de_Glaciares_2022.csv --informe docs/validacion_dataset.md`) y `data/processed/perfil_glaciares_limpio.csv` (procesado) |
+| Evaluación del dataset | [`docs/evaluacion_criterios_dataset.csv`](docs/evaluacion_criterios_dataset.csv): requisitos del curso; cumple los obligatorios con 2 avisos (variables sobre 60 % de faltantes y licencia no declarada) |
+| Diccionario de variables | [`docs/diccionario_variables.csv`](docs/diccionario_variables.csv): 45 variables con su rol analítico |
+| Bitácora y metadatos | [`docs/bitacora_f2.md`](docs/bitacora_f2.md) y [`docs/metadatos_proyecto.csv`](docs/metadatos_proyecto.csv), generados por F2 con las cifras de cada decisión |
 
-El archivo de `data/raw/` **nunca se modifica**. F2 recalcula su huella SHA-256 y falla si el archivo cambió.
+El archivo de `data/raw/` **nunca se modifica**. F1 y F2 verifican su huella SHA-256 y se detienen si el archivo cambió.
 
 ## Estructura del repositorio
 
@@ -54,20 +56,31 @@ proyecto-grupo3-mcdi500/
 ├── data/
 │   ├── raw/                         # CSV original de la DGA (inmutable)
 │   └── processed/                   # Salidas de F2 (se regeneran al ejecutar el notebook)
+├── src/
+│   └── utilidades.py                # Módulo compartido: rutas, huella, carga, entorno, Git, Bitacora
 ├── docs/
-│   ├── validacion_dataset.md        # Perfil de las 45 variables y requisitos del curso
+│   ├── validacion_dataset.md        # Perfil de las 45 variables (validar_dataset.py)
+│   ├── diccionario_variables.csv    # Generado por F1
+│   ├── evaluacion_criterios_dataset.csv   # Generado por F1
+│   ├── vinculacion_mapa_conceptual.csv    # Generado por F1
+│   ├── metadatos_fase1.json         # Condiciones de ejecución de F1
 │   ├── bitacora_f2.md               # Bitácora de decisiones exportada por F2
+│   ├── metadatos_proyecto.csv       # Metadatos del pipeline aplanados por F2 (recursividad)
 │   ├── f1/                          # Mapa conceptual de la Formativa 1 (.drawio y .pdf)
 │   └── informe/                     # Informe técnico de la Sumativa 1 (.docx y .pdf)
+├── validar_dataset.py               # Validador de dataset entregado por el curso
 ├── requirements.txt                 # Dependencias con versión exacta (pip freeze)
 ├── .gitignore
 └── README.md
 ```
 
+Las funciones que usan varias fases viven en `src/utilidades.py`: F1 lo prueba con casos normales, límite y excepciones, y F2 lo importa, así que ninguna función está copiada entre notebooks. Las carpetas `F3/` y `F4/` se crearán al iniciar esas fases.
+
 ## Entorno y dependencias
 
 - **Python:** 3.12 o superior. El proyecto se probó con Python 3.12.3 y 3.14.6.
-- **Librerías principales:** pandas 3.1.1, NumPy 2.5.4, scikit-learn 1.9.1 (escaladores de F2), JupyterLab 4.6.6 e ipykernel 7.4.0. Matplotlib 3.11.2 y seaborn 0.13.2 quedan instaladas para F3–F4.
+- **Librerías principales:** pandas 3.1.1, NumPy 2.5.4, scikit-learn 1.9.1 (escaladores de F2), Matplotlib 3.11.2 (gráficos de control de F2), JupyterLab 4.6.6 e ipykernel 7.4.0. seaborn 0.13.2 queda instalada para F4.
+- **Semilla:** `SEMILLA = 42`, declarada en `src/utilidades.py` y fijada en ambos notebooks. El pipeline actual es determinista, pero la semilla queda fijada para cualquier paso aleatorio de las fases siguientes.
 - La lista completa con versiones exactas está en [`requirements.txt`](requirements.txt).
 
 ### Instalación
@@ -105,14 +118,17 @@ jupyter lab
 
 1. **`F1/F1_Definicion.ipynb`**
    - Presenta el problema, la pregunta, los objetivos, el alcance, las restricciones y los supuestos.
-   - Verifica las versiones del entorno, localiza el CSV con rutas relativas y construye el diccionario de las 45 variables.
-   - **No modifica ni exporta datos.**
-   - Resultado esperado: «Verificación F1 superada».
+   - Importa y prueba `src/utilidades.py` y verifica la huella del dataset y las versiones del entorno.
+   - Construye el diccionario de las 45 variables con su rol analítico y evalúa el dataset contra los criterios del curso.
+   - Vincula el mapa conceptual con lo implementado, valida la fase y muestra la rama, el commit y la identidad de Git.
+   - **No modifica el inventario.** Solo genera artefactos documentales en `docs/`.
+   - Resultado esperado: 13/13 pruebas del módulo OK, «Verificación F1 superada» y las seis comprobaciones `[OK]` de `validar_fase1`.
 2. **`F2/F2_Procesamiento.ipynb`**
    - Sigue los pasos 6 a 11 del curso: exploración y medición → limpieza e imputación → transformación por tipo de variable → escalamiento → validación y pruebas → persistencia y bitácora.
-   - Trabaja sobre una copia; el CSV original se verifica con su huella SHA-256 al inicio y al final.
-   - Exporta `glaciares_limpio.csv` y `glaciares_modelo.csv` a `data/processed/` y la bitácora a `docs/bitacora_f2.md`.
-   - Resultado esperado: 17/17 validaciones OK, 21/21 pruebas OK y «F2 finalizada».
+   - Incluye gráficos de control (imputación, transformación y escalamiento) y una sección de recursividad.
+   - Nunca modifica `original`: cada etapa produce su propio DataFrame. El CSV original se verifica con su huella SHA-256 al inicio y al final.
+   - Exporta `glaciares_limpio.csv` y `glaciares_modelo.csv` a `data/processed/`, y la bitácora y los metadatos a `docs/`.
+   - Resultado esperado: 17/17 validaciones OK, 21/21 pruebas OK, 8 pruebas de las funciones recursivas OK y «F2 finalizada».
 
 También pueden ejecutarse sin abrir JupyterLab:
 
@@ -121,7 +137,7 @@ jupyter nbconvert --to notebook --execute --inplace F1/F1_Definicion.ipynb
 jupyter nbconvert --to notebook --execute --inplace F2/F2_Procesamiento.ipynb
 ```
 
-Los notebooks pueden ejecutarse desde su propia carpeta o desde la raíz del repositorio. No requieren internet ni semilla aleatoria, porque el pipeline es determinista. Cada etapa de F2 produce su propio DataFrame, así que re-ejecutar una celda suelta da el mismo resultado.
+Los notebooks pueden ejecutarse desde su propia carpeta o desde la raíz del repositorio y no requieren internet. Cada etapa de F2 produce su propio DataFrame, así que re-ejecutar una celda suelta da el mismo resultado.
 
 ### Solución de problemas
 
@@ -130,7 +146,8 @@ Los notebooks pueden ejecutarse desde su propia carpeta o desde la raíz del rep
 | `ModuleNotFoundError` (p. ej. `sklearn`) o «Faltan [...]: ejecutar pip install» | El kernel no es el del entorno virtual | En VS Code o JupyterLab, seleccionar el kernel de `.venv`; si persiste, `python -m pip install -r requirements.txt` con el entorno activado |
 | La celda de entorno muestra `DIFIERE` o «← requirements.txt declara …» | Versiones distintas a las del proyecto | Es un aviso: los notebooks también corren con pandas 2.2, pero para reproducir exactamente usar el `.venv` del proyecto |
 | `AssertionError: El CSV no coincide con la versión registrada` | `data/raw/` fue modificado o es otra versión | Restaurar el archivo original: `git checkout -- data/raw/` |
-| `FileNotFoundError: No se encontró data/raw/...` | El notebook se abrió fuera del repositorio clonado | Abrir el notebook desde la carpeta del repositorio |
+| `FileNotFoundError: No se encontró data/raw/...` o `src/utilidades.py` | El notebook se abrió fuera del repositorio clonado | Abrir el notebook desde la carpeta del repositorio |
+| F1 §9 muestra `email_valido: False` | El email de Git no es el de la cuenta de GitHub (p. ej. `usuario@equipo.local`) | `git config user.email "email@de-la-cuenta"` antes de hacer commits |
 
 ## Decisiones principales de la Fase 2
 
