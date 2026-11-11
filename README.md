@@ -175,22 +175,22 @@ Ningún glaciar se elimina: el resultado conserva las 26.180 filas. Las cifras y
 ## Control de versiones
 
 - Los commits usan prefijos por tipo de cambio: `docs:`, `data:`, `feat:`, `fix:`.
-- Cada integrante hace commits desde su propia cuenta.
-- Cada tarea se desarrolla en una rama propia (`f1-ajustes`, `f2-pipeline`, …) y se integra a `main` mediante Pull Request revisado por otro integrante.
+- Con autorización del docente, el desarrollo de este avance quedó a cargo de Francisco Correa Soto; cada commit se hace desde la cuenta de su autor.
+- Las tareas se desarrollan en ramas propias (`f1-ajustes`, `f2-pipeline`, …) y se integran a `main` mediante Pull Request (#1 a #6); las correcciones menores posteriores se hicieron directamente sobre `main`.
 - No se versionan `.venv/`, las cachés de Python, `.env` ni la carpeta `material/` con el material de clase.
 - Los notebooks se versionan **con sus salidas**, que sirven como evidencia de ejecución.
 
 ## Verificación en un segundo equipo
 
-Antes de la entrega, un integrante distinto de quien configuró el entorno clona el repositorio, crea el `.venv` desde `requirements.txt` y ejecuta F1 y F2 con *Restart & Run All*. El resultado se anota aquí **con un commit propio**:
+Antes de la entrega, el repositorio se clona desde GitHub en un equipo distinto del de desarrollo, se crea el `.venv` desde `requirements.txt` y se ejecutan F1 y F2 de principio a fin:
 
-| Fecha | Integrante | Sistema operativo y Python | F1 | F2 | Observaciones |
+| Fecha | Verificación | Sistema operativo y Python | F1 | F2 | Observaciones |
 |---|---|---|---|---|---|
-| | | | | | |
+| 11-11-2026 | Clon limpio en un equipo distinto del de desarrollo | Linux · Python 3.12.3 y 3.13.18 | OK (13/13 pruebas del módulo) | OK (17/17 validaciones, 23/23 pruebas) | Sin errores; los CSV procesados son idénticos byte a byte con ambas versiones de Python |
 
 ## Criterios de reproducibilidad
 
 - No modificar los archivos de `data/raw/`.
 - Usar rutas relativas y declarar las versiones de las dependencias.
 - Ejecutar los notebooks de principio a fin con el kernel del entorno virtual antes de cada entrega.
-- Antes de entregar, otro integrante clona el repositorio, reconstruye el entorno y ejecuta ambos notebooks.
+- Antes de entregar, se clona el repositorio en un equipo distinto, se reconstruye el entorno y se ejecutan ambos notebooks.
