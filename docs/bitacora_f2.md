@@ -33,4 +33,5 @@
 | 29 | escalamiento | Se usa RobustScaler (mediana 0, RIC 1) sobre 6 variables continuas | LOG_AREA, LOG_VOL, HMEDIA, RANGO_ALT, PENDIENTE, ESP_MED; coherente con la imputación por mediana y con los atípicos legítimos; sobre el área sin log, MinMax deja el 99.0 % de los datos en el 1 % inferior del rango |
 | 30 | validación | Se ejecutan 17 validaciones del dataset resultante | 17/17 OK: filas, clave, nulos, tipos, one-hot, ordinales, RobustScaler, reglas físicas, banderas y huella de data/raw |
 | 31 | validación | Se ejecutan 21 pruebas de las funciones | 21/21 OK: 7 casos normales, 5 casos límite y 9 excepciones |
-| 32 | persistencia | Se guardan y releen glaciares_limpio.csv y glaciares_modelo.csv en data/processed | limpio 26180×48 y modelo 26180×49; forma, columnas y tipos comprobados tras releer; data/raw intacto |
+| 32 | documentación | Los metadatos del pipeline se aplanan con una función recursiva | 4 niveles de anidamiento → 31 pares clave-valor en docs/metadatos_proyecto.csv; 8 pruebas OK (normales, límite y excepción) |
+| 33 | persistencia | Se guardan y releen glaciares_limpio.csv y glaciares_modelo.csv en data/processed | limpio 26180×48 y modelo 26180×49; forma, columnas y tipos comprobados tras releer; data/raw intacto |

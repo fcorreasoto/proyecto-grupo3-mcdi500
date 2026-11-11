@@ -1,0 +1,32 @@
+clave,valor
+proyecto.nombre,Análisis reproducible del Inventario Público de Glaciares de Chile 2022
+proyecto.grupo,Grupo 3
+proyecto.fase,F2
+proyecto.semilla,42
+datos.archivo,Inventario_Publico_de_Glaciares_2022.csv
+datos.sha256,5691de5d7d7ffe2c8586a7066e227ac5cc91fa1ec69f54096e937a054c283f1d
+datos.dimensiones.filas,26180
+datos.dimensiones.columnas,45
+datos.fuente.organismo,Dirección General de Aguas (DGA)
+datos.fuente.url,https://dga.mop.gob.cl
+decisiones.columnas_descartadas,"Id, DATUM, HUSO, CUBIERTO, F_ESP_MED, OBSERVACIO, WGI_1, OBJECTID, CH_CASQ"
+decisiones.texto.valores_corregidos,139
+decisiones.volumen.recalculados,362
+decisiones.volumen.factores_hielo.GLACIAR ROCOSO,0.6
+decisiones.volumen.factores_agua.GLACIAR ROCOSO,0.917
+decisiones.imputacion.HMIN.metodo,HMEDIA − desnivel mediano por comuna
+decisiones.imputacion.HMIN.valores,33
+decisiones.imputacion.HMIN.cambio_desv_pct,-0.0029
+decisiones.imputacion.HMEDIA.metodo,punto medio (HMIN + HMAX) / 2
+decisiones.imputacion.HMEDIA.valores,1
+decisiones.ordinales.MZON_GLAC,"MACROZONA NORTE, MACROZONA CENTRO, MACROZONA SUR, MACROZONA AUSTRAL"
+decisiones.ordinales.CLASE_TAMANO,"< 0,01, 0,01–0,1, 0,1–1, 1–10, > 10"
+decisiones.one_hot,"CLASIFICA, FRENTE_TER, REGION, FUENTE_GRUPO"
+decisiones.escalador.metodo,robust
+decisiones.escalador.variables,"LOG_AREA, LOG_VOL, HMEDIA, RANGO_ALT, PENDIENTE, ESP_MED"
+resultados.limpio.filas,26180
+resultados.limpio.columnas,48
+resultados.modelo.filas,26180
+resultados.modelo.columnas,49
+resultados.validaciones_ok,17
+resultados.pruebas_ok,21
