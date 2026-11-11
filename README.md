@@ -121,7 +121,16 @@ jupyter nbconvert --to notebook --execute --inplace F1/F1_Definicion.ipynb
 jupyter nbconvert --to notebook --execute --inplace F2/F2_Procesamiento.ipynb
 ```
 
-Los notebooks pueden ejecutarse desde su propia carpeta o desde la raíz del repositorio. No requieren internet ni semilla aleatoria, porque el pipeline es determinista.
+Los notebooks pueden ejecutarse desde su propia carpeta o desde la raíz del repositorio. No requieren internet ni semilla aleatoria, porque el pipeline es determinista. Cada etapa de F2 produce su propio DataFrame, así que re-ejecutar una celda suelta da el mismo resultado.
+
+### Solución de problemas
+
+| Síntoma | Causa probable | Solución |
+|---|---|---|
+| `ModuleNotFoundError` (p. ej. `sklearn`) o «Faltan [...]: ejecutar pip install» | El kernel no es el del entorno virtual | En VS Code o JupyterLab, seleccionar el kernel de `.venv`; si persiste, `python -m pip install -r requirements.txt` con el entorno activado |
+| La celda de entorno muestra `DIFIERE` o «← requirements.txt declara …» | Versiones distintas a las del proyecto | Es un aviso: los notebooks también corren con pandas 2.2, pero para reproducir exactamente usar el `.venv` del proyecto |
+| `AssertionError: El CSV no coincide con la versión registrada` | `data/raw/` fue modificado o es otra versión | Restaurar el archivo original: `git checkout -- data/raw/` |
+| `FileNotFoundError: No se encontró data/raw/...` | El notebook se abrió fuera del repositorio clonado | Abrir el notebook desde la carpeta del repositorio |
 
 ## Decisiones principales de la Fase 2
 
