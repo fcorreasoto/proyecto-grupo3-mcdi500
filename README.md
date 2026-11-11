@@ -73,6 +73,7 @@ python -m venv .venv
 
 Instalar las dependencias una vez que se haya generado `requirements.txt`:
 ```bash
+pyton -m pip install --upgrade pip #update pip
 python -m pip install -r requirements.txt
 ```
 

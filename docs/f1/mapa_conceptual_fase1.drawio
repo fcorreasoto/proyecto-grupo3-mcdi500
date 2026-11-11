@@ -1,0 +1,335 @@
+<mxfile host="Electron" agent="gen_mapa.py" pages="2">
+  <diagram id="p1" name="Portada">
+    <mxGraphModel dx="1226" dy="861" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p1-1" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#DAE8FC;strokeColor=#6C8EBF;verticalAlign=middle;spacing=4;rounded=0;strokeColor=none;fillColor=#6C8EBF;" value="" vertex="1">
+          <mxGeometry height="12" width="1100" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-2" parent="1" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=13;fontColor=#555555;" value="Magíster en Ciencia de Datos e Inteligencia Artificial · MCDI500 Programación para la Ciencia de Datos" vertex="1">
+          <mxGeometry height="30" width="980" x="60" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-3" parent="1" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=22;" value="&lt;b&gt;Evaluación Formativa 1 — Mapa conceptual&lt;/b&gt;" vertex="1">
+          <mxGeometry height="70" width="980" x="60" y="85" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-4" parent="1" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=13;" value="&lt;b&gt;Proyecto:&lt;/b&gt; Análisis reproducible del Inventario Público de Glaciares de Chile 2022 · Fase 1&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="980" x="60" y="160" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-5" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFFFFF;strokeColor=#666666;verticalAlign=middle;spacing=4;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;" value="&lt;b&gt;Grupo 3 — Integrantes&lt;/b&gt;&lt;br&gt;&lt;br&gt;Aníbal Reyes&lt;br&gt;Francisco Correa&lt;br&gt;Gustavo Aloy&lt;br&gt;Roberto Gaubert" vertex="1">
+          <mxGeometry height="150" width="460" x="60" y="205" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-6" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFFFFF;strokeColor=#666666;verticalAlign=middle;spacing=4;align=left;verticalAlign=top;spacingLeft=12;spacingTop=8;fontSize=12;" value="&lt;b&gt;Docente:&lt;/b&gt; Dr. Omar Salinas Silva&lt;br&gt;&lt;br&gt;&lt;b&gt;Entrega:&lt;/b&gt; Semana 1 · noviembre de 2026&lt;br&gt;&lt;br&gt;&lt;b&gt;Repositorio:&lt;/b&gt; github.com/fcorreasoto/MCDI500-grupo3" vertex="1">
+          <mxGeometry height="150" width="460" x="580" y="205" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-7" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFFFFF;strokeColor=#666666;verticalAlign=middle;spacing=4;align=left;verticalAlign=top;spacingLeft=12;spacingRight=12;spacingTop=8;" value="&lt;b&gt;Reflexión técnica del grupo&lt;/b&gt;&lt;br&gt;&lt;br&gt;• &lt;b&gt;Partimos del problema, no de las herramientas.&lt;/b&gt; La pregunta (¿cómo se distribuyen los glaciares según región, clasificación, superficie y volumen?) es analizable porque el inventario contiene REGION, CLASIFICA, AREA_KM2 y VOL_km3 para 26.180 glaciares. Un inventario transversal no permite estimar tendencias de pérdida de hielo: ese límite queda fuera del alcance.&lt;br&gt;&lt;br&gt;• &lt;b&gt;Cada herramienta tiene una función distinta.&lt;/b&gt; Python con un entorno virtual y requirements.txt fija las versiones; Jupyter une código, narrativa y salidas; Git registra localmente qué cambió, cuándo, quién lo hizo y por qué; GitHub comparte ese historial entre los cuatro integrantes. Git ≠ GitHub: Git funciona sin internet y GitHub aloja el repositorio remoto.&lt;br&gt;&lt;br&gt;• &lt;b&gt;La estructura del repositorio refleja el ciclo de vida del dato.&lt;/b&gt; data/raw es inmutable, data/processed recibe la transformación y results/ guarda la comunicación. Así siempre se puede volver al dato original.&lt;br&gt;&lt;br&gt;• &lt;b&gt;La exploración ya condicionó decisiones.&lt;/b&gt; La validación inicial mostró que CUBIERTO está 100% vacía, CH_CASQ tiene 97% de faltantes y LATITUD/LONGITUD vienen como texto con coma decimal. Estas decisiones se justificarán en el notebook y en docs/ durante la Fase 2.&lt;br&gt;&lt;br&gt;• &lt;b&gt;Trabajo colaborativo.&lt;/b&gt; Nos repartimos el trabajo por archivo, cada integrante hace commits con su propia cuenta y nbstripout limpia las salidas de los notebooks antes de cada commit para evitar conflictos." vertex="1">
+          <mxGeometry height="270" width="980" x="60" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="p1-8" parent="1" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;spacingLeft=4;" value="&lt;b&gt;Referencias&amp;nbsp;&lt;/b&gt;&lt;br&gt;Chacon, S., &amp;amp; Straub, B. (2014). &lt;i&gt;Pro Git&lt;/i&gt; (2.ª ed.). Apress. https://git-scm.com/book&lt;br&gt;Dirección General de Aguas. (2022). &lt;i&gt;Inventario público de glaciares de Chile 2022&lt;/i&gt; [Conjunto de datos]. Ministerio de Obras Públicas.&lt;br&gt;Kluyver, T., Ragan-Kelley, B., Pérez, F., Granger, B., Bussonnier, M., Frederic, J., Kelley, K., Hamrick, J., Grout, J., Corlay, S., Ivanov, P., Avila, D., Abdalla, S., Willing, C., &amp;amp; Jupyter Development Team. (2016). Jupyter Notebooks: A publishing format for reproducible computational workflows. En F. Loizides &amp;amp; B. Schmidt (Eds.), &lt;i&gt;Positioning and power in academic publishing: Players, agents and agendas&lt;/i&gt; (pp. 87–90). IOS Press. https://doi.org/10.3233/978-1-61499-649-1-87" vertex="1">
+          <mxGeometry height="160" width="980" x="60" y="665" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="p2" name="Mapa conceptual">
+    <mxGraphModel dx="1100" dy="850" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="p2-1" value="&lt;b&gt;Flujo de trabajo reproducible — Inventario Público de Glaciares de Chile 2022 · Grupo 3&lt;/b&gt;" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=15;align=center;" vertex="1" parent="1">
+          <mxGeometry x="15" y="6" width="1070" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-2" value="&lt;b&gt;A · Contexto problematizador · Fase 1&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFE6CC;strokeColor=#D79B00;verticalAlign=middle;spacing=4;fillColor=none;dashed=0;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=8;fontSize=12;fontColor=#D79B00;arcSize=3;" vertex="1" parent="1">
+          <mxGeometry x="15" y="36" width="1070" height="112" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-3" value="&lt;b&gt;Situación&lt;/b&gt;&lt;br&gt;Los glaciares son reservas de agua relevantes para Chile" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFE6CC;strokeColor=#D79B00;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="30" y="66" width="180" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-4" value="&lt;b&gt;Problema&lt;/b&gt;&lt;br&gt;No hay una caracterización territorial transparente y reproducible" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFE6CC;strokeColor=#D79B00;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="310" y="66" width="180" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-5" value="&lt;b&gt;Pregunta analizable&lt;/b&gt;&lt;br&gt;¿Cómo se distribuyen según región, clasificación, superficie y volumen?" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFE6CC;strokeColor=#D79B00;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="590" y="66" width="180" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-6" value="&lt;b&gt;Dataset&lt;/b&gt; · DGA 2022&lt;br&gt;26.180 glaciares × 45 variables&lt;br&gt;(REGION, CLASIFICA, AREA_KM2, VOL_km3)" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFE6CC;strokeColor=#D79B00;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="870" y="66" width="210" height="66" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-7" value="se delimita en" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;" edge="1" parent="1" source="p2-3" target="p2-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-8" value="se formula como" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;" edge="1" parent="1" source="p2-4" target="p2-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-9" value="se responde con" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;" edge="1" parent="1" source="p2-5" target="p2-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-10" value="&lt;b&gt;B · Ciclo de vida del dato&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#DAE8FC;strokeColor=#6C8EBF;verticalAlign=middle;spacing=4;fillColor=none;dashed=0;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=8;fontSize=12;fontColor=#6C8EBF;arcSize=3;" vertex="1" parent="1">
+          <mxGeometry x="15" y="172" width="1070" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-11" value="&lt;b&gt;① Definición&lt;/b&gt;&lt;br&gt;Problema, pregunta y alcance acotados&lt;br&gt;&lt;font color=&quot;#6C8EBF&quot;&gt;&lt;b&gt;[F1]&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#DAE8FC;strokeColor=#6C8EBF;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="24" y="200" width="122" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-12" value="&lt;b&gt;② Obtención&lt;/b&gt;&lt;br&gt;CSV oficial en data/raw (inmutable)&lt;br&gt;&lt;font color=&quot;#6C8EBF&quot;&gt;&lt;b&gt;[F2]&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#DAE8FC;strokeColor=#6C8EBF;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="210" y="200" width="122" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-13" value="&lt;b&gt;③ Exploración&lt;/b&gt;&lt;br&gt;Tipos, faltantes y anomalías (validar_dataset.py)&lt;br&gt;&lt;font color=&quot;#6C8EBF&quot;&gt;&lt;b&gt;[F2]&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#DAE8FC;strokeColor=#6C8EBF;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="396" y="200" width="122" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-14" value="&lt;b&gt;④ Transformación&lt;/b&gt;&lt;br&gt;Limpieza y tipado con pandas → data/processed&lt;br&gt;&lt;font color=&quot;#6C8EBF&quot;&gt;&lt;b&gt;[F2]&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#DAE8FC;strokeColor=#6C8EBF;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="582" y="200" width="122" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-15" value="&lt;b&gt;⑤ Análisis&lt;/b&gt;&lt;br&gt;Conteo, superficie y volumen por región y clasificación&lt;br&gt;&lt;font color=&quot;#6C8EBF&quot;&gt;&lt;b&gt;[F3]&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#DAE8FC;strokeColor=#6C8EBF;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="768" y="200" width="122" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-16" value="&lt;b&gt;⑥ Comunicación&lt;/b&gt;&lt;br&gt;Tablas, figuras e informe en results/&lt;br&gt;&lt;font color=&quot;#6C8EBF&quot;&gt;&lt;b&gt;[F4]&lt;/b&gt;&lt;/font&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#DAE8FC;strokeColor=#6C8EBF;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="954" y="200" width="122" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-17" value="da paso a" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;" edge="1" parent="1" source="p2-11" target="p2-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-18" value="da paso a" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;" edge="1" parent="1" source="p2-12" target="p2-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-19" value="da paso a" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;" edge="1" parent="1" source="p2-13" target="p2-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-20" value="da paso a" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;" edge="1" parent="1" source="p2-14" target="p2-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-21" value="da paso a" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;" edge="1" parent="1" source="p2-15" target="p2-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-22" value="obliga a redefinir" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;dashed=1;dashPattern=6 4;exitX=0.5;exitY=1;entryX=0.5;entryY=1;" edge="1" parent="1" source="p2-13" target="p2-11">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="457.0" y="312" />
+              <mxPoint x="85.0" y="312" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2-23" value="se incorpora en" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;dashed=1;dashPattern=6 4;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2-6" target="p2-12">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="922" y="160" />
+              <mxPoint x="271.0" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2-24" value="orienta" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;strokeWidth=3;endSize=8;strokeColor=#333333;exitX=0.04;exitY=1;entryX=0.04;entryY=0;" edge="1" parent="1" source="p2-2" target="p2-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-25" value="&lt;b&gt;C · Ecosistema de herramientas&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#D5E8D4;strokeColor=#82B366;verticalAlign=middle;spacing=4;fillColor=none;dashed=0;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=8;fontSize=12;fontColor=#82B366;arcSize=3;" vertex="1" parent="1">
+          <mxGeometry x="15" y="360" width="300" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-26" value="&lt;b&gt;Python 3.13 + entorno virtual (.venv)&lt;/b&gt;&lt;br&gt;pandas · NumPy · Matplotlib, versiones en requirements.txt" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#D5E8D4;strokeColor=#82B366;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="30" y="390" width="270" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-27" value="&lt;b&gt;JupyterLab&lt;/b&gt;&lt;br&gt;Ejecuta el análisis paso a paso (Restart &amp;amp; Run All)" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#D5E8D4;strokeColor=#82B366;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="30" y="474" width="270" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-28" value="&lt;b&gt;Git (local)&lt;/b&gt;&lt;br&gt;Registra qué, cuándo, quién y por qué" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#D5E8D4;strokeColor=#82B366;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="30" y="558" width="102" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-29" value="&lt;b&gt;GitHub (remoto)&lt;/b&gt;&lt;br&gt;Repositorio común, ramas y Pull Requests" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#D5E8D4;strokeColor=#82B366;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="192" y="558" width="102" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-30" value="es el kernel de" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;" edge="1" parent="1" source="p2-26" target="p2-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-31" value="es versionado por" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;entryX=0.5;entryY=0;exitX=0.25;exitY=1;" edge="1" parent="1" source="p2-27" target="p2-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-32" value="push/pull" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="p2-28" target="p2-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-33" value="&lt;b&gt;D · Repositorio MCDI500-grupo3 (estructura proyectada)&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;verticalAlign=middle;spacing=4;fillColor=none;dashed=0;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=8;fontSize=12;fontColor=#D6B656;arcSize=3;" vertex="1" parent="1">
+          <mxGeometry x="330" y="360" width="390" height="478" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-34" value="&lt;b&gt;data/raw/&lt;/b&gt; · dato original ②" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="345" y="390" width="175" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-35" value="&lt;b&gt;data/processed/&lt;/b&gt; · dato limpio ④" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="530" y="390" width="175" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-36" value="&lt;b&gt;notebooks/&lt;/b&gt; · 01_entorno, 02_pipeline ③④" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="345" y="438" width="175" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-37" value="&lt;b&gt;src/&lt;/b&gt; · funciones reutilizables ④⑤" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="530" y="438" width="175" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-38" value="&lt;b&gt;docs/&lt;/b&gt; · validación, diccionario, decisiones" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="345" y="486" width="175" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-39" value="&lt;b&gt;results/&lt;/b&gt; · tablas y figuras ⑥" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="530" y="486" width="175" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-40" value="&lt;b&gt;README.md&lt;/b&gt; · qué es y cómo se ejecuta" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="345" y="534" width="175" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-41" value="&lt;b&gt;requirements.txt&lt;/b&gt; · dependencias" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="530" y="534" width="175" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-42" value="&lt;b&gt;.gitignore&lt;/b&gt; · no versiona .venv/, __pycache__/, .env ni material de clase" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="345" y="582" width="360" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-43" value="&lt;b&gt;Commits proyectados&lt;/b&gt; (prefijo: verbo + cambio)&lt;br&gt;✔ docs: crea estructura inicial del proyecto&lt;br&gt;✔ data: incorpora dataset base en raw&lt;br&gt;○ docs: documenta validación del dataset&lt;br&gt;○ feat: agrega requirements.txt con versiones fijas&lt;br&gt;○ fix: convierte LATITUD/LONGITUD a float&lt;br&gt;○ docs: justifica eliminar CUBIERTO (100% nulos)&lt;br&gt;○ feat: agrega pipeline de limpieza en src/&lt;br&gt;○ docs: agrega diccionario de variables&lt;br&gt;&lt;b&gt;Criterios:&lt;/b&gt; prefijos docs/data/feat/fix · un cambio por commit · cada integrante hace commits con su cuenta · una rama por tarea + Pull Request · nbstripout antes del commit" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;verticalAlign=middle;spacing=4;align=left;verticalAlign=top;spacingLeft=8;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="345" y="626" width="360" height="204" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-44" value="aloja" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;exitX=1;exitY=0.3;entryX=0;entryY=0.44;" edge="1" parent="1" source="p2-29" target="p2-33">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="0" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2-45" value="registra commits" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;exitX=0.5;exitY=1;entryX=0;entryY=0.5;" edge="1" parent="1" source="p2-28" target="p2-43">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="81" y="662" />
+              <mxPoint x="322" y="662" />
+              <mxPoint x="322" y="728" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2-46" value="&lt;b&gt;E · Documentación científica reproducible&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#E1D5E7;strokeColor=#9673A6;verticalAlign=middle;spacing=4;fillColor=none;dashed=0;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=8;fontSize=12;fontColor=#9673A6;arcSize=3;" vertex="1" parent="1">
+          <mxGeometry x="735" y="360" width="350" height="478" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-47" value="&lt;b&gt;Notebook reproducible&lt;/b&gt; (notebooks/*.ipynb)&lt;br&gt;Une razonamiento, cálculo y evidencia" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#E1D5E7;strokeColor=#9673A6;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="750" y="390" width="320" height="46" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-48" value="&lt;b&gt;Celdas Markdown&lt;/b&gt;&lt;br&gt;Justifican el &lt;i&gt;por qué&lt;/i&gt; de cada decisión" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#E1D5E7;strokeColor=#9673A6;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="750" y="470" width="100" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-49" value="&lt;b&gt;Celdas de código&lt;/b&gt;&lt;br&gt;Usan funciones de src/ (el &lt;i&gt;qué&lt;/i&gt;)" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#E1D5E7;strokeColor=#9673A6;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="860" y="470" width="100" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-50" value="&lt;b&gt;Salidas&lt;/b&gt;&lt;br&gt;Tablas y gráficos como evidencia" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#E1D5E7;strokeColor=#9673A6;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="970" y="470" width="100" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-51" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;" edge="1" parent="1" source="p2-47" target="p2-48">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-52" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;" edge="1" parent="1" source="p2-47" target="p2-49">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-53" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;" edge="1" parent="1" source="p2-47" target="p2-50">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-54" value="se compone de" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="940" y="440" width="100" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-55" value="&lt;i&gt;Ej.: «Se elimina CUBIERTO porque está 100% vacía y no aporta a la pregunta»&lt;/i&gt; (descripción + justificación)" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFFFFF;strokeColor=#666666;verticalAlign=middle;spacing=4;fontSize=10;strokeColor=#9673A6;dashed=1;" vertex="1" parent="1">
+          <mxGeometry x="750" y="584" width="320" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-56" value="registran" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;exitX=0.5;exitY=1;entryX=0.15;entryY=0;" edge="1" parent="1" source="p2-48" target="p2-55">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-57" value="&lt;b&gt;Referencias técnicas&lt;/b&gt;&lt;br&gt;Fuente DGA y documentación en APA 7" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#E1D5E7;strokeColor=#9673A6;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="750" y="664" width="155" height="74" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-58" value="&lt;b&gt;README + docs/&lt;/b&gt;&lt;br&gt;Ejecución desde cero, diccionario y decisiones" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#E1D5E7;strokeColor=#9673A6;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="915" y="664" width="155" height="74" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-59" value="&lt;b&gt;Comunicación de resultados&lt;/b&gt;&lt;br&gt;Hallazgos por región y clasificación → informe (F4)" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#E1D5E7;strokeColor=#9673A6;verticalAlign=middle;spacing=4;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="750" y="766" width="320" height="58" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-60" value="cita" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2-55" target="p2-57">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-61" value="se resume en" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;exitX=0.75;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2-55" target="p2-58">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-62" value="sustentan" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;exitX=1;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="p2-50" target="p2-59">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1078" y="518" />
+              <mxPoint x="1078" y="795" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="p2-63" value="se ejecuta con" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;strokeWidth=3;endSize=8;strokeColor=#333333;exitX=0.15;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2-10" target="p2-25">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-64" value="se registra en" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;strokeWidth=3;endSize=8;strokeColor=#333333;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2-10" target="p2-33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-65" value="se documenta en" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;strokeWidth=3;endSize=8;strokeColor=#333333;exitX=0.85;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="p2-10" target="p2-46">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-66" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFFFFF;strokeColor=#666666;verticalAlign=middle;spacing=4;verticalAlign=top;arcSize=3;" vertex="1" parent="1">
+          <mxGeometry x="15" y="700" width="300" height="138" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-67" value="&lt;b&gt;Leyenda&lt;/b&gt;" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;" vertex="1" parent="1">
+          <mxGeometry x="25" y="702" width="200" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-68" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFE6CC;strokeColor=#D79B00;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="25" y="724" width="20" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-69" value="Contexto y datos" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="50" y="720" width="112" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-70" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#DAE8FC;strokeColor=#6C8EBF;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="25" y="743" width="20" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-71" value="Etapa del ciclo" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="50" y="739" width="112" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-72" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#D5E8D4;strokeColor=#82B366;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="25" y="762" width="20" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-73" value="Herramienta" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="50" y="758" width="112" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-74" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#FFF2CC;strokeColor=#D6B656;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="25" y="781" width="20" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-75" value="Repositorio y commits" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="50" y="777" width="112" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-76" value="" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fontFamily=Arial;fontSize=11;fillColor=#E1D5E7;strokeColor=#9673A6;verticalAlign=middle;spacing=4;" vertex="1" parent="1">
+          <mxGeometry x="25" y="800" width="20" height="12" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-77" value="Documentación" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="50" y="796" width="112" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-78" value="" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;" vertex="1" parent="1">
+          <mxGeometry x="165" y="731" width="1" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-79" value="" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;" vertex="1" parent="1">
+          <mxGeometry x="197" y="731" width="1" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-80" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;" edge="1" parent="1" source="p2-78" target="p2-79">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-81" value="Relación (frase)" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="201" y="722" width="110" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-82" value="" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;" vertex="1" parent="1">
+          <mxGeometry x="165" y="751" width="1" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-83" value="" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;" vertex="1" parent="1">
+          <mxGeometry x="197" y="751" width="1" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-84" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;dashed=1;dashPattern=6 4;" edge="1" parent="1" source="p2-82" target="p2-83">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-85" value="Iteración / flujo" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="201" y="742" width="110" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-86" value="" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;" vertex="1" parent="1">
+          <mxGeometry x="165" y="771" width="1" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-87" value="" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;" vertex="1" parent="1">
+          <mxGeometry x="197" y="771" width="1" height="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-88" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;fontFamily=Arial;fontSize=11;fontSize=10;endArrow=block;endFill=1;labelBackgroundColor=#FFFFFF;strokeColor=#444444;strokeWidth=3;endSize=8;strokeColor=#333333;" edge="1" parent="1" source="p2-86" target="p2-87">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-89" value="Entre bloques" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="201" y="762" width="110" height="18" as="geometry" />
+        </mxCell>
+        <mxCell id="p2-90" value="&lt;b&gt;[F1–F4]&lt;/b&gt; fase del ABP&lt;br&gt;&lt;b&gt;A–E&lt;/b&gt; bloque · &lt;b&gt;①–⑥&lt;/b&gt; etapa&lt;br&gt;&lt;b&gt;✔&lt;/b&gt; realizado · &lt;b&gt;○&lt;/b&gt; proyectado" style="text;html=1;whiteSpace=wrap;fontFamily=Arial;fontSize=11;verticalAlign=top;align=left;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="165" y="790" width="148" height="46" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
