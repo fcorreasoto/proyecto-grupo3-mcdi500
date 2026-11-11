@@ -3,9 +3,8 @@
   "grupo": "Grupo 3",
   "fase": "F1",
   "fecha_ejecucion": "2026-11-11",
-  "semilla": 42,
-  "python": "3.14.6",
-  "sistema": "Linux 7.0.0-43-generic",
+  "python": "3.12.3",
+  "sistema": "Linux 7.0.0-42-generic",
   "interprete": ".venv/bin/python",
   "entorno_virtual": true,
   "dependencias": {
