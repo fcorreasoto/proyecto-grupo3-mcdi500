@@ -22,7 +22,7 @@ Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica el
 **Objetivo general:** Medir, mediante un flujo reproducible en Python, cuán concentrados están el volumen estimado y la superficie de los glaciares de Chile en pocos glaciares y regiones, y cómo varía esa concentración según la clasificación del glaciar.
 
 **Objetivos específicos**
-1. Verificar la estructura, la calidad y el rol analítico de las 45 variables, y la relación entre área y volumen estimado (F1–F2).
+1. Verificar la estructura, la calidad y el rol analítico de las 45 variables, y que el volumen se estimó desde el área (F1–F2).
 2. Documentar y ejecutar la limpieza y transformación sin modificar el archivo original (F2).
 3. Calcular la concentración del volumen y de la superficie: participación del 1 % y del 10 % de glaciares mayores, por región y por clasificación (F3).
 4. Comunicar con tablas y visualizaciones reproducibles si la concentración cambia según la clasificación (F4).
