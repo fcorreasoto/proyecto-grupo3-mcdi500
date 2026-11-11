@@ -8,6 +8,9 @@ env/
 __pycache__/
 *.pyc
 
+# Jupyter
+.ipynb_checkpoints/
+
 # Variables de entorno
 .env
 
