@@ -113,12 +113,17 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
+Registrar el entorno como kernel de Jupyter (con el entorno activado). Se hace **una sola vez por equipo**; solo se repite si se vuelve a crear el `.venv` o se mueve la carpeta del proyecto:
+```bash
+python -m ipykernel install --user --name grupo3 --display-name "Python (.venv grupo3)"
+```
+
 ## Ejecución de los notebooks
 
-Ejecútalos **en orden** con el kernel del entorno virtual (`.venv`). En JupyterLab usa *Kernel → Restart Kernel and Run All Cells*.
+Ejecútalos **en orden** con el kernel del entorno virtual. Abre JupyterLab con el entorno activado, selecciona el kernel con *Kernel → Change Kernel → «Python (.venv grupo3)»* y usa *Kernel → Restart Kernel and Run All Cells*.
 
 ```bash
-jupyter lab
+python -m jupyter lab
 ```
 
 1. **`F1/F1_Definicion.ipynb`**
@@ -149,6 +154,8 @@ Los notebooks pueden ejecutarse desde su propia carpeta o desde la raíz del rep
 | Síntoma | Causa probable | Solución |
 |---|---|---|
 | `ModuleNotFoundError` (p. ej. `sklearn`) o «Faltan [...]: ejecutar pip install» | El kernel no es el del entorno virtual | En VS Code o JupyterLab, seleccionar el kernel de `.venv`; si persiste, `python -m pip install -r requirements.txt` con el entorno activado |
+| JupyterLab no muestra el kernel del entorno virtual, o la sección 5 de F1 indica que el kernel no corre dentro de `.venv` | JupyterLab se abrió sin activar el entorno (p. ej., desde Anaconda o un acceso directo) | Activar el entorno, registrar el kernel con `python -m ipykernel install --user --name grupo3 --display-name "Python (.venv grupo3)"`, abrir con `python -m jupyter lab` y elegir *Kernel → Change Kernel → «Python (.venv grupo3)»* |
+| `Activate.ps1 cannot be loaded… running scripts is disabled` (Windows) | PowerShell bloquea los scripts locales | `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` y volver a activar el entorno |
 | La celda de entorno muestra `DIFIERE` o «← requirements.txt declara …» | Versiones distintas a las del proyecto | Es un aviso: los notebooks también corren con pandas 2.2, pero para reproducir exactamente usar el `.venv` del proyecto |
 | `AssertionError: El CSV no coincide con la versión registrada` | `data/raw/` fue modificado o es otra versión | Restaurar el archivo original: `git checkout -- data/raw/` |
 | `FileNotFoundError: No se encontró data/raw/...` o `src/utilidades.py` | El notebook se abrió fuera del repositorio clonado | Abrir el notebook desde la carpeta del repositorio |
