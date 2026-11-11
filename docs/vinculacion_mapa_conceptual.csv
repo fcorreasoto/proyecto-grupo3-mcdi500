@@ -14,7 +14,7 @@ C · pandas · NumPy + validar_dataset.py → ③ mide,Herramienta,Implementado,
 C · pandas · scikit-learn → ④ transforma,Herramienta,Implementado en F2,F2 §3–5
 C · pandas (groupby) → ⑤ agrega,Herramienta,Proyectado (F3),
 C · Matplotlib · seaborn → ⑥ visualiza,Herramienta,Parcial: gráficos de control en F2; figuras en F4,"F2 §3.5, §4, §5"
-C · Git + GitHub y JupyterLab (transversales),Herramienta,Implementado,"§9: rama, commit e identidad; PR #1 y #2"
+C · Git + GitHub y JupyterLab (transversales),Herramienta,Implementado,Historial de Git; Pull Requests #1 a #4
 "D · Estructura: F1/, F2/, data/, src/, docs/ en la raíz",Organización del repositorio,Implementado,§9: validar_fase1
 D · results/ (tablas y figuras),Organización del repositorio,Proyectado (F4),
 "D · Protocolo: notebooks ejecutados, rama + PR, commits por integrante",Decisión técnica,Implementado,Historial de Git y README
