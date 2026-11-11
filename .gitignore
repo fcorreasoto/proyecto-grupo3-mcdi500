@@ -1,3 +1,4 @@
+
 # Entornos virtuales
 .venv/
 venv/
@@ -10,6 +11,12 @@ __pycache__/
 # Variables de entorno
 .env
 
-# macOS
-.DS_Store
+# Windows
+Thumbs.db
+Desktop.ini
 
+# macOS
+*.DS_Store
+
+# directorios de proyecto
+material/
