@@ -1,23 +1,23 @@
 elemento_mapa,tipo,estado,evidencia
-"A · Situación, problema y aporte frente a la DGA",Proceso,Implementado,§1–3: PROYECTO['problematica']; README
-A · Pregunta acotada: concentración del volumen y su variación por clasificación,Proceso,Implementado,§2: PROYECTO['pregunta']
-A · Dataset DGA 2022 con licencia declarada,Flujo reproducible,Implementado,§7.2: FICHA y evaluación del dataset
-A · Supuesto verificado: el volumen se estimó desde el área,Decisión técnica,Implementado,"F2 §2.3: ESP_MED = 28,5·A^0,357; §1 supuestos"
-B① Definición,Proceso,Implementado,§1–3
-B② Obtención: CSV en data/raw verificado con SHA-256,Flujo reproducible,Implementado,§4: verificar_huella
-"B③ Exploración: faltantes encubiertos, atípicos y categorías",Proceso,Implementado,§6–7 (descriptiva); F2 §2
-B④ Transformación → data/processed,Proceso,Implementado en F2,F2 §3–8; data/processed/
+"A · Situación, problema y aporte frente a la DGA",Proceso,Implementado,Secciones 1–3: PROYECTO['problematica']; README
+A · Pregunta acotada: concentración del volumen y su variación por clasificación,Proceso,Implementado,Sección 2: PROYECTO['pregunta']
+A · Dataset DGA 2022 con licencia declarada,Flujo reproducible,Implementado,Sección 7.2: FICHA y evaluación del dataset
+A · Supuesto verificado: el volumen se estimó desde el área,Decisión técnica,Implementado,"F2 sección 2.3: ESP_MED = 28,5·A^0,357; sección 1 supuestos"
+B① Definición,Proceso,Implementado,Secciones 1–3
+B② Obtención: CSV en data/raw verificado con SHA-256,Flujo reproducible,Implementado,Sección 4: verificar_huella
+"B③ Exploración: faltantes encubiertos, atípicos y categorías",Proceso,Implementado,Secciones 6–7 (descriptiva); F2 sección 2
+B④ Transformación → data/processed,Proceso,Implementado en F2,F2 secciones 3–8; data/processed/
 B⑤ Análisis de concentración · B⑥ Comunicación,Proceso,Proyectado (F3–F4),
-C · Python + .venv + requirements.txt → ① configura,Herramienta,Implementado,§5: kernel y versiones verificadas
-C · src/utilidades.py → ② verifica y carga,Herramienta,Implementado,§4: módulo importado y probado (13 casos)
-C · pandas · NumPy + validar_dataset.py → ③ mide,Herramienta,Implementado,§6–7; F2 §2; docs/validacion_dataset.md
-C · pandas · scikit-learn → ④ transforma,Herramienta,Implementado en F2,F2 §3–5
+C · Python + .venv + requirements.txt → ① configura,Herramienta,Implementado,Sección 5: kernel y versiones verificadas
+C · src/utilidades.py → ② verifica y carga,Herramienta,Implementado,Sección 4: módulo importado y probado (13 casos)
+C · pandas · NumPy + validar_dataset.py → ③ mide,Herramienta,Implementado,Secciones 6–7; F2 sección 2; docs/validacion_dataset.md
+C · pandas · scikit-learn → ④ transforma,Herramienta,Implementado en F2,F2 secciones 3–5
 C · pandas (groupby) → ⑤ agrega,Herramienta,Proyectado (F3),
-C · Matplotlib · seaborn → ⑥ visualiza,Herramienta,Parcial: gráficos de control en F2; figuras en F4,"F2 §3.5, §4, §5"
+C · Matplotlib · seaborn → ⑥ visualiza,Herramienta,Parcial: gráficos de control en F2; figuras en F4,"F2 secciones 3.5, 4 y 5"
 C · Git + GitHub y JupyterLab (transversales),Herramienta,Implementado,Historial de Git; Pull Requests #1 a #4
-"D · Estructura: F1/, F2/, data/, src/, docs/ en la raíz",Organización del repositorio,Implementado,§9: validar_fase1
+"D · Estructura: F1/, F2/, data/, src/, docs/ en la raíz",Organización del repositorio,Implementado,Sección 9: validar_fase1
 D · results/ (tablas y figuras),Organización del repositorio,Proyectado (F4),
 "D · Protocolo: notebooks ejecutados, rama + PR, commits por integrante",Decisión técnica,Implementado,Historial de Git y README
 E · Notebook: Markdown + código + salidas,Estructura del notebook,Implementado,Narrativa antes de cada bloque en F1 y F2
 E · Bitácora de decisiones con cifras,Documentación,Implementado,docs/bitacora_f2.md
-E · Informe + referencias APA 7 (DGA con enlace),Documentación,Implementado,docs/informe/; §7.2
+E · Informe + referencias APA 7 (DGA con enlace),Documentación,Implementado,docs/informe/; sección 7.2

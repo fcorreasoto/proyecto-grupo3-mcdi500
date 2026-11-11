@@ -27,7 +27,7 @@ Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica el
 3. Calcular la concentración del volumen y de la superficie: participación del 1 % y del 10 % de glaciares mayores, por región y por clasificación (F3).
 4. Comunicar con tablas y visualizaciones reproducibles si la concentración cambia según la clasificación (F4).
 
-**Supuesto clave (verificado en F2 §2.3):** el espesor y el volumen **no son mediciones**. Se estimaron desde el área con la fórmula de Chen y Ohmura (1990), `ESP_MED = 28,5 · AREA^0,357` (R² ≥ 0,998 en los cinco tipos), de modo que `VOL ≈ 0,0285 · AREA^1,357` (× 0,6 en glaciares rocosos). Área y volumen se reportan juntos, pero no se tratan como variables independientes: la concentración del volumen amplifica la del área.
+**Supuesto clave (verificado en F2 sección 2.3):** el espesor y el volumen **no son mediciones**. Se estimaron desde el área con la fórmula de Chen y Ohmura (1990), `ESP_MED = 28,5 · AREA^0,357` (R² ≥ 0,998 en los cinco tipos), de modo que `VOL ≈ 0,0285 · AREA^1,357` (× 0,6 en glaciares rocosos). Área y volumen se reportan juntos, pero no se tratan como variables independientes: la concentración del volumen amplifica la del área.
 
 **Fuera del alcance:** tendencias temporales de pérdida de hielo (el inventario es transversal), modelos predictivos, cruce con datos climáticos externos y relaciones entre área y volumen, porque una depende de la otra.
 
