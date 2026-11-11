@@ -2,7 +2,7 @@
 
 Inventario Público de Glaciares de Chile 2022. Este módulo reúne lo que usan varias
 fases (rutas, integridad del dato, entorno, trazabilidad y bitácora), para que cada
-función se escriba y se pruebe una sola vez. F1 lo importa y lo prueba (§4.1) y F2 lo
+función se escriba y se pruebe una sola vez. F1 lo importa y lo prueba (sección 4.1) y F2 lo
 reutiliza; las fases siguientes lo importarán del mismo modo.
 """
 
@@ -13,6 +13,7 @@ from pathlib import Path
 
 import pandas as pd
 
+SEMILLA = 42  # declarada para cualquier proceso aleatorio de las fases siguientes
 ARCHIVO_INVENTARIO = "Inventario_Publico_de_Glaciares_2022.csv"
 HUELLA_INVENTARIO = "5691de5d7d7ffe2c8586a7066e227ac5cc91fa1ec69f54096e937a054c283f1d"
 
