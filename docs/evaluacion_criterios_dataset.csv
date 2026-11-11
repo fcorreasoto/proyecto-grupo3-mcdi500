@@ -1,0 +1,14 @@
+estado,tipo,requisito,detalle,por_que_se_pide
+OK,obligatorio,Al menos 2000 filas,"26,180 filas",Agrupar por categoría sin grupos vacíos
+OK,obligatorio,Al menos 12 columnas,45 columnas,Variedad de roles analíticos
+OK,obligatorio,Combina al menos 3 roles analíticos,"alta cardinalidad, continua, discreta, fecha, nominal, ordinal",El conjunto debe ser multivariado
+OK,obligatorio,Al menos una variable numérica,16 (continuas o discretas),Escalamiento y atípicos
+OK,obligatorio,Al menos una variable categórica,"10 (nominales, binarias u ordinales)",Codificación de categorías
+OK,aviso,Presencia de valores faltantes (≥ 1 %),máximo 100.0 %,Sin faltantes no hay preprocesamiento que justificar
+AVISO,aviso,Ninguna variable sobre 60 % de faltantes,"CH_CASQ, CUBIERTO, OBSERVACIO","Por encima, la variable no es recuperable"
+OK,aviso,Incluye alguna variable de fecha,1 detectada(s),Parseo y derivación de variables temporales
+OK,aviso,Incluye texto o alta cardinalidad,10 detectadas,Normalización y agrupación
+OK,aviso,Archivo bajo 100 MB,9.46 MB,Límite de GitHub
+OK,aviso,Sin filas duplicadas exactas,0 duplicadas,"Cada fila, una observación"
+AVISO,aviso,Licencia abierta y fuente verificable,fuente oficial verificable; licencia no declarada,Uso legítimo y procedencia comprobable
+OK,aviso,Datos de los últimos cinco años,publicado en 2022,Problema contingente

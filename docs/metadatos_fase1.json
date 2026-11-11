@@ -1,0 +1,28 @@
+{
+  "proyecto": "Análisis reproducible del Inventario Público de Glaciares de Chile 2022",
+  "grupo": "Grupo 3",
+  "fase": "F1",
+  "fecha_ejecucion": "2026-11-11",
+  "semilla": 42,
+  "python": "3.14.6",
+  "sistema": "Linux 7.0.0-43-generic",
+  "interprete": ".venv/bin/python",
+  "entorno_virtual": true,
+  "dependencias": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.1",
+    "scikit-learn": "1.9.1",
+    "matplotlib": "3.11.2",
+    "jupyterlab": "4.6.6",
+    "ipykernel": "7.4.0",
+    "seaborn": "0.13.2"
+  },
+  "dataset": {
+    "archivo": "Inventario_Publico_de_Glaciares_2022.csv",
+    "organismo": "Dirección General de Aguas (DGA)",
+    "url": "https://dga.mop.gob.cl/inventario-publico-glaciares/",
+    "filas": 26180,
+    "columnas": 45,
+    "sha256": "5691de5d7d7ffe2c8586a7066e227ac5cc91fa1ec69f54096e937a054c283f1d"
+  }
+}
