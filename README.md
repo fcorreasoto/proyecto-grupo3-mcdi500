@@ -36,8 +36,10 @@ Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica un
 | Fuente | Dirección General de Aguas (DGA), *Inventario Público de Glaciares de Chile 2022*. Uso académico citando la fuente |
 | Archivo original | `data/raw/Inventario_Publico_de_Glaciares_2022.csv` (26.180 filas × 45 columnas, 9,46 MB) |
 | Huella SHA-256 | `5691de5d7d7ffe2c8586a7066e227ac5cc91fa1ec69f54096e937a054c283f1d` |
-| Archivo procesado (F2) | `data/processed/inventario_glaciares_2022_procesado.csv` (26.180 × 48) |
-| Perfil de calidad | [`docs/validacion_dataset.md`](docs/validacion_dataset.md) y `data/processed/perfil_f2.csv` |
+| Datos limpios (F2) | `data/processed/glaciares_limpio.csv` (26.180 × 48): variables en unidades físicas, banderas y derivadas. Entrada de F3 y F4 |
+| Matriz numérica (F2) | `data/processed/glaciares_modelo.csv` (26.180 × 49): ordinales, seno/coseno, one-hot, banderas y continuas escaladas |
+| Perfil de calidad | [`docs/validacion_dataset.md`](docs/validacion_dataset.md) (original) y `data/processed/perfil_glaciares_limpio.csv` (procesado) |
+| Bitácora de decisiones | [`docs/bitacora_f2.md`](docs/bitacora_f2.md), generada por F2 con las cifras de cada decisión |
 
 El archivo de `data/raw/` **nunca se modifica**. F2 recalcula su huella SHA-256 y falla si el archivo cambió.
 
@@ -51,9 +53,10 @@ proyecto-grupo3-mcdi500/
 │   └── F2_Procesamiento.ipynb       # Obtención → exploración → limpieza → transformación → validación
 ├── data/
 │   ├── raw/                         # CSV original de la DGA (inmutable)
-│   └── processed/                   # Salidas de F2 (se generan al ejecutar el notebook)
+│   └── processed/                   # Salidas de F2 (se regeneran al ejecutar el notebook)
 ├── docs/
 │   ├── validacion_dataset.md        # Perfil de las 45 variables y requisitos del curso
+│   ├── bitacora_f2.md               # Bitácora de decisiones exportada por F2
 │   ├── f1/                          # Mapa conceptual de la Formativa 1 (.drawio y .pdf)
 │   └── informe/                     # Informe técnico de la Sumativa 1 (.docx y .pdf)
 ├── requirements.txt                 # Dependencias con versión exacta (pip freeze)
@@ -64,7 +67,7 @@ proyecto-grupo3-mcdi500/
 ## Entorno y dependencias
 
 - **Python:** 3.12 o superior. El proyecto se probó con Python 3.12.3 y 3.14.6.
-- **Librerías principales:** pandas 3.1.1, NumPy 2.5.4, JupyterLab 4.6.6 e ipykernel 7.4.0. Matplotlib 3.11.2, seaborn 0.13.2 y scikit-learn 1.9.1 quedan instaladas para F3–F4.
+- **Librerías principales:** pandas 3.1.1, NumPy 2.5.4, scikit-learn 1.9.1 (escaladores de F2), JupyterLab 4.6.6 e ipykernel 7.4.0. Matplotlib 3.11.2 y seaborn 0.13.2 quedan instaladas para F3–F4.
 - La lista completa con versiones exactas está en [`requirements.txt`](requirements.txt).
 
 ### Instalación
@@ -106,10 +109,10 @@ jupyter lab
    - **No modifica ni exporta datos.**
    - Resultado esperado: «Verificación F1 superada».
 2. **`F2/F2_Procesamiento.ipynb`**
-   - Carga el CSV, registra su huella SHA-256 y diagnostica faltantes, duplicados, atípicos y fechas.
-   - Crea `LATITUD_NUM`, `LONGITUD_NUM` y `FUEN_FECHA_DT` sobre una copia del inventario y valida el resultado con `assert`.
-   - Exporta los archivos a `data/processed/`.
-   - Resultado esperado: «Pruebas superadas…» y «Dimensiones exportadas: (26180, 48)».
+   - Sigue los pasos 6 a 11 del curso: exploración y medición → limpieza e imputación → transformación por tipo de variable → escalamiento → validación y pruebas → persistencia y bitácora.
+   - Trabaja sobre una copia; el CSV original se verifica con su huella SHA-256 al inicio y al final.
+   - Exporta `glaciares_limpio.csv` y `glaciares_modelo.csv` a `data/processed/` y la bitácora a `docs/bitacora_f2.md`.
+   - Resultado esperado: 17/17 validaciones OK, 21/21 pruebas OK y «F2 finalizada».
 
 También pueden ejecutarse sin abrir JupyterLab:
 
@@ -124,20 +127,23 @@ Los notebooks pueden ejecutarse desde su propia carpeta o desde la raíz del rep
 
 | Hallazgo | Decisión |
 |---|---|
-| `CUBIERTO` y `OBSERVACIO` 100 % vacías | Se conservan en el archivo y se excluyen de los análisis. No hay valores desde los cuales imputar |
-| `CH_CASQ` 97,24 % faltante | Se conserva sin imputar, porque la fuente no documenta el significado del faltante |
-| `LATITUD` y `LONGITUD` como texto con coma decimal | Se crean columnas `float` auxiliares. Las 26.180 se convierten sin fallas |
-| `FUEN_FECHA` con formatos mixtos | Se crea `FUEN_FECHA_DT` (DD/MM/AAAA). Las 13 no interpretables quedan como `NaT` y se reportan |
-| Superficie y volumen muy asimétricos | No se eliminan atípicos, porque son glaciares reales |
-| Variables de análisis sin faltantes | No se imputa nada. Ningún registro se elimina |
+| `CUBIERTO`, `OBSERVACIO` (100 % vacías); `Id`, `DATUM`, `HUSO`, `F_ESP_MED` (valor único); `WGI_1` (≡ `CLASIFICA`); `OBJECTID` (no único) | Se descartan. Los valores constantes quedan registrados en la bitácora |
+| `CH_CASQ` 97,24 % faltante | Se descarta como categoría (> 60 %) y se conserva como bandera binaria `EN_CAMPO_HIELO` (723 glaciares) |
+| Texto con codificación rota (`FOTOGRAMETR├ìA`), mayúsculas inconsistentes y espacios dobles | Se normaliza: 139 valores corregidos |
+| `LATITUD`/`LONGITUD` como texto; `FUEN_FECHA` en 3 formatos; códigos leídos como enteros | Casting a `float`, a fecha más `FUEN_ANIO` (1955–2022) y a texto, respectivamente |
+| 362 `VOL_km3 = 0` y 668 `EQ_AGUAKM3 = 0` (redondeo) | Se recalculan con la fórmula del propio inventario (factores distintos para glaciares rocosos); bandera de recálculo |
+| 33 `HMIN = 0` en frentes de tierra o lago (faltante encubierto) | Se imputan con `HMEDIA − desnivel mediano por comuna`: es el único método sin violaciones físicas y con menor cambio de desviación (−0,003 %). Eliminar filas perdería 967,5 km² de hielo |
+| 1 glaciar con `HMEDIA < HMIN` | Punto medio `(HMIN + HMAX) / 2`, con bandera |
+| Área y volumen muy asimétricos (asimetría 43 y 54) | No se eliminan atípicos. Se aplica log10 (asimetría 0,6–0,7) y luego RobustScaler, elegido tras comparar los tres escaladores |
+| Nominales, ordinal (`MZON_GLAC`) y cíclica (`ORIENTA`) | One-hot (32 columnas), orden geográfico declarado y seno/coseno |
 
-El detalle y la justificación de cada decisión están en el notebook F2 (§3 y §8) y en el informe (sección 4.2).
+Ningún glaciar se elimina: el resultado conserva las 26.180 filas. Las cifras y la justificación de cada decisión están en el notebook F2 y en [`docs/bitacora_f2.md`](docs/bitacora_f2.md).
 
 ## Control de versiones
 
 - Los commits usan prefijos por tipo de cambio: `docs:`, `data:`, `feat:`, `fix:`.
 - Cada integrante hace commits desde su propia cuenta.
-- Desde la Fase 3, cada tarea se desarrolla en una rama propia y se integra a `main` mediante Pull Request.
+- Cada tarea se desarrolla en una rama propia (`f1-ajustes`, `f2-pipeline`, …) y se integra a `main` mediante Pull Request revisado por otro integrante.
 - No se versionan `.venv/`, las cachés de Python, `.env` ni la carpeta `material/` con el material de clase.
 - Los notebooks se versionan **con sus salidas**, que sirven como evidencia de ejecución.
 
