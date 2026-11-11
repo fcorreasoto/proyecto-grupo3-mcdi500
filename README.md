@@ -125,7 +125,7 @@ jupyter lab
    - Presenta el problema, la pregunta, los objetivos, el alcance, las restricciones y los supuestos.
    - Importa y prueba `src/utilidades.py` y verifica la huella del dataset y las versiones del entorno.
    - Construye el diccionario de las 45 variables con su rol analítico y evalúa el dataset contra los criterios del curso.
-   - Vincula el mapa conceptual con lo implementado, valida la fase y muestra la rama, el commit y la identidad de Git.
+   - Vincula el mapa conceptual con lo implementado y valida la fase.
    - **No modifica el inventario.** Solo genera artefactos documentales en `docs/`.
    - Resultado esperado: 13/13 pruebas del módulo OK, «Verificación F1 superada» y las seis comprobaciones `[OK]` de `validar_fase1`.
 2. **`F2/F2_Procesamiento.ipynb`**
@@ -152,7 +152,7 @@ Los notebooks pueden ejecutarse desde su propia carpeta o desde la raíz del rep
 | La celda de entorno muestra `DIFIERE` o «← requirements.txt declara …» | Versiones distintas a las del proyecto | Es un aviso: los notebooks también corren con pandas 2.2, pero para reproducir exactamente usar el `.venv` del proyecto |
 | `AssertionError: El CSV no coincide con la versión registrada` | `data/raw/` fue modificado o es otra versión | Restaurar el archivo original: `git checkout -- data/raw/` |
 | `FileNotFoundError: No se encontró data/raw/...` o `src/utilidades.py` | El notebook se abrió fuera del repositorio clonado | Abrir el notebook desde la carpeta del repositorio |
-| F1 §9 muestra `email_valido: False` | El email de Git no es el de la cuenta de GitHub (p. ej. `usuario@equipo.local`) | `git config user.email "email@de-la-cuenta"` antes de hacer commits |
+| Los commits no aparecen asociados a tu perfil en GitHub | El email de Git no es el de la cuenta de GitHub (p. ej. `usuario@equipo.local`) | `git config user.email "email@de-la-cuenta"` antes de hacer commits |
 
 ## Decisiones principales de la Fase 2
 
@@ -177,6 +177,14 @@ Ningún glaciar se elimina: el resultado conserva las 26.180 filas. Las cifras y
 - Cada tarea se desarrolla en una rama propia (`f1-ajustes`, `f2-pipeline`, …) y se integra a `main` mediante Pull Request revisado por otro integrante.
 - No se versionan `.venv/`, las cachés de Python, `.env` ni la carpeta `material/` con el material de clase.
 - Los notebooks se versionan **con sus salidas**, que sirven como evidencia de ejecución.
+
+## Verificación en un segundo equipo
+
+Antes de la entrega, un integrante distinto de quien configuró el entorno clona el repositorio, crea el `.venv` desde `requirements.txt` y ejecuta F1 y F2 con *Restart & Run All*. El resultado se anota aquí **con un commit propio**:
+
+| Fecha | Integrante | Sistema operativo y Python | F1 | F2 | Observaciones |
+|---|---|---|---|---|---|
+| | | | | | |
 
 ## Criterios de reproducibilidad
 
