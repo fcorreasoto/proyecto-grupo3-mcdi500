@@ -15,25 +15,30 @@ Informe técnico de la Sumativa 1: [`docs/informe/mcdi500_sumativa1_grupo3.pdf`]
 
 ## Problemática
 
-Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica un inventario oficial de 26.180 glaciares, pero su CSV no es directamente analizable: tiene columnas vacías, coordenadas leídas como texto por usar coma decimal, fechas en formatos mixtos y magnitudes muy asimétricas. El proyecto busca caracterizar la distribución de los glaciares con un procedimiento transparente y reproducible.
+Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica el inventario oficial (26.180 glaciares, 45 variables) y sus totales, pero no un cálculo reproducible de **cuán concentrado está el hielo**. Además, su CSV no es directamente analizable: tiene columnas vacías, coordenadas leídas como texto, fechas en formatos mixtos y faltantes encubiertos. **Nuestro aporte** es medir esa concentración con un procedimiento reproducible de punta a punta: dato verificado, pipeline versionado y probado.
 
-**Pregunta de investigación:** ¿Cómo se distribuyen los glaciares del Inventario Público de Glaciares 2022 según región, clasificación, superficie y volumen estimado?
+**Pregunta de investigación:** ¿Qué tan concentrado está el volumen de hielo estimado en pocos glaciares y regiones, y cambia esa concentración según la clasificación del glaciar? La exploración la sustenta: el 1 % de los glaciares reúne el 93,8 % del volumen, y Magallanes y Aysén el 97,9 %.
 
-**Objetivo general:** Caracterizar la distribución territorial y las propiedades físicas de los glaciares registrados en el inventario mediante un flujo de análisis reproducible en Python.
+**Objetivo general:** Medir, mediante un flujo reproducible en Python, cuán concentrados están el volumen estimado y la superficie de los glaciares de Chile en pocos glaciares y regiones, y cómo varía esa concentración según la clasificación del glaciar.
 
 **Objetivos específicos**
-1. Verificar la estructura, la calidad y el rol analítico de las 45 variables del inventario (F1–F2).
+1. Verificar la estructura, la calidad y el rol analítico de las 45 variables, y la relación entre área y volumen estimado (F1–F2).
 2. Documentar y ejecutar la limpieza y transformación sin modificar el archivo original (F2).
-3. Resumir número de glaciares, superficie y volumen estimado por región y clasificación (F3).
-4. Generar tablas y visualizaciones reproducibles desde el repositorio (F4).
+3. Calcular la concentración del volumen y de la superficie: participación del 1 % y del 10 % de glaciares mayores, por región y por clasificación (F3).
+4. Comunicar con tablas y visualizaciones reproducibles si la concentración cambia según la clasificación (F4).
 
-**Fuera del alcance:** tendencias temporales de pérdida de hielo (el inventario es transversal), modelos predictivos y cruce con datos climáticos externos.
+**Supuesto clave (verificado en F2 §2.3):** el espesor y el volumen **no son mediciones**. Se estimaron desde el área con la fórmula de Chen y Ohmura (1990), `ESP_MED = 28,5 · AREA^0,357` (R² ≥ 0,998 en los cinco tipos), de modo que `VOL ≈ 0,0285 · AREA^1,357` (× 0,6 en glaciares rocosos). Área y volumen se reportan juntos, pero no se tratan como variables independientes: la concentración del volumen amplifica la del área.
+
+**Fuera del alcance:** tendencias temporales de pérdida de hielo (el inventario es transversal), modelos predictivos, cruce con datos climáticos externos y relaciones entre área y volumen, porque una depende de la otra.
+
+**Mapa conceptual:** [`docs/f1/mcdi500_s1_grupo3.pdf`](docs/f1/mcdi500_s1_grupo3.pdf) (versión 2, ajustada según la retroalimentación de la Formativa 1; editable en `docs/f1/mapa_conceptual_fase1.drawio`).
 
 ## Datos
 
 | | |
 |---|---|
-| Fuente | Dirección General de Aguas (DGA), *Inventario Público de Glaciares de Chile 2022*. Uso académico citando la fuente |
+| Fuente | Dirección General de Aguas (DGA), *Inventario Público de Glaciares de Chile 2022*. Descarga: https://dga.mop.gob.cl/inventario-publico-glaciares/ |
+| Licencia | La página de descarga de la DGA no declara una licencia (revisada el 11-11-2026). Se usa como dato público con fines académicos, citando la fuente |
 | Archivo original | `data/raw/Inventario_Publico_de_Glaciares_2022.csv` (26.180 filas × 45 columnas, 9,46 MB) |
 | Huella SHA-256 | `5691de5d7d7ffe2c8586a7066e227ac5cc91fa1ec69f54096e937a054c283f1d` |
 | Datos limpios (F2) | `data/processed/glaciares_limpio.csv` (26.180 × 48): variables en unidades físicas, banderas y derivadas. Entrada de F3 y F4 |
