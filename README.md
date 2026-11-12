@@ -193,7 +193,7 @@ Antes de la entrega, el repositorio se clona desde GitHub en un equipo distinto 
 
 | Fecha | Integrante | Sistema operativo y Python | F1 | F2 | Observaciones |
 |---|---|---|---|---|---|
-| | | | | | |
+| 11-11-2026| Gustavo Aloy Angella | Window 11 -Python 3.13.14  | OK (13/13) pruebas del módulo | OK (17/17) pruebas del módulo | Se detectaron y corrigieron dos problemas. Jupytelab no mostraba el kernel del .env y problemas con reconocer el cvs valido |
 
 ## Criterios de reproducibilidad
 
