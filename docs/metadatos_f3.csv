@@ -1,0 +1,26 @@
+clave,valor
+proyecto.fase,F3
+proyecto.semilla,42
+proyecto.commit,cefcd95
+datos.archivo,Inventario_Publico_de_Glaciares_2022.csv
+datos.sha256,5691de5d7d7ffe2c8586a7066e227ac5cc91fa1ec69f54096e937a054c283f1d
+datos.dimensiones.filas,26180
+datos.dimensiones.columnas,45
+nucleo.pipelines.limpieza,"DescartadorColumnas, NormalizadorTexto, ConversorTipos, ReconstructorVolumen, MarcadorFaltantes, ImputadorEstrategia(HMIN), ImputadorPuntoMedio(HMEDIA), DerivadorVariables"
+nucleo.pipelines.formato,"Redondeador, Categorizador"
+nucleo.pipelines.modelo,"CodificadorOrdinal(MZON_GLAC), CodificadorOrdinal(CLASE_TAMANO), CodificadorCiclico, EscaladorRobusto, CodificadorOneHot"
+nucleo.imputacion.HMIN.metodo,HMEDIA − desnivel mediano por comuna
+nucleo.imputacion.HMIN.candidatas,"media global, mediana global, mediana por comuna, HMEDIA − desnivel mediano por comuna"
+nucleo.verificacion_F2.glaciares_limpio.csv,True
+nucleo.verificacion_F2.glaciares_modelo.csv,True
+nucleo.verificacion_F2.perfil_glaciares_limpio.csv,True
+resultados.superficie.glaciares,26180
+resultados.superficie.total,21012.341
+resultados.superficie.pct_1%_mayores,71.525
+resultados.superficie.pct_10%_mayores,91.096
+resultados.superficie.gini,0.937
+resultados.volumen.glaciares,26180.0
+resultados.volumen.total,3026.198
+resultados.volumen.pct_1%_mayores,93.78
+resultados.volumen.pct_10%_mayores,99.085
+resultados.volumen.gini,0.991
