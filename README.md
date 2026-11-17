@@ -8,7 +8,7 @@ Proyecto del curso **MCDI500 Programación para la Ciencia de Datos**, Magíster
 |---|---|---|
 | F1 · Definición y entorno | ✔ Implementada | [`F1/F1_Definicion.ipynb`](F1/F1_Definicion.ipynb) |
 | F2 · Obtención, limpieza, transformación y validación | ✔ Implementada | [`F2/F2_Procesamiento.ipynb`](F2/F2_Procesamiento.ipynb) |
-| F3 · Núcleo algorítmico | ◐ En desarrollo (semana 2) | Módulos de `src/` ✔ · notebook `F3/` en desarrollo |
+| F3 · Núcleo algorítmico | ✔ Implementada | [`F3/F3_NucleoAlgoritmico.ipynb`](F3/F3_NucleoAlgoritmico.ipynb) y módulos de [`src/`](src/) |
 | F4 · Comunicación | ○ Proyectada (semana 3) | — |
 
 Informe técnico de la Sumativa 1: [`docs/informe/mcdi500_sumativa1_grupo3.pdf`](docs/informe/mcdi500_sumativa1_grupo3.pdf)
@@ -46,9 +46,10 @@ Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica el
 | Perfil de calidad | [`docs/validacion_dataset.md`](docs/validacion_dataset.md) (original, generado con `python validar_dataset.py data/raw/Inventario_Publico_de_Glaciares_2022.csv --informe docs/validacion_dataset.md`) y `data/processed/perfil_glaciares_limpio.csv` (procesado) |
 | Evaluación del dataset | [`docs/evaluacion_criterios_dataset.csv`](docs/evaluacion_criterios_dataset.csv): requisitos del curso; cumple los obligatorios con 2 avisos (variables sobre 60 % de faltantes y licencia no declarada) |
 | Diccionario de variables | [`docs/diccionario_variables.csv`](docs/diccionario_variables.csv): 45 variables con su rol analítico |
-| Bitácora y metadatos | [`docs/bitacora_f2.md`](docs/bitacora_f2.md) y [`docs/metadatos_proyecto.csv`](docs/metadatos_proyecto.csv), generados por F2 con las cifras de cada decisión |
+| Bitácora y metadatos | [`docs/bitacora_f2.md`](docs/bitacora_f2.md) y [`docs/metadatos_proyecto.csv`](docs/metadatos_proyecto.csv), generados por F2 con las cifras de cada decisión; [`docs/bitacora_f3.md`](docs/bitacora_f3.md) (generada por el observador del pipeline) y [`docs/metadatos_f3.csv`](docs/metadatos_f3.csv), generados por F3 |
+| Concentración (F3) | `data/processed/concentracion_magnitudes_f3.csv` (superficie, volumen y volumen calculado desde el área), `concentracion_region_f3.csv`, `concentracion_clasificacion_f3.csv` y `concentracion_macrozona_f3.csv` (superficie y volumen lado a lado), y `lorenz_f3.csv` (curvas de Lorenz). Entrada de F4 |
 
-El archivo de `data/raw/` **nunca se modifica**. F1 y F2 verifican su huella SHA-256 y se detienen si el archivo cambió.
+El archivo de `data/raw/` **nunca se modifica**. F1, F2 y F3 verifican su huella SHA-256 y se detienen si el archivo cambió.
 
 ## Estructura del repositorio
 
@@ -58,6 +59,8 @@ proyecto-grupo3-mcdi500/
 │   └── F1_Definicion.ipynb          # Problema, objetivos, entorno y reconocimiento del inventario
 ├── F2/
 │   └── F2_Procesamiento.ipynb       # Obtención → exploración → limpieza → transformación → validación
+├── F3/
+│   └── F3_NucleoAlgoritmico.ipynb   # Pipeline en clases, verificación con F2, concentración, eficiencia, recursividad y patrones
 ├── data/
 │   ├── raw/                         # CSV original de la DGA (inmutable)
 │   └── processed/                   # Salidas de F2 (se regeneran al ejecutar el notebook)
@@ -82,6 +85,8 @@ proyecto-grupo3-mcdi500/
 │   ├── metadatos_fase1.json         # Condiciones de ejecución de F1
 │   ├── bitacora_f2.md               # Bitácora de decisiones exportada por F2
 │   ├── metadatos_proyecto.csv       # Metadatos del pipeline aplanados por F2 (recursividad)
+│   ├── bitacora_f3.md               # Bitácora de F3, generada al ejecutar el pipeline (patrón Observer)
+│   ├── metadatos_f3.csv             # Metadatos de F3 aplanados con md.aplanar
 │   ├── f1/                          # Mapa conceptual de la Formativa 1 (.drawio y .pdf)
 │   └── informe/                     # Informe técnico de la Sumativa 1 (.docx y .pdf)
 ├── validar_dataset.py               # Validador de dataset entregado por el curso
@@ -106,7 +111,7 @@ python src/pruebas_medicion.py         # 16 pruebas de medición y recursividad
 python src/procesamiento.py            # 15 pasos en 3 pipelines + comparación SHA-256 con F2
 ```
 
-Las carpetas `F3/` y `F4/` se crearán al integrar los componentes de esas fases.
+La carpeta `F4/` se creará al iniciar esa fase.
 
 ## Entorno y dependencias
 
@@ -166,12 +171,21 @@ python -m jupyter lab
    - Nunca modifica `original`: cada etapa produce su propio DataFrame. El CSV original se verifica con su huella SHA-256 al inicio y al final.
    - Exporta `glaciares_limpio.csv` y `glaciares_modelo.csv` a `data/processed/`, y la bitácora y los metadatos a `docs/`.
    - Resultado esperado: 17/17 validaciones OK, 23/23 pruebas OK, 8 pruebas de las funciones recursivas OK y «F2 finalizada».
+3. **`F3/F3_NucleoAlgoritmico.ipynb`**
+   - Importa los módulos de `src/` (no define clases en celdas). Ejecuta el pipeline de F2 encapsulado en clases y verifica que los tres CSV de `data/processed/` son idénticos byte a byte a los de F2.
+   - Muestra dónde se aplican la herencia, el polimorfismo y el encapsulamiento.
+   - Calcula la concentración de la superficie (resultado principal) y demuestra que la del volumen deriva de ella.
+   - Compara implementaciones con `timeit` y `tracemalloc` (Gini, participación de los mayores, normalización del texto) y la recursión frente a una pila. Documenta los patrones Strategy y Observer.
+   - Exporta las tablas de concentración a `data/processed/` y la bitácora y los metadatos de F3 a `docs/`.
+   - Resultado esperado: tres archivos con `identico = True`, 29/29 pruebas del núcleo, 24/24 de concentración, 16/16 de medición y «F3 finalizada».
+   - Las mediciones de tiempo varían entre equipos. Las cifras de concentración y las pruebas no cambian.
 
 También pueden ejecutarse sin abrir JupyterLab:
 
 ```bash
 jupyter nbconvert --to notebook --execute --inplace F1/F1_Definicion.ipynb
 jupyter nbconvert --to notebook --execute --inplace F2/F2_Procesamiento.ipynb
+jupyter nbconvert --to notebook --execute --inplace F3/F3_NucleoAlgoritmico.ipynb
 ```
 
 Los notebooks pueden ejecutarse desde su propia carpeta o desde la raíz del repositorio y no requieren internet. Cada etapa de F2 produce su propio DataFrame, así que re-ejecutar una celda suelta da el mismo resultado.
@@ -182,6 +196,7 @@ Los notebooks pueden ejecutarse desde su propia carpeta o desde la raíz del rep
 |---|---|---|
 | `ModuleNotFoundError` (p. ej. `sklearn`) o «Faltan [...]: ejecutar pip install» | El kernel no es el del entorno virtual | En VS Code o JupyterLab, seleccionar el kernel de `.venv`; si persiste, `python -m pip install -r requirements.txt` con el entorno activado |
 | JupyterLab no muestra el kernel del entorno virtual, o la sección 5 de F1 indica que el kernel no corre dentro de `.venv` | JupyterLab se abrió sin activar el entorno (p. ej., desde Anaconda o un acceso directo) | Activar el entorno, registrar el kernel con `python -m ipykernel install --user --name grupo3 --display-name "Python (.venv grupo3)"`, abrir con `python -m jupyter lab` y elegir *Kernel → Change Kernel → «Python (.venv grupo3)»* |
+| La verificación de F3 indica `identico = False` en Windows | Una versión anterior de `src/procesamiento.py` escribía los CSV con saltos de línea `\r\n` | Actualizar con `git pull`: desde F3 los CSV se escriben con `lineterminator="\n"` en cualquier sistema |
 | `Activate.ps1 cannot be loaded… running scripts is disabled` (Windows) | PowerShell bloquea los scripts locales | `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` y volver a activar el entorno |
 | La celda de entorno muestra `DIFIERE` o «← requirements.txt declara …» | Versiones distintas a las del proyecto | Es un aviso: los notebooks también corren con pandas 2.2, pero para reproducir exactamente usar el `.venv` del proyecto |
 | `AssertionError: El CSV no coincide con la versión registrada` | `data/raw/` fue modificado o es otra versión. En Windows, un clon anterior a `.gitattributes` tiene el CSV con saltos de línea CRLF | Borrar el CSV y restaurarlo desde Git: `Remove-Item data\raw\*.csv` (Windows) o `rm data/raw/*.csv`, y luego `git checkout -- data/raw/` |
@@ -213,6 +228,7 @@ Ningún glaciar se elimina: el resultado conserva las 26.180 filas. Las cifras y
 - En F1 y F2 el desarrollo quedó a cargo de Francisco Correa Soto, con autorización del docente. Desde la Fase 3, cada integrante desarrolla un componente técnico propio.
 - El historial anterior tiene varias identidades por persona; `.mailmap` las unifica en `git log` y `git shortlog -sne`.
 - Las tareas se desarrollan en ramas propias (`f1-ajustes`, `f2-pipeline`, …) y se integran a `main` mediante Pull Request (#1 a #6); las correcciones menores posteriores se hicieron directamente sobre `main`.
+- En F3 todo cambio entra por pull request: los módulos de `src/` (`f3-pipeline`, `f3-concentracion`; PR #8 y #9) y el notebook (`f3-notebook-gustavo`, `F3-notebook-roberto`; PR #10 a #12).
 - No se versionan `.venv/`, las cachés de Python, `.env` ni la carpeta `material/` con el material de clase.
 - Los notebooks se versionan **con sus salidas**, que sirven como evidencia de ejecución.
 
