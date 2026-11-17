@@ -1,0 +1,12 @@
+# Unifica las identidades de Git del historial: una por integrante.
+# Formato: Nombre canónico <email canónico> [Nombre en el commit] <email en el commit>
+# Comprobar con: git shortlog -sne
+
+Francisco Correa Soto <f.correasoto@uandresbello.edu> <f.correasoto@uandresbello.edu>
+Francisco Correa Soto <f.correasoto@uandresbello.edu> <fcorreas23@gmail.com>
+Francisco Correa Soto <f.correasoto@uandresbello.edu> <forreas23@gmail.com>
+
+Gustavo Aloy Angella <gustavoaloy72@gmail.com> <gustavoaloy72@gmail.com>
+
+# TODO Roberto: reemplazar el email canónico por el de su cuenta de GitHub.
+Roberto Gaubert Urbina <robertogaubert@MacBook-Air-de-Coordinador-2.local> <robertogaubert@MacBook-Air-de-Coordinador-2.local>
