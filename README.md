@@ -8,7 +8,7 @@ Proyecto del curso **MCDI500 Programación para la Ciencia de Datos**, Magíster
 |---|---|---|
 | F1 · Definición y entorno | ✔ Implementada | [`F1/F1_Definicion.ipynb`](F1/F1_Definicion.ipynb) |
 | F2 · Obtención, limpieza, transformación y validación | ✔ Implementada | [`F2/F2_Procesamiento.ipynb`](F2/F2_Procesamiento.ipynb) |
-| F3 · Núcleo algorítmico | ◐ En desarrollo (semana 2) | Pipeline POO en `src/` ✔ · `src/concentracion.py` · `src/medicion.py` · `F3/` |
+| F3 · Núcleo algorítmico | ◐ En desarrollo (semana 2) | Módulos de `src/` ✔ · notebook `F3/` en desarrollo |
 | F4 · Comunicación | ○ Proyectada (semana 3) | — |
 
 Informe técnico de la Sumativa 1: [`docs/informe/mcdi500_sumativa1_grupo3.pdf`](docs/informe/mcdi500_sumativa1_grupo3.pdf)
@@ -17,7 +17,7 @@ Informe técnico de la Sumativa 1: [`docs/informe/mcdi500_sumativa1_grupo3.pdf`]
 
 Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica el inventario oficial (26.180 glaciares, 45 variables) y sus totales, pero no un cálculo reproducible de **cuán concentrada está la superficie glaciar**. Además, su CSV no es directamente analizable: tiene columnas vacías, coordenadas leídas como texto, fechas en formatos mixtos y faltantes encubiertos. **Nuestro aporte** es medir esa concentración con un procedimiento reproducible de punta a punta: dato verificado, pipeline versionado y probado.
 
-**Pregunta de investigación:** ¿Qué tan concentrada está la superficie glaciar en pocos glaciares y regiones, y cambia esa concentración según la clasificación del glaciar? La exploración la sustenta: el 1 % de los glaciares reúne el 71,5 % de la superficie, y Magallanes y Aysén el 91,1 % (F2, sección 2.2.1). El volumen no se trata como un hallazgo independiente: se estimó desde el área, y su concentración (93,8 % en el 1 % mayor) es una consecuencia de la de la superficie.
+**Pregunta de investigación:** ¿Qué tan concentrada está la superficie glaciar en pocos glaciares y regiones, y cambia esa concentración según la clasificación del glaciar? F2 (sección 2.2.1) mostró que el 1 % de los glaciares reúne el 71,5 % de la superficie. En F3, `src/concentracion.py` agrega que Magallanes y Aysén reúnen el 91,1 % y que el Gini es 0,937. El volumen no se trata como un hallazgo independiente: se estimó desde el área, y su concentración (93,8 % en el 1 % mayor; Gini 0,991) es una consecuencia de la de la superficie. El volumen calculado solo con el área reproduce exactamente esas cifras.
 
 **Objetivo general:** Medir, mediante un flujo reproducible en Python, cuán concentrada está la superficie de los glaciares de Chile en pocos glaciares y regiones, y cómo varía esa concentración según la clasificación del glaciar, explicando la del volumen como magnitud derivada del área.
 
@@ -68,7 +68,12 @@ proyecto-grupo3-mcdi500/
 │   ├── transformadores.py           # F3: clase base Transformador y una clase hija por paso de F2
 │   ├── pipeline.py                  # F3: Pipeline (composición) y observadores de la bitácora (patrón Observer)
 │   ├── procesamiento.py             # F3: arma los pipelines de F2 y verifica las salidas byte a byte
-│   └── pruebas_nucleo.py            # F3: 29 pruebas (casos normales, límite y excepciones)
+│   ├── concentracion.py             # F3: concentración de la superficie y del volumen derivado (Gini, Lorenz, mayores)
+│   ├── medicion.py                  # F3: tiempo y memoria reproducibles y comparación de implementaciones
+│   ├── metadatos.py                 # F3: aplanado recursivo e iterativo de los metadatos
+│   ├── pruebas_nucleo.py            # F3: 29 pruebas del pipeline POO
+│   ├── pruebas_concentracion.py     # F3: 24 pruebas, incluidas las cifras de control
+│   └── pruebas_medicion.py          # F3: 16 pruebas de medición y recursividad
 ├── docs/
 │   ├── validacion_dataset.md        # Perfil de las 45 variables (validar_dataset.py)
 │   ├── diccionario_variables.csv    # Generado por F1
@@ -95,8 +100,10 @@ Las funciones que usan varias fases viven en `src/utilidades.py`: F1 lo prueba c
 La verificación regenera los tres CSV de `data/processed/` y comprueba que son idénticos byte a byte a los de F2:
 
 ```bash
-python src/pruebas_nucleo.py   # 29 pruebas: 11 normales, 5 límite y 13 excepciones
-python src/procesamiento.py    # 15 pasos en 3 pipelines + comparación SHA-256 con F2
+python src/pruebas_nucleo.py           # 29 pruebas del pipeline POO
+python src/pruebas_concentracion.py    # 24 pruebas, incluidas las cifras de control de la concentración
+python src/pruebas_medicion.py         # 16 pruebas de medición y recursividad
+python src/procesamiento.py            # 15 pasos en 3 pipelines + comparación SHA-256 con F2
 ```
 
 Las carpetas `F3/` y `F4/` se crearán al integrar los componentes de esas fases.

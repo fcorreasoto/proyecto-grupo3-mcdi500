@@ -66,9 +66,20 @@ def reparar_codificacion(texto):
         return texto
 
 
+def _normalizar_valor(valor):
+    return " ".join(reparar_codificacion(valor).upper().split())
+
+
 def normalizar_texto(serie):
-    """Repara la codificación, pasa a mayúsculas y colapsa espacios; los nulos se mantienen."""
-    return serie.map(lambda v: v if pd.isna(v) else " ".join(reparar_codificacion(v).upper().split()))
+    """Repara la codificación, pasa a mayúsculas y colapsa espacios; los nulos se mantienen.
+
+    Optimización de F3: normaliza solo los valores distintos y los asigna con un diccionario. Las
+    columnas de texto repiten pocos valores miles de veces (REGION tiene 16 en 26.180 filas), y
+    medicion.py midió esta versión entre 1,3 y 2,5 veces más rápida que la de F2, que normalizaba
+    fila a fila, con la mitad de memoria y el mismo resultado.
+    """
+    tabla = {valor: _normalizar_valor(valor) for valor in serie.dropna().unique()}
+    return serie.map(lambda v: v if pd.isna(v) else tabla[v])
 
 
 def clave_texto(valor):
