@@ -8,26 +8,26 @@ Proyecto del curso **MCDI500 Programación para la Ciencia de Datos**, Magíster
 |---|---|---|
 | F1 · Definición y entorno | ✔ Implementada | [`F1/F1_Definicion.ipynb`](F1/F1_Definicion.ipynb) |
 | F2 · Obtención, limpieza, transformación y validación | ✔ Implementada | [`F2/F2_Procesamiento.ipynb`](F2/F2_Procesamiento.ipynb) |
-| F3 · Análisis | ○ Proyectada (semana 2) | — |
+| F3 · Núcleo algorítmico | ◐ En desarrollo (semana 2) | Pipeline POO en `src/` ✔ · `src/concentracion.py` · `src/medicion.py` · `F3/` |
 | F4 · Comunicación | ○ Proyectada (semana 3) | — |
 
 Informe técnico de la Sumativa 1: [`docs/informe/mcdi500_sumativa1_grupo3.pdf`](docs/informe/mcdi500_sumativa1_grupo3.pdf)
 
 ## Problemática
 
-Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica el inventario oficial (26.180 glaciares, 45 variables) y sus totales, pero no un cálculo reproducible de **cuán concentrado está el hielo**. Además, su CSV no es directamente analizable: tiene columnas vacías, coordenadas leídas como texto, fechas en formatos mixtos y faltantes encubiertos. **Nuestro aporte** es medir esa concentración con un procedimiento reproducible de punta a punta: dato verificado, pipeline versionado y probado.
+Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica el inventario oficial (26.180 glaciares, 45 variables) y sus totales, pero no un cálculo reproducible de **cuán concentrada está la superficie glaciar**. Además, su CSV no es directamente analizable: tiene columnas vacías, coordenadas leídas como texto, fechas en formatos mixtos y faltantes encubiertos. **Nuestro aporte** es medir esa concentración con un procedimiento reproducible de punta a punta: dato verificado, pipeline versionado y probado.
 
-**Pregunta de investigación:** ¿Qué tan concentrado está el volumen de hielo estimado en pocos glaciares y regiones, y cambia esa concentración según la clasificación del glaciar? La exploración la sustenta: el 1 % de los glaciares reúne el 93,8 % del volumen, y Magallanes y Aysén el 97,9 % (F2, sección 2.2.1).
+**Pregunta de investigación:** ¿Qué tan concentrada está la superficie glaciar en pocos glaciares y regiones, y cambia esa concentración según la clasificación del glaciar? La exploración la sustenta: el 1 % de los glaciares reúne el 71,5 % de la superficie, y Magallanes y Aysén el 91,1 % (F2, sección 2.2.1). El volumen no se trata como un hallazgo independiente: se estimó desde el área, y su concentración (93,8 % en el 1 % mayor) es una consecuencia de la de la superficie.
 
-**Objetivo general:** Medir, mediante un flujo reproducible en Python, cuán concentrados están el volumen estimado y la superficie de los glaciares de Chile en pocos glaciares y regiones, y cómo varía esa concentración según la clasificación del glaciar.
+**Objetivo general:** Medir, mediante un flujo reproducible en Python, cuán concentrada está la superficie de los glaciares de Chile en pocos glaciares y regiones, y cómo varía esa concentración según la clasificación del glaciar, explicando la del volumen como magnitud derivada del área.
 
 **Objetivos específicos**
 1. Verificar la estructura, la calidad y el rol analítico de las 45 variables, y que el volumen se estimó desde el área (F1–F2).
 2. Documentar y ejecutar la limpieza y transformación sin modificar el archivo original (F2).
-3. Calcular la concentración del volumen y de la superficie: participación del 1 % y del 10 % de glaciares mayores, por región y por clasificación (F3).
+3. Construir el núcleo algorítmico (F3): reorganizar el pipeline en componentes reutilizables con medición de eficiencia y sin alterar ningún resultado, y calcular dentro de ese diseño la concentración de la superficie (participación del 1 % y del 10 % mayores, curva de Lorenz y Gini, por región y por clasificación) y la del volumen como derivada.
 4. Comunicar con tablas y visualizaciones reproducibles si la concentración cambia según la clasificación (F4).
 
-**Supuesto clave (verificado en F2 sección 2.3):** el espesor y el volumen **no son mediciones**. Se estimaron desde el área con la fórmula de Chen y Ohmura (1990), `ESP_MED = 28,5 · AREA^0,357` (R² ≥ 0,998 en los cinco tipos), de modo que `VOL ≈ 0,0285 · AREA^1,357` (× 0,6 en glaciares rocosos). Área y volumen se reportan juntos, pero no se tratan como variables independientes: la concentración del volumen amplifica la del área.
+**Supuesto clave (verificado en F2 sección 2.3):** el espesor y el volumen **no son mediciones**. Se estimaron desde el área con la fórmula de Chen y Ohmura (1990), `ESP_MED = 28,5 · AREA^0,357` (R² ≥ 0,998 en los cinco tipos), de modo que `VOL ≈ 0,0285 · AREA^1,357` (× 0,6 en glaciares rocosos). Por eso la superficie es la magnitud principal y el volumen una magnitud derivada: como el exponente 1,357 es mayor que 1, los glaciares grandes pesan más en volumen que en área y la concentración del volumen amplifica la de la superficie (Gini 0,937 en área y 0,991 en volumen).
 
 **Fuera del alcance:** tendencias temporales de pérdida de hielo (el inventario es transversal), modelos predictivos, cruce con datos climáticos externos y relaciones entre área y volumen, porque una depende de la otra.
 
@@ -62,7 +62,13 @@ proyecto-grupo3-mcdi500/
 │   ├── raw/                         # CSV original de la DGA (inmutable)
 │   └── processed/                   # Salidas de F2 (se regeneran al ejecutar el notebook)
 ├── src/
-│   └── utilidades.py                # Módulo compartido: rutas, huella, carga, entorno, Git, pruebas, Bitacora
+│   ├── utilidades.py                # Módulo compartido: rutas, huella, carga, entorno, Git, pruebas, Bitacora
+│   ├── limpieza.py                  # F3: funciones de limpieza y codificación de F2 (programación estructurada)
+│   ├── imputacion.py                # F3: estrategias de imputación intercambiables (patrón Strategy)
+│   ├── transformadores.py           # F3: clase base Transformador y una clase hija por paso de F2
+│   ├── pipeline.py                  # F3: Pipeline (composición) y observadores de la bitácora (patrón Observer)
+│   ├── procesamiento.py             # F3: arma los pipelines de F2 y verifica las salidas byte a byte
+│   └── pruebas_nucleo.py            # F3: 29 pruebas (casos normales, límite y excepciones)
 ├── docs/
 │   ├── validacion_dataset.md        # Perfil de las 45 variables (validar_dataset.py)
 │   ├── diccionario_variables.csv    # Generado por F1
@@ -75,11 +81,25 @@ proyecto-grupo3-mcdi500/
 │   └── informe/                     # Informe técnico de la Sumativa 1 (.docx y .pdf)
 ├── validar_dataset.py               # Validador de dataset entregado por el curso
 ├── requirements.txt                 # Dependencias con versión exacta (pip freeze)
+├── .mailmap                         # Unifica las identidades del historial (una por integrante)
 ├── .gitignore
 └── README.md
 ```
 
-Las funciones que usan varias fases viven en `src/utilidades.py`: F1 lo prueba con casos normales, límite y excepciones, y F2 lo importa, así que ninguna función está copiada entre notebooks. Las carpetas `F3/` y `F4/` se crearán al iniciar esas fases.
+Las funciones que usan varias fases viven en `src/utilidades.py`: F1 lo prueba con casos normales, límite y excepciones, y F2 lo importa, así que ninguna función está copiada entre notebooks. En la Fase 3, el pipeline de F2 se reorganiza en clases sin cambiar ningún resultado:
+
+- Cada paso hereda de `Transformador`, que separa lo que el paso aprende (`ajustar`) de lo que aplica (`transformar`).
+- `Pipeline` recorre los pasos sin preguntar su tipo y avisa a sus observadores, que generan la bitácora.
+- La imputación recibe la estrategia como parámetro.
+
+La verificación regenera los tres CSV de `data/processed/` y comprueba que son idénticos byte a byte a los de F2:
+
+```bash
+python src/pruebas_nucleo.py   # 29 pruebas: 11 normales, 5 límite y 13 excepciones
+python src/procesamiento.py    # 15 pasos en 3 pipelines + comparación SHA-256 con F2
+```
+
+Las carpetas `F3/` y `F4/` se crearán al integrar los componentes de esas fases.
 
 ## Entorno y dependencias
 
@@ -181,8 +201,10 @@ Ningún glaciar se elimina: el resultado conserva las 26.180 filas. Las cifras y
 
 ## Control de versiones
 
-- Los commits usan prefijos por tipo de cambio: `docs:`, `data:`, `feat:`, `fix:`.
-- Con autorización del docente, el desarrollo de este avance quedó a cargo de Francisco Correa Soto; cada commit se hace desde la cuenta de su autor.
+- Cada integrante usa una sola identidad de Git, la de su cuenta de GitHub, y desarrolla su componente en una rama propia que se integra a `main` con un pull request revisado por otro integrante.
+- Los commits usan prefijos por tipo de cambio: `feat:`, `fix:`, `test:`, `perf:`, `docs:`, `chore:`.
+- En F1 y F2 el desarrollo quedó a cargo de Francisco Correa Soto, con autorización del docente. Desde la Fase 3, cada integrante desarrolla un componente técnico propio.
+- El historial anterior tiene varias identidades por persona; `.mailmap` las unifica en `git log` y `git shortlog -sne`.
 - Las tareas se desarrollan en ramas propias (`f1-ajustes`, `f2-pipeline`, …) y se integran a `main` mediante Pull Request (#1 a #6); las correcciones menores posteriores se hicieron directamente sobre `main`.
 - No se versionan `.venv/`, las cachés de Python, `.env` ni la carpeta `material/` con el material de clase.
 - Los notebooks se versionan **con sus salidas**, que sirven como evidencia de ejecución.
