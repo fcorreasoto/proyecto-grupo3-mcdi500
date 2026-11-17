@@ -121,9 +121,9 @@ def guardar_salidas(limpio, modelo, carpeta):
     carpeta = Path(carpeta)
     carpeta.mkdir(parents=True, exist_ok=True)
     rutas = [carpeta / nombre for nombre in ARCHIVOS_SALIDA]
-    limpio.to_csv(rutas[0], index=False, date_format="%Y-%m-%d")
-    modelo.to_csv(rutas[1], index=False)
-    lim.perfil_columnas(limpio).to_csv(rutas[2], index=False)
+    limpio.to_csv(rutas[0], index=False, date_format="%Y-%m-%d", lineterminator="\n")
+    modelo.to_csv(rutas[1], index=False, lineterminator="\n")
+    lim.perfil_columnas(limpio).to_csv(rutas[2], index=False, lineterminator="\n")
     return rutas
 
 
