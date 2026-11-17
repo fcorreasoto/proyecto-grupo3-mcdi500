@@ -1,7 +1,7 @@
 clave,valor
 proyecto.fase,F3
 proyecto.semilla,42
-proyecto.commit,cefcd95
+proyecto.commit,08f2bd0
 datos.archivo,Inventario_Publico_de_Glaciares_2022.csv
 datos.sha256,5691de5d7d7ffe2c8586a7066e227ac5cc91fa1ec69f54096e937a054c283f1d
 datos.dimensiones.filas,26180
