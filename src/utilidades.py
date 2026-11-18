@@ -141,6 +141,16 @@ def version_repositorio(raiz, excluir=()):
         return {"rama": "no disponible", "commit": "no disponible", "cambios_sin_commit": None}
 
 
+def commit_contenido(raiz, rutas=("src", "data/raw")):
+    """Último commit que modificó `rutas` (por defecto, el código y los datos originales).
+    A diferencia de HEAD, no cambia con commits que solo tocan documentación o salidas,
+    así que los metadatos generados no se modifican en cada ejecución."""
+    try:
+        return _git(raiz, "log", "-1", "--format=%h", "--", *rutas) or "no disponible"
+    except (OSError, subprocess.SubprocessError):
+        return "no disponible"
+
+
 def email_valido(email):
     """True si el email tiene forma usuario@dominio.tld y no es un nombre de equipo local
     (p. ej. usuario@MacBook.local), que GitHub no puede asociar a ninguna cuenta."""
