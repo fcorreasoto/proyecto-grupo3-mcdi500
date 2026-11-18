@@ -177,7 +177,7 @@ python -m jupyter lab
    - Calcula la concentración de la superficie (resultado principal) y demuestra que la del volumen deriva de ella.
    - Compara implementaciones con `timeit` y `tracemalloc` (Gini, participación de los mayores, normalización del texto) y la recursión frente a una pila. Documenta los patrones Strategy y Observer.
    - Exporta las tablas de concentración a `data/processed/` y la bitácora y los metadatos de F3 a `docs/`.
-   - Resultado esperado: tres archivos con `identico = True`, 29/29 pruebas del núcleo, 24/24 de concentración, 16/16 de medición y «F3 finalizada».
+   - Resultado esperado: tres archivos con `identico = True`, 29/29 pruebas del núcleo, 24/24 de concentración, 16/16 de medición y, al cerrar, «data/raw intacto (SHA-256 igual al inicial).»
    - Las mediciones de tiempo varían entre equipos. Las cifras de concentración y las pruebas no cambian.
 
 También pueden ejecutarse sin abrir JupyterLab:
