@@ -2,10 +2,10 @@
   "proyecto": "Análisis reproducible del Inventario Público de Glaciares de Chile 2022",
   "grupo": "Grupo 3",
   "fase": "F1",
-  "fecha_ejecucion": "2026-11-11",
+  "fecha_ejecucion": "2026-11-23",
   "semilla": 42,
-  "python": "3.14.6",
-  "sistema": "Linux 7.0.0-43-generic",
+  "python": "3.14.10",
+  "sistema": "Linux 6.12.118+deb13-amd64",
   "interprete": ".venv/bin/python",
   "entorno_virtual": true,
   "dependencias": {
