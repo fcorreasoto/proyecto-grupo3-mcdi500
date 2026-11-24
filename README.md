@@ -9,7 +9,7 @@ Proyecto del curso **MCDI500 Programación para la Ciencia de Datos**, Magíster
 | F1 · Definición y entorno | ✔ Implementada | [`F1/F1_Definicion.ipynb`](F1/F1_Definicion.ipynb) |
 | F2 · Obtención, limpieza, transformación y validación | ✔ Implementada | [`F2/F2_Procesamiento.ipynb`](F2/F2_Procesamiento.ipynb) |
 | F3 · Núcleo algorítmico | ✔ Implementada | [`F3/F3_NucleoAlgoritmico.ipynb`](F3/F3_NucleoAlgoritmico.ipynb) y módulos de [`src/`](src/) |
-| F4 · Comunicación | ○ Proyectada (semana 3) | — |
+| F4 · Comunicación | ✔ Implementada | [`F4/F4_Comunicacion.ipynb`](F4/F4_Comunicacion.ipynb), [`src/comunicacion.py`](src/comunicacion.py) y [`src/figuras.py`](src/figuras.py) |
 
 Informe técnico de la Sumativa 1: [`docs/informe/mcdi500_sumativa1_grupo3.pdf`](docs/informe/mcdi500_sumativa1_grupo3.pdf)
 
@@ -48,8 +48,9 @@ Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica el
 | Diccionario de variables | [`docs/diccionario_variables.csv`](docs/diccionario_variables.csv): 45 variables con su rol analítico |
 | Bitácora y metadatos | [`docs/bitacora_f2.md`](docs/bitacora_f2.md) y [`docs/metadatos_proyecto.csv`](docs/metadatos_proyecto.csv), generados por F2 con las cifras de cada decisión; [`docs/bitacora_f3.md`](docs/bitacora_f3.md) (generada por el observador del pipeline) y [`docs/metadatos_f3.csv`](docs/metadatos_f3.csv), generados por F3 |
 | Concentración (F3) | `data/processed/concentracion_magnitudes_f3.csv` (superficie, volumen y volumen calculado desde el área), `concentracion_region_f3.csv`, `concentracion_clasificacion_f3.csv` y `concentracion_macrozona_f3.csv` (superficie y volumen lado a lado), y `lorenz_f3.csv` (curvas de Lorenz). Entrada de F4 |
+| Comunicación (F4) | `F4/figuras/` (seis figuras y tres anexos, 200 ppp), [`docs/hallazgos_f4.csv`](docs/hallazgos_f4.csv) (objetivo, hallazgo y evidencia de cada figura) y [`docs/metadatos_f4.json`](docs/metadatos_f4.json) |
 
-El archivo de `data/raw/` **nunca se modifica**. F1, F2 y F3 verifican su huella SHA-256 y se detienen si el archivo cambió.
+El archivo de `data/raw/` **nunca se modifica**. F1, F2, F3 y F4 verifican su huella SHA-256 y se detienen si el archivo cambió.
 
 ## Estructura del repositorio
 
@@ -61,6 +62,10 @@ proyecto-grupo3-mcdi500/
 │   └── F2_Procesamiento.ipynb       # Obtención → exploración → limpieza → transformación → validación
 ├── F3/
 │   └── F3_NucleoAlgoritmico.ipynb   # Pipeline en clases, verificación con F2, concentración, eficiencia, recursividad y patrones
+├── F4/
+│   ├── F4_Comunicacion.ipynb        # Contrato con F3, copia interpretable, seis figuras, eficiencia y validación
+│   ├── README.md
+│   └── figuras/                     # fig1–fig6 y tres anexos, generados por el notebook
 ├── data/
 │   ├── raw/                         # CSV original de la DGA (inmutable)
 │   └── processed/                   # Salidas de F2 (se regeneran al ejecutar el notebook)
@@ -76,7 +81,11 @@ proyecto-grupo3-mcdi500/
 │   ├── metadatos.py                 # F3: aplanado recursivo e iterativo de los metadatos
 │   ├── pruebas_nucleo.py            # F3: 29 pruebas del pipeline POO
 │   ├── pruebas_concentracion.py     # F3: 24 pruebas, incluidas las cifras de control
-│   └── pruebas_medicion.py          # F3: 16 pruebas de medición y recursividad
+│   ├── pruebas_medicion.py          # F3: 16 pruebas de medición y recursividad
+│   ├── comunicacion.py              # F4: artefactos, contrato con F3, copia interpretable y tablas para graficar
+│   ├── figuras.py                   # F4: FiguraHallazgo (método plantilla) y una clase hija por figura
+│   ├── pruebas_comunicacion.py      # F4: 23 pruebas
+│   └── pruebas_figuras.py           # F4: 18 pruebas, incluidas las cifras de cada título
 ├── docs/
 │   ├── validacion_dataset.md        # Perfil de las 45 variables (validar_dataset.py)
 │   ├── diccionario_variables.csv    # Generado por F1
@@ -87,6 +96,9 @@ proyecto-grupo3-mcdi500/
 │   ├── metadatos_proyecto.csv       # Metadatos del pipeline aplanados por F2 (recursividad)
 │   ├── bitacora_f3.md               # Bitácora de F3, generada al ejecutar el pipeline (patrón Observer)
 │   ├── metadatos_f3.csv             # Metadatos de F3 aplanados con md.aplanar
+│   ├── hallazgos_f4.csv             # Generado por F4: una fila por figura con su hallazgo y evidencia
+│   ├── metadatos_f4.json            # Condiciones de ejecución de F4
+│   ├── changelog.md                 # Cambios por fase con su commit (trazabilidad de mejoras)
 │   ├── f1/                          # Mapa conceptual de la Formativa 1 (.drawio y .pdf)
 │   └── informe/                     # Informe técnico de la Sumativa 1 (.docx y .pdf)
 ├── validar_dataset.py               # Validador de dataset entregado por el curso
@@ -111,13 +123,18 @@ python src/pruebas_medicion.py         # 16 pruebas de medición y recursividad
 python src/procesamiento.py            # 15 pasos en 3 pipelines + comparación SHA-256 con F2
 ```
 
-La carpeta `F4/` se creará al iniciar esa fase.
+En la Fase 4 las figuras siguen el mismo diseño: cada una hereda de `FiguraHallazgo`, cuyo método plantilla `construir` aplica el estilo, el título-hallazgo y la fuente, y el notebook las construye, guarda y registra con las mismas llamadas sin preguntar su tipo. El título se arma con las cifras de la tabla de cada figura, así que figura, `docs/hallazgos_f4.csv` e informe no pueden contradecirse:
+
+```bash
+python src/pruebas_comunicacion.py     # 23 pruebas de la comunicación (F4)
+python src/pruebas_figuras.py          # 18 pruebas de las figuras, incluidas las cifras de cada título (F4)
+```
 
 ## Entorno y dependencias
 
 - **Python:** 3.12 o superior. El proyecto se probó con Python 3.12.3 y 3.14.6.
-- **Librerías principales:** pandas 3.1.1, NumPy 2.5.4, scikit-learn 1.9.1 (escaladores de F2), Matplotlib 3.11.2 (gráficos de control de F2), JupyterLab 4.6.6 e ipykernel 7.4.0. seaborn 0.13.2 queda instalada para F4.
-- **Semilla:** `SEMILLA = 42`, declarada en `src/utilidades.py` y fijada en ambos notebooks. El pipeline actual es determinista, pero la semilla queda fijada para cualquier paso aleatorio de las fases siguientes.
+- **Librerías principales:** pandas 3.1.1, NumPy 2.5.4, scikit-learn 1.9.1 (escaladores de F2), Matplotlib 3.11.2 (gráficos de control de F2), JupyterLab 4.6.6 e ipykernel 7.4.0. seaborn 0.13.2 dibuja el mapa de calor de F4; la caja de la figura 3 se dibuja con Matplotlib porque seaborn 0.13.2 genera un aviso de obsolescencia con Matplotlib 3.11.
+- **Semilla:** `SEMILLA = 42`, declarada en `src/utilidades.py` y fijada en todos los notebooks (F4 la usa en la muestra de puntos de la figura 3 y en las muestras de la medición de eficiencia). El pipeline actual es determinista, pero la semilla queda fijada para cualquier paso aleatorio de las fases siguientes.
 - La lista completa con versiones exactas está en [`requirements.txt`](requirements.txt).
 
 ### Instalación
@@ -179,6 +196,13 @@ python -m jupyter lab
    - Exporta las tablas de concentración a `data/processed/` y la bitácora y los metadatos de F3 a `docs/`.
    - Resultado esperado: tres archivos con `identico = True`, 29/29 pruebas del núcleo, 24/24 de concentración, 16/16 de medición y, al cerrar, «data/raw intacto (SHA-256 igual al inicial).»
    - Las mediciones de tiempo varían entre equipos. Las cifras de concentración y las pruebas no cambian.
+4. **`F4/F4_Comunicacion.ipynb`**
+   - No limpia ni transforma: verifica que las tablas de F3 coinciden con su recálculo (8 controles) y las reproduce desde `data/raw` con código independiente (Gini por el área bajo la curva de Lorenz).
+   - Reconstruye la superficie, la clasificación y la región desde `glaciares_modelo` (revierte RobustScaler, el logaritmo y el one-hot) y comprueba que es el mismo dato que `glaciares_limpio`: se grafica solo la copia interpretable.
+   - Construye seis figuras cuyo título dice el hallazgo: tres principales (contexto, contraste y resolución) y tres complementarias (regiones, volumen derivado y control por macrozona).
+   - Compara tres implementaciones de la participación por grupo con `timeit` y `tracemalloc` sobre 1.000 a 300.000 glaciares y ejecuta las pruebas de F4 y de concentración de F3.
+   - Exporta las figuras a `F4/figuras/`, y `hallazgos_f4.csv` y `metadatos_f4.json` a `docs/`.
+   - Resultado esperado: contrato 8/8, 65/65 pruebas y, al cerrar, «data/raw intacto (SHA-256 igual al inicial).»
 
 También pueden ejecutarse sin abrir JupyterLab:
 
@@ -186,6 +210,7 @@ También pueden ejecutarse sin abrir JupyterLab:
 jupyter nbconvert --to notebook --execute --inplace F1/F1_Definicion.ipynb
 jupyter nbconvert --to notebook --execute --inplace F2/F2_Procesamiento.ipynb
 jupyter nbconvert --to notebook --execute --inplace F3/F3_NucleoAlgoritmico.ipynb
+jupyter nbconvert --to notebook --execute --inplace F4/F4_Comunicacion.ipynb
 ```
 
 Los notebooks pueden ejecutarse desde su propia carpeta o desde la raíz del repositorio y no requieren internet. Cada etapa de F2 produce su propio DataFrame, así que re-ejecutar una celda suelta da el mismo resultado.
@@ -221,6 +246,19 @@ Los notebooks pueden ejecutarse desde su propia carpeta o desde la raíz del rep
 
 Ningún glaciar se elimina: el resultado conserva las 26.180 filas. Las cifras y la justificación de cada decisión están en el notebook F2 y en [`docs/bitacora_f2.md`](docs/bitacora_f2.md).
 
+## Resultados de la Fase 4
+
+| Figura | Hallazgo |
+|---|---|
+| 1 · Curva de Lorenz | El 1 % de los glaciares (261) reúne el 71,5 % de la superficie; el 10 %, el 91,1 % (Gini 0,937) |
+| 2 · Composición por clasificación | 217 glaciares efluentes (0,8 %) reúnen el 65,4 % de la superficie; 18.211 glaciaretes (69,6 %), el 3,8 % |
+| 3 · Tamaño por clasificación | Dentro de cada tipo el Gini baja a 0,50–0,71: buena parte de la concentración es diferencia de tamaño entre tipos |
+| 4 · Regiones | Magallanes y Aysén reúnen el 91,1 % de la superficie |
+| 5 · Volumen derivado | El volumen calculado solo desde el área reproduce el publicado (correlación 0,999; Gini 0,991) |
+| 6 · Tipo por macrozona | Los efluentes solo existen en la macrozona austral (73,5 % de su superficie); sin ellos el Gini baja a 0,837, pero la concentración persiste |
+
+Las cifras exactas de cada figura están en [`docs/hallazgos_f4.csv`](docs/hallazgos_f4.csv); la discusión y las limitaciones, en la sección 11 del notebook F4.
+
 ## Control de versiones
 
 - Cada integrante usa una sola identidad de Git, la de su cuenta de GitHub, y desarrolla su componente en una rama propia que se integra a `main` con un pull request revisado por otro integrante.
@@ -229,12 +267,13 @@ Ningún glaciar se elimina: el resultado conserva las 26.180 filas. Las cifras y
 - El historial anterior tiene varias identidades por persona; `.mailmap` las unifica en `git log` y `git shortlog -sne`.
 - Las tareas se desarrollan en ramas propias (`f1-ajustes`, `f2-pipeline`, …) y se integran a `main` mediante Pull Request (#1 a #6); las correcciones menores posteriores se hicieron directamente sobre `main`.
 - En F3 todo cambio entra por pull request: los módulos de `src/` (`f3-pipeline`, `f3-concentracion`; PR #8 y #9) y el notebook (`f3-notebook-gustavo`, `F3-notebook-roberto`; PR #10 a #12).
+- En F4 cada integrante integra su componente por pull request: `f4-comunicacion` (Francisco Correa Soto, PR #14), `f4-figuras-principales` (Gustavo Aloy Angella, PR #15), `f4-figuras-complementarias` y `f4-notebook` (Roberto Gaubert Urbina, PR #16 y #17) y `f4-cierre` (PR #18). Los cambios por fase, con su commit, están en [`docs/changelog.md`](docs/changelog.md).
 - No se versionan `.venv/`, las cachés de Python, `.env` ni la carpeta `material/` con el material de clase.
 - Los notebooks se versionan **con sus salidas**, que sirven como evidencia de ejecución.
 
 ## Verificación en un segundo equipo
 
-Antes de la entrega, el repositorio se clona desde GitHub en un equipo distinto del de desarrollo, se crea el `.venv` desde `requirements.txt` y se ejecutan F1 y F2 de principio a fin:
+Antes de la entrega, el repositorio se clona desde GitHub en un equipo distinto del de desarrollo, se crea el `.venv` desde `requirements.txt` y se ejecutan los notebooks de principio a fin:
 
 | Fecha | Integrante | Sistema operativo y Python | F1 | F2 | Observaciones |
 |---|---|---|---|---|---|
@@ -245,4 +284,4 @@ Antes de la entrega, el repositorio se clona desde GitHub en un equipo distinto 
 - No modificar los archivos de `data/raw/`.
 - Usar rutas relativas y declarar las versiones de las dependencias.
 - Ejecutar los notebooks de principio a fin con el kernel del entorno virtual antes de cada entrega.
-- Antes de entregar, se clona el repositorio en un equipo distinto, se reconstruye el entorno y se ejecutan ambos notebooks.
+- Antes de entregar, se clona el repositorio en un equipo distinto, se reconstruye el entorno y se ejecutan los cuatro notebooks (F1 a F4).
