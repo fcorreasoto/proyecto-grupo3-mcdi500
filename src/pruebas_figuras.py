@@ -81,10 +81,31 @@ def _pruebas_principales(a):
          lambda: prueba("0,50–0,71" in principales[2].titulo() and "0,937" in principales[2].titulo())),
     ]
 
+#  figuras complementarias
+def _pruebas_complementarias(a):
+    limpio, magnitudes = a["limpio"], a["magnitudes"]
+    complementarias = [fg.FiguraRegiones(limpio), fg.FiguraVolumenDerivado(limpio, magnitudes),
+                       fg.FiguraTipoPorMacrozona(limpio)]
+    return [
+        ("normal", "Las figuras complementarias se construyen con la misma llamada",
+         lambda: prueba(all(_construye(f) for f in complementarias))),
+        ("normal", "Las complementarias se registran con rol 'complementaria'",
+         lambda: prueba(all(f.registro()["rol"] == "complementaria" for f in complementarias))),
+        ("límite", "Las regiones de nombre largo se abrevian; las demás conservan su nombre",
+         lambda: prueba(fg.nombre_region("AYSEN DEL GENERAL CARLOS IBAÑEZ DEL CAMPO") == "Aysén"
+                        and fg.nombre_region("ATACAMA") == "Atacama")),
+        ("control", "Título fig. 4: Magallanes y Aysén reúnen el 91,1 %",
+         lambda: prueba(complementarias[0].titulo() ==
+                        "Magallanes y Aysén reúnen el 91,1 % de la superficie glaciar del país")),
+        ("control", "Título fig. 5: correlación 0,999 y Gini del volumen 0,991",
+         lambda: prueba("0,999" in complementarias[1].titulo() and "0,991" in complementarias[1].titulo())),
+        ("control", "Título fig. 6: los efluentes reúnen el 73,5 % de la macrozona austral",
+         lambda: prueba("73,5 %" in complementarias[2].titulo())),
+    ]
 
 def pruebas():
     a = _artefactos()
-    return _pruebas_base(a) + _pruebas_principales(a)
+    return _pruebas_base(a) + _pruebas_principales(a) + _pruebas_complementarias(a)
 
 
 if __name__ == "__main__":
