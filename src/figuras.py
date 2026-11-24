@@ -354,3 +354,149 @@ class FiguraTamanoPorTipo(FiguraHallazgo):
                      transform=eje.get_yaxis_transform())
         eje.set_title("Caja: mediana y cuartiles · puntos: muestra aleatoria de 2.500 glaciares",
                       color=GRIS, fontsize=9)
+
+
+# ====== figuras complementarias =======
+class FiguraRegiones(FiguraHallazgo):
+    """Complementaria · Concentración geográfica: dos regiones reúnen casi toda la superficie."""
+
+    nombre = "fig4_superficie_por_region"
+    rol = "complementaria"
+    objetivo = "OE3 · ¿Qué tan concentrada está la superficie glaciar en pocas regiones?"
+    grafico = "Barras horizontales ordenadas, con las dos mayores destacadas"
+    tamano = (9, 6)
+
+    def __init__(self, limpio, **kwargs):
+        super().__init__(**kwargs)
+        self._tabla = com.composicion(limpio, "REGION", "AREA_KM2")
+
+    def titulo(self):
+        dos = self._tabla.iloc[:2]
+        return (f"{nombre_region(dos.index[0])} y {nombre_region(dos.index[1])} reúnen el "
+                f"{com.pct(dos['pct_magnitud'].sum())} de la superficie glaciar del país")
+
+    def evidencia(self):
+        dos = self._tabla.iloc[:2]
+        return "; ".join(f"{nombre_region(r)}: {com.pct(f['pct_magnitud'])} con {com.miles(f['glaciares'])} glaciares"
+                         for r, f in dos.iterrows()) + f"; las otras {len(self._tabla) - 2} regiones: " \
+            f"{com.pct(self._tabla['pct_magnitud'].iloc[2:].sum())}"
+
+    def _dibujar(self, figura):
+        eje = figura.subplots()
+        t = self._tabla.iloc[::-1]
+        colores = [GRANATE if r in self._tabla.index[:2] else NEUTRO for r in t.index]
+        barras = eje.barh([nombre_region(r) for r in t.index], t["pct_magnitud"], color=colores, height=0.7)
+        etiquetas = [f"{com.pct(p, 1 if p >= 0.1 else 2)}  ({com.miles(n)} glaciares)"
+                     for p, n in zip(t["pct_magnitud"], t["glaciares"])]
+        eje.bar_label(barras, labels=etiquetas, padding=3, fontsize=8.5, color=TINTA)
+        eje.set_xlim(0, 68)
+        _formato_pct_eje(eje.xaxis)
+        eje.set_xlabel("Porcentaje de la superficie glaciar nacional")
+        eje.tick_params(axis="y", length=0)
+        eje.set_title("Regiones ordenadas por su aporte; entre paréntesis, cuántos glaciares tiene cada una",
+                      color=GRIS, fontsize=9)
+
+
+class FiguraVolumenDerivado(FiguraHallazgo):
+    """Complementaria · El volumen no es un hallazgo independiente: se calculó desde el área."""
+
+    nombre = "fig5_volumen_derivado"
+    rol = "complementaria"
+    objetivo = "OE3 · ¿La concentración del volumen agrega información a la de la superficie?"
+    grafico = "Dispersión log-log con recta de igualdad"
+    tamano = (8, 6)
+
+    def __init__(self, limpio, magnitudes, **kwargs):
+        super().__init__(**kwargs)
+        self._tabla = pd.DataFrame({
+            "CLASIFICA": limpio["CLASIFICA"].astype(str).to_numpy(),
+            "publicado": limpio["VOL_km3"].to_numpy(float),
+            "desde_area": con.volumen_desde_area(limpio).to_numpy(float),
+        })
+        positivos = self._tabla[(self._tabla["publicado"] > 0) & (self._tabla["desde_area"] > 0)]
+        self._correlacion_log = float(np.corrcoef(np.log10(positivos["publicado"]),
+                                                  np.log10(positivos["desde_area"]))[0, 1])
+        self._magnitudes = magnitudes.set_index("magnitud")
+
+    def titulo(self):
+        return (f"El volumen calculado solo desde el área reproduce el publicado (correlación "
+                f"{com.decimal(self._correlacion_log, 3)}): su Gini de {com.decimal(self._magnitudes.loc['VOL_km3', 'gini'])} "
+                f"no es un hallazgo independiente")
+
+    def evidencia(self):
+        m = self._magnitudes
+        return (f"Correlación (log10) {com.decimal(self._correlacion_log, 4)}; 1 % mayor: "
+                f"{com.pct(m.loc['VOL_DESDE_AREA', 'pct_1%_mayores'])} desde el área y "
+                f"{com.pct(m.loc['VOL_km3', 'pct_1%_mayores'])} publicado")
+
+    def _dibujar(self, figura):
+        eje = figura.subplots()
+        t = self._tabla[(self._tabla["publicado"] > 0) & (self._tabla["desde_area"] > 0)]
+        rocoso = t["CLASIFICA"] == "GLACIAR ROCOSO"
+        eje.scatter(t.loc[~rocoso, "desde_area"], t.loc[~rocoso, "publicado"], s=4, alpha=0.3, color=AZUL,
+                    edgecolors="none", rasterized=True, label=f"Glaciares de hielo (n = {com.miles((~rocoso).sum())})")
+        eje.scatter(t.loc[rocoso, "desde_area"], t.loc[rocoso, "publicado"], s=4, alpha=0.4,
+                    color=COLORES_TIPO["GLACIAR ROCOSO"], edgecolors="none", rasterized=True,
+                    label=f"Glaciares rocosos, × 0,6 (n = {com.miles(rocoso.sum())})")
+        extremos = [t[["publicado", "desde_area"]].min().min(), t[["publicado", "desde_area"]].max().max()]
+        eje.plot(extremos, extremos, color=GRANATE, lw=1.4, ls="--", label="Igualdad (volumen publicado = calculado)")
+        eje.set_xscale("log")
+        eje.set_yscale("log")
+        eje.set_xlabel("Volumen calculado solo desde el área: 0,0285 · ÁREA^1,357 (km³)")
+        eje.set_ylabel("Volumen publicado por la DGA (km³)")
+        leyenda = eje.legend(loc="upper left", fontsize=8.5, markerscale=3)
+        for marca in leyenda.legend_handles:
+            marca.set_alpha(1)
+        eje.grid(color=HIELO, lw=0.6)
+        eje.set_title(f"Correlación de los logaritmos: {com.decimal(self._correlacion_log, 4)} · "
+                      "cada punto es un glaciar", color=GRIS, fontsize=9)
+
+
+class FiguraTipoPorMacrozona(FiguraHallazgo):
+    """Complementaria · Control por una tercera variable: ¿el patrón por tipo se mantiene por zona?"""
+
+    nombre = "fig6_tipo_por_macrozona"
+    rol = "complementaria"
+    objetivo = "OE4 · ¿El efecto de la clasificación se mantiene al separar por macrozona?"
+    grafico = "Mapa de calor de una tabla cruzada (porcentaje de la fila)"
+    tamano = (10, 4.6)
+
+    def __init__(self, limpio, **kwargs):
+        super().__init__(**kwargs)
+        tabla = com.participacion_cruzada(limpio, "MZON_GLAC", "CLASIFICA")
+        orden_tipos = com.composicion(limpio, "CLASIFICA").index
+        self._tabla = tabla[list(orden_tipos)]
+        self._gini = com.gini_por_grupo(limpio, "MZON_GLAC")
+
+    def _dominante(self, zona):
+        fila = self._tabla.loc[zona]
+        return fila.idxmax(), float(fila.max())
+
+    def titulo(self):
+        tipo, valor = self._dominante("MACROZONA AUSTRAL")
+        return (f"El tipo que domina la superficie cambia con la latitud: los efluentes solo existen en la "
+                f"macrozona austral, donde reúnen el {com.pct(valor)}")
+
+    def evidencia(self):
+        partes = []
+        for zona in self._tabla.index:
+            tipo, valor = self._dominante(zona)
+            partes.append(f"{zona.title()}: {nombre_tipo(tipo).lower()} {com.pct(valor)} "
+                          f"(Gini {com.decimal(self._gini.loc[str(zona), 'gini'], 2)})")
+        return "; ".join(partes)
+
+    def _dibujar(self, figura):
+        eje = figura.subplots()
+        anotaciones = self._tabla.map(lambda v: "—" if v == 0 else "< 0,1" if v < 0.05 else com.pct(v, 1).replace(" %", ""))
+        sns.heatmap(self._tabla, annot=anotaciones, fmt="", cmap="Blues", vmin=0, vmax=100, linewidths=1,
+                    linecolor="white", cbar_kws={"label": "% de la superficie de la macrozona",
+                                                 "format": PercentFormatter(100, decimals=0)}, ax=eje)
+        eje.set_xticks(np.arange(self._tabla.shape[1]) + 0.5,
+                       [nombre_tipo(t).replace("Glaciar ", "Glaciar\n") for t in self._tabla.columns], rotation=0)
+        eje.set_yticks(np.arange(self._tabla.shape[0]) + 0.5,
+                       [f"{str(z).title().replace('Macrozona ', '')}\nGini {com.decimal(self._gini.loc[str(z), 'gini'], 2)}"
+                        for z in self._tabla.index], rotation=0)
+        eje.set_xlabel("")
+        eje.set_ylabel("Macrozona (de norte a sur)")
+        eje.set_title("Cada fila suma 100 %; «—» indica que el tipo no existe en esa macrozona",
+                      color=GRIS, fontsize=9)
