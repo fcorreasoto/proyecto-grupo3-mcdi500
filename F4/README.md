@@ -18,9 +18,12 @@ Contenido
  3    Dos versiones del dato: la matriz de modelo (escalada, one-hot) se
       revierte y se compara con la copia interpretable (glaciares_limpio).
  4    Vinculación objetivo → figura.
- 5    Figuras principales en tres actos: contexto, contraste y resolución.
- 6    Figuras complementarias: regiones, volumen derivado y control por
-      macrozona (¿la concentración persiste sin los glaciares efluentes?).
+ 5    Figuras principales en tres actos: curva de Lorenz (contexto), barras
+      pareadas por clasificación (contraste) y descomposición de Theil
+      (resolución: cuánto de la desigualdad se asocia a cada agrupación).
+ 6    Figuras complementarias: tamaño por tipo, regiones, control por
+      macrozona (¿la concentración persiste sin los efluentes?) y el volumen
+      como magnitud secundaria (por qué está más concentrado).
  7    Decisiones de escala: lineal frente a logarítmica.
  8    Eficiencia: tres implementaciones de la participación por grupo,
       con timeit y tracemalloc sobre tamaños crecientes.
@@ -47,17 +50,21 @@ Módulos
                         Gini por grupo) y formato castellano de las cifras.
 - src/figuras.py        clase base FiguraHallazgo (método plantilla
                         construir) y una clase hija por figura.
-- src/pruebas_comunicacion.py   23 pruebas (normales, límite, excepciones y control).
-- src/pruebas_figuras.py        18 pruebas, incluidas las cifras de cada título.
+- src/concentracion.py  (F3, ampliado en F4) IndiceTheil y descomponer_theil:
+                        desigualdad entre y dentro de los grupos.
+- src/pruebas_comunicacion.py   24 pruebas (normales, límite, excepciones y control).
+- src/pruebas_figuras.py        20 pruebas, incluidas las cifras de cada título.
+- src/pruebas_concentracion.py  32 pruebas, 8 de ellas de Theil (agregadas en F4).
 
 Salidas (se regeneran al ejecutar el notebook)
 ----------------------------------------------
 - F4/figuras/fig1_lorenz_superficie.png          principal · contexto
 - F4/figuras/fig2_composicion_clasificacion.png  principal · contraste
-- F4/figuras/fig3_tamano_por_clasificacion.png   principal · resolución
-- F4/figuras/fig4_superficie_por_region.png      complementaria
-- F4/figuras/fig5_volumen_derivado.png           complementaria
+- F4/figuras/fig3_descomposicion_theil.png       principal · resolución
+- F4/figuras/fig4_tamano_por_clasificacion.png   complementaria
+- F4/figuras/fig5_superficie_por_region.png      complementaria
 - F4/figuras/fig6_tipo_por_macrozona.png         complementaria
+- F4/figuras/fig7_volumen_derivado.png           complementaria · magnitud secundaria
 - F4/figuras/anexo1..3_*.png                     anexos (secciones 3, 7 y 8)
 - docs/hallazgos_f4.csv     una fila por figura: objetivo, hallazgo y evidencia.
 - docs/metadatos_f4.json    versiones, semilla, huella de data/raw, commit,
@@ -80,8 +87,8 @@ Resultado esperado
 ------------------
 - Contrato con F3: 8/8 controles cumplidos; las cifras se reproducen desde data/raw.
 - Copia reconstruida desde glaciares_modelo = glaciares_limpio = data/raw.
-- 65/65 pruebas (23 de comunicación, 18 de figuras y 24 de concentración de F3).
-- Seis figuras y tres anexos en F4/figuras/, a 200 ppp.
+- 76/76 pruebas (24 de comunicación, 20 de figuras y 32 de concentración, con Theil).
+- Siete figuras y tres anexos en F4/figuras/, a 200 ppp.
 - «data/raw intacto (SHA-256 igual al inicial).»
 
 Las mediciones de tiempo de la sección 8 varían entre equipos. Las cifras de
@@ -90,13 +97,17 @@ las figuras y las pruebas no cambian.
 Hallazgos
 ---------
 - El 1 % de los glaciares (261) reúne el 71,5 % de la superficie; Gini 0,937.
-- 217 glaciares efluentes (0,8 %) reúnen el 65,4 % de la superficie; 18.211
-  glaciaretes (69,6 %) aportan el 3,8 %.
-- Dentro de cada tipo el Gini baja a 0,50–0,71: buena parte de la
-  concentración es diferencia de tamaño entre tipos.
+- El 0,8 % de los glaciares, los efluentes (217), reúne el 65,4 % de la
+  superficie; 18.211 glaciaretes (69,6 %) aportan el 3,8 %.
+- Descomposición de Theil (3,793): la diferencia entre clasificaciones da
+  cuenta del 77,6 % de la desigualdad; entre macrozonas, del 6,5 %, y entre
+  regiones, solo del 5,7 %.
+- Dentro de cada tipo el Gini baja a 0,50–0,71: cada tipo ocupa su propio
+  rango de tamaño.
 - Los efluentes solo existen en la macrozona austral (73,5 % de su superficie);
   sin ellos el Gini baja a 0,837, pero la concentración persiste.
-- El volumen calculado solo desde el área reproduce el publicado
-  (correlación 0,999; Gini 0,991): no es un hallazgo independiente.
+- El volumen es una magnitud secundaria: se calculó desde el área con
+  exponente 1,357 (10 veces más área → 23 veces más volumen), por eso su Gini
+  sube de 0,937 a 0,991. No es un hallazgo independiente.
 
 Fase anterior: F3/F3_NucleoAlgoritmico.ipynb

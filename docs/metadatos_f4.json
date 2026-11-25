@@ -1,7 +1,7 @@
 {
   "fase": "F4",
   "commit_codigo_y_datos": "c5d9daa",
-  "python": "3.12.3",
+  "python": "3.14.10",
   "dependencias": {
     "numpy": "2.5.4",
     "pandas": "3.1.1",
@@ -22,18 +22,19 @@
   "figuras": [
     "F4/figuras/fig1_lorenz_superficie.png",
     "F4/figuras/fig2_composicion_clasificacion.png",
-    "F4/figuras/fig3_tamano_por_clasificacion.png",
-    "F4/figuras/fig4_superficie_por_region.png",
-    "F4/figuras/fig5_volumen_derivado.png",
+    "F4/figuras/fig3_descomposicion_theil.png",
+    "F4/figuras/fig4_tamano_por_clasificacion.png",
+    "F4/figuras/fig5_superficie_por_region.png",
     "F4/figuras/fig6_tipo_por_macrozona.png",
+    "F4/figuras/fig7_volumen_derivado.png",
     "F4/figuras/anexo1_dos_versiones_del_dato.png",
     "F4/figuras/anexo2_escala_lineal_vs_log.png",
     "F4/figuras/anexo3_eficiencia_participacion.png"
   ],
   "controles_contrato": 8,
   "pruebas": {
-    "comunicacion (F4)": 23,
-    "figuras (F4)": 18,
-    "concentracion (F3)": 24
+    "comunicacion (F4)": 24,
+    "figuras (F4)": 20,
+    "concentracion (F3)": 32
   }
 }

@@ -19,6 +19,20 @@ Registro de cambios por fase, con el commit que los respalda y el motivo. Los ha
   contrato 8/8 y 65/65 pruebas.
 - `docs/changelog.md` (este archivo, PR #18).
 
+### Agregado tras la retroalimentación de la Fase 4 (rama `f4-theil`)
+- `IndiceTheil` y `descomponer_theil` en `src/concentracion.py`, con 8 pruebas (commit `XXXXXXX`, PR #XX).
+  Convierten en una cifra la inferencia de F3: la clasificación da cuenta del 77,6 % de la desigualdad
+  de la superficie y la región del 5,7 %. El Gini no se descompone de forma exacta; Theil sí.
+- Figura 3 de la descomposición de Theil, como figura principal de resolución (commit `XXXXXXX`).
+
+### Cambiado tras la retroalimentación de la Fase 4
+- Figura 2: barras pareadas (% de glaciares y % de superficie por clasificación) en vez de barras
+  apiladas, con el título «El 0,8 % de los glaciares, los efluentes, reúne el 65,4 % de la superficie».
+- Volumen como magnitud secundaria (figura 7): el título explica por qué su concentración es mayor
+  (exponente 1,357).
+- Redacción: «se concentra» y «se asocia»; el inventario como fotografía de 2022 con imágenes de
+  distintos años. Figuras renumeradas (fig1–fig7) y 76 pruebas en el notebook F4.
+
 ### Cambiado
 - `README.md`: F4 implementada, estructura, ejecución, pruebas y resultados de la fase (PR #18).
 - F1 reejecutado y sus metadatos actualizados antes de abrir las ramas de F4 (`c78b65c`).
@@ -54,18 +68,3 @@ Registro de cambios por fase, con el commit que los respalda y el motivo. Los ha
 - F1 y F2 ejecutados completos con sus salidas (`7c65f7b`); `pandas` faltaba en la celda de importaciones de F1 (`16f7562`).
 - Git convertía los saltos de línea de los CSV en Windows y la huella SHA-256 no coincidía (`1ef407b`).
 - Verificación de F1 y F2 en un segundo equipo con Windows (`a03f745`, Gustavo Aloy Angella, PR #7).
-
----
-
-## Tabla comparativa: observaciones formativas y mejoras (apartado 27 del informe)
-
-> **Completar con las retroalimentaciones recibidas** (Formativa 1, Sumativa 1, Fase 3). Una fila por
-> observación, con el commit que la resuelve. Las dos primeras filas están confirmadas en el historial.
-
-| # | Observación recibida (fuente) | Acción de mejora | Commit | Impacto (modularidad · rendimiento · documentación) |
-|---|---|---|---|---|
-| 1 | Mapa conceptual (Formativa 1) | Mapa conceptual v2 y alineación del informe | `fcc0311` | Documentación: el informe y el mapa usan la misma estructura |
-| 2 | Commits no trazables por integrante | `.mailmap` y una rama por integrante con PR | `0334b4e` | Documentación: `git shortlog -sne` muestra 3 autores |
-| 3 | TODO (Sumativa 1) | | | |
-| 4 | TODO (Fase 3) | | | |
-| 5 | TODO | | | |

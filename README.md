@@ -48,7 +48,7 @@ Los glaciares son reservas hídricas estratégicas para Chile. La DGA publica el
 | Diccionario de variables | [`docs/diccionario_variables.csv`](docs/diccionario_variables.csv): 45 variables con su rol analítico |
 | Bitácora y metadatos | [`docs/bitacora_f2.md`](docs/bitacora_f2.md) y [`docs/metadatos_proyecto.csv`](docs/metadatos_proyecto.csv), generados por F2 con las cifras de cada decisión; [`docs/bitacora_f3.md`](docs/bitacora_f3.md) (generada por el observador del pipeline) y [`docs/metadatos_f3.csv`](docs/metadatos_f3.csv), generados por F3 |
 | Concentración (F3) | `data/processed/concentracion_magnitudes_f3.csv` (superficie, volumen y volumen calculado desde el área), `concentracion_region_f3.csv`, `concentracion_clasificacion_f3.csv` y `concentracion_macrozona_f3.csv` (superficie y volumen lado a lado), y `lorenz_f3.csv` (curvas de Lorenz). Entrada de F4 |
-| Comunicación (F4) | `F4/figuras/` (seis figuras y tres anexos, 200 ppp), [`docs/hallazgos_f4.csv`](docs/hallazgos_f4.csv) (objetivo, hallazgo y evidencia de cada figura) y [`docs/metadatos_f4.json`](docs/metadatos_f4.json) |
+| Comunicación (F4) | `F4/figuras/` (siete figuras y tres anexos, 200 ppp), [`docs/hallazgos_f4.csv`](docs/hallazgos_f4.csv) (objetivo, hallazgo y evidencia de cada figura) y [`docs/metadatos_f4.json`](docs/metadatos_f4.json) |
 
 El archivo de `data/raw/` **nunca se modifica**. F1, F2, F3 y F4 verifican su huella SHA-256 y se detienen si el archivo cambió.
 
@@ -63,9 +63,9 @@ proyecto-grupo3-mcdi500/
 ├── F3/
 │   └── F3_NucleoAlgoritmico.ipynb   # Pipeline en clases, verificación con F2, concentración, eficiencia, recursividad y patrones
 ├── F4/
-│   ├── F4_Comunicacion.ipynb        # Contrato con F3, copia interpretable, seis figuras, eficiencia y validación
+│   ├── F4_Comunicacion.ipynb        # Contrato con F3, copia interpretable, Theil, siete figuras, eficiencia y validación
 │   ├── README.md
-│   └── figuras/                     # fig1–fig6 y tres anexos, generados por el notebook
+│   └── figuras/                     # fig1–fig7 y tres anexos, generados por el notebook
 ├── data/
 │   ├── raw/                         # CSV original de la DGA (inmutable)
 │   └── processed/                   # Salidas de F2 (se regeneran al ejecutar el notebook)
@@ -76,16 +76,16 @@ proyecto-grupo3-mcdi500/
 │   ├── transformadores.py           # F3: clase base Transformador y una clase hija por paso de F2
 │   ├── pipeline.py                  # F3: Pipeline (composición) y observadores de la bitácora (patrón Observer)
 │   ├── procesamiento.py             # F3: arma los pipelines de F2 y verifica las salidas byte a byte
-│   ├── concentracion.py             # F3: concentración de la superficie y del volumen derivado (Gini, Lorenz, mayores)
+│   ├── concentracion.py             # F3: concentración de la superficie y del volumen derivado (Gini, Lorenz, mayores); F4: Theil y su descomposición
 │   ├── medicion.py                  # F3: tiempo y memoria reproducibles y comparación de implementaciones
 │   ├── metadatos.py                 # F3: aplanado recursivo e iterativo de los metadatos
 │   ├── pruebas_nucleo.py            # F3: 29 pruebas del pipeline POO
-│   ├── pruebas_concentracion.py     # F3: 24 pruebas, incluidas las cifras de control
+│   ├── pruebas_concentracion.py     # F3–F4: 32 pruebas (24 de F3 y 8 de Theil), incluidas las cifras de control
 │   ├── pruebas_medicion.py          # F3: 16 pruebas de medición y recursividad
 │   ├── comunicacion.py              # F4: artefactos, contrato con F3, copia interpretable y tablas para graficar
 │   ├── figuras.py                   # F4: FiguraHallazgo (método plantilla) y una clase hija por figura
-│   ├── pruebas_comunicacion.py      # F4: 23 pruebas
-│   └── pruebas_figuras.py           # F4: 18 pruebas, incluidas las cifras de cada título
+│   ├── pruebas_comunicacion.py      # F4: 24 pruebas
+│   └── pruebas_figuras.py           # F4: 20 pruebas, incluidas las cifras de cada título
 ├── docs/
 │   ├── validacion_dataset.md        # Perfil de las 45 variables (validar_dataset.py)
 │   ├── diccionario_variables.csv    # Generado por F1
@@ -118,7 +118,7 @@ La verificación regenera los tres CSV de `data/processed/` y comprueba que son 
 
 ```bash
 python src/pruebas_nucleo.py           # 29 pruebas del pipeline POO
-python src/pruebas_concentracion.py    # 24 pruebas, incluidas las cifras de control de la concentración
+python src/pruebas_concentracion.py    # 32 pruebas, incluidas las cifras de control de la concentración y de Theil
 python src/pruebas_medicion.py         # 16 pruebas de medición y recursividad
 python src/procesamiento.py            # 15 pasos en 3 pipelines + comparación SHA-256 con F2
 ```
@@ -126,8 +126,8 @@ python src/procesamiento.py            # 15 pasos en 3 pipelines + comparación 
 En la Fase 4 las figuras siguen el mismo diseño: cada una hereda de `FiguraHallazgo`, cuyo método plantilla `construir` aplica el estilo, el título-hallazgo y la fuente, y el notebook las construye, guarda y registra con las mismas llamadas sin preguntar su tipo. El título se arma con las cifras de la tabla de cada figura, así que figura, `docs/hallazgos_f4.csv` e informe no pueden contradecirse:
 
 ```bash
-python src/pruebas_comunicacion.py     # 23 pruebas de la comunicación (F4)
-python src/pruebas_figuras.py          # 18 pruebas de las figuras, incluidas las cifras de cada título (F4)
+python src/pruebas_comunicacion.py     # 24 pruebas de la comunicación (F4)
+python src/pruebas_figuras.py          # 20 pruebas de las figuras, incluidas las cifras de cada título (F4)
 ```
 
 ## Entorno y dependencias
@@ -194,15 +194,16 @@ python -m jupyter lab
    - Calcula la concentración de la superficie (resultado principal) y demuestra que la del volumen deriva de ella.
    - Compara implementaciones con `timeit` y `tracemalloc` (Gini, participación de los mayores, normalización del texto) y la recursión frente a una pila. Documenta los patrones Strategy y Observer.
    - Exporta las tablas de concentración a `data/processed/` y la bitácora y los metadatos de F3 a `docs/`.
-   - Resultado esperado: tres archivos con `identico = True`, 29/29 pruebas del núcleo, 24/24 de concentración, 16/16 de medición y, al cerrar, «data/raw intacto (SHA-256 igual al inicial).»
+   - Resultado esperado: tres archivos con `identico = True`, 29/29 pruebas del núcleo, 24/24 de concentración (32/32 desde F4, que agrega las de Theil), 16/16 de medición y, al cerrar, «data/raw intacto (SHA-256 igual al inicial).»
    - Las mediciones de tiempo varían entre equipos. Las cifras de concentración y las pruebas no cambian.
 4. **`F4/F4_Comunicacion.ipynb`**
    - No limpia ni transforma: verifica que las tablas de F3 coinciden con su recálculo (8 controles) y las reproduce desde `data/raw` con código independiente (Gini por el área bajo la curva de Lorenz).
    - Reconstruye la superficie, la clasificación y la región desde `glaciares_modelo` (revierte RobustScaler, el logaritmo y el one-hot) y comprueba que es el mismo dato que `glaciares_limpio`: se grafica solo la copia interpretable.
-   - Construye seis figuras cuyo título dice el hallazgo: tres principales (contexto, contraste y resolución) y tres complementarias (regiones, volumen derivado y control por macrozona).
+   - Descompone la desigualdad con el índice de Theil: la clasificación da cuenta del 77,6 % y la región del 5,7 %.
+   - Construye siete figuras cuyo título dice el hallazgo: tres principales (curva de Lorenz, barras pareadas por clasificación y descomposición de Theil) y cuatro complementarias (tamaño por tipo, regiones, control por macrozona y volumen como magnitud secundaria).
    - Compara tres implementaciones de la participación por grupo con `timeit` y `tracemalloc` sobre 1.000 a 300.000 glaciares y ejecuta las pruebas de F4 y de concentración de F3.
    - Exporta las figuras a `F4/figuras/`, y `hallazgos_f4.csv` y `metadatos_f4.json` a `docs/`.
-   - Resultado esperado: contrato 8/8, 65/65 pruebas y, al cerrar, «data/raw intacto (SHA-256 igual al inicial).»
+   - Resultado esperado: contrato 8/8, 76/76 pruebas y, al cerrar, «data/raw intacto (SHA-256 igual al inicial).»
 
 También pueden ejecutarse sin abrir JupyterLab:
 
@@ -251,11 +252,12 @@ Ningún glaciar se elimina: el resultado conserva las 26.180 filas. Las cifras y
 | Figura | Hallazgo |
 |---|---|
 | 1 · Curva de Lorenz | El 1 % de los glaciares (261) reúne el 71,5 % de la superficie; el 10 %, el 91,1 % (Gini 0,937) |
-| 2 · Composición por clasificación | 217 glaciares efluentes (0,8 %) reúnen el 65,4 % de la superficie; 18.211 glaciaretes (69,6 %), el 3,8 % |
-| 3 · Tamaño por clasificación | Dentro de cada tipo el Gini baja a 0,50–0,71: buena parte de la concentración es diferencia de tamaño entre tipos |
-| 4 · Regiones | Magallanes y Aysén reúnen el 91,1 % de la superficie |
-| 5 · Volumen derivado | El volumen calculado solo desde el área reproduce el publicado (correlación 0,999; Gini 0,991) |
+| 2 · Composición por clasificación | El 0,8 % de los glaciares, los efluentes, reúne el 65,4 % de la superficie; 18.211 glaciaretes (69,6 %), el 3,8 % |
+| 3 · Descomposición de Theil | La clasificación da cuenta del 77,6 % de la desigualdad de la superficie; la región, solo del 5,7 % |
+| 4 · Tamaño por clasificación | Dentro de cada tipo el Gini baja a 0,50–0,71: cada tipo ocupa su propio rango de tamaño |
+| 5 · Regiones | Magallanes y Aysén reúnen el 91,1 % de la superficie, aunque la región da cuenta de poca desigualdad |
 | 6 · Tipo por macrozona | Los efluentes solo existen en la macrozona austral (73,5 % de su superficie); sin ellos el Gini baja a 0,837, pero la concentración persiste |
+| 7 · Volumen (magnitud secundaria) | Se calculó desde el área con exponente 1,357: 10 veces más área es 23 veces más volumen, y el Gini sube de 0,937 a 0,991 |
 
 Las cifras exactas de cada figura están en [`docs/hallazgos_f4.csv`](docs/hallazgos_f4.csv); la discusión y las limitaciones, en la sección 11 del notebook F4.
 
