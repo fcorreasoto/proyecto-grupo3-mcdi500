@@ -79,7 +79,7 @@ proyecto-grupo3-mcdi500/
 │   ├── concentracion.py             # F3: concentración de la superficie y del volumen derivado (Gini, Lorenz, mayores); F4: Theil y su descomposición
 │   ├── medicion.py                  # F3: tiempo y memoria reproducibles y comparación de implementaciones
 │   ├── metadatos.py                 # F3: aplanado recursivo e iterativo de los metadatos
-│   ├── pruebas_nucleo.py            # F3: 29 pruebas del pipeline POO
+│   ├── pruebas_nucleo.py            # F3: 31 pruebas del pipeline POO (incluidas las clases abstractas)
 │   ├── pruebas_concentracion.py     # F3–F4: 32 pruebas (24 de F3 y 8 de Theil), incluidas las cifras de control
 │   ├── pruebas_medicion.py          # F3: 16 pruebas de medición y recursividad
 │   ├── comunicacion.py              # F4: artefactos, contrato con F3, copia interpretable y tablas para graficar
@@ -117,7 +117,7 @@ Las funciones que usan varias fases viven en `src/utilidades.py`: F1 lo prueba c
 La verificación regenera los tres CSV de `data/processed/` y comprueba que son idénticos byte a byte a los de F2:
 
 ```bash
-python src/pruebas_nucleo.py           # 29 pruebas del pipeline POO
+python src/pruebas_nucleo.py           # 31 pruebas del pipeline POO
 python src/pruebas_concentracion.py    # 32 pruebas, incluidas las cifras de control de la concentración y de Theil
 python src/pruebas_medicion.py         # 16 pruebas de medición y recursividad
 python src/procesamiento.py            # 15 pasos en 3 pipelines + comparación SHA-256 con F2
@@ -135,7 +135,7 @@ python src/pruebas_figuras.py          # 20 pruebas de las figuras, incluidas la
 - **Python:** 3.12 o superior. El proyecto se probó con Python 3.12.3 y 3.14.6.
 - **Librerías principales:** pandas 3.1.1, NumPy 2.5.4, scikit-learn 1.9.1 (escaladores de F2), Matplotlib 3.11.2 (gráficos de control de F2), JupyterLab 4.6.6 e ipykernel 7.4.0. seaborn 0.13.2 dibuja el mapa de calor de F4; la caja de la figura 3 se dibuja con Matplotlib porque seaborn 0.13.2 genera un aviso de obsolescencia con Matplotlib 3.11.
 - **Semilla:** `SEMILLA = 42`, declarada en `src/utilidades.py` y fijada en todos los notebooks (F4 la usa en la muestra de puntos de la figura 3 y en las muestras de la medición de eficiencia). El pipeline actual es determinista, pero la semilla queda fijada para cualquier paso aleatorio de las fases siguientes.
-- La lista completa con versiones exactas está en [`requirements.txt`](requirements.txt).
+- [`requirements.txt`](requirements.txt) declara solo las 7 dependencias directas, con su versión exacta (NumPy, pandas, scikit-learn, Matplotlib, seaborn, JupyterLab e ipykernel); pip instala el resto. Se verificó creando un entorno nuevo solo con ese archivo y ejecutando F1 a F4 desde cero.
 
 ### Instalación
 
@@ -194,7 +194,7 @@ python -m jupyter lab
    - Calcula la concentración de la superficie (resultado principal) y demuestra que la del volumen deriva de ella.
    - Compara implementaciones con `timeit` y `tracemalloc` (Gini, participación de los mayores, normalización del texto) y la recursión frente a una pila. Documenta los patrones Strategy y Observer.
    - Exporta las tablas de concentración a `data/processed/` y la bitácora y los metadatos de F3 a `docs/`.
-   - Resultado esperado: tres archivos con `identico = True`, 29/29 pruebas del núcleo, 24/24 de concentración (32/32 desde F4, que agrega las de Theil), 16/16 de medición y, al cerrar, «data/raw intacto (SHA-256 igual al inicial).»
+   - Resultado esperado: tres archivos con `identico = True`, 31/31 pruebas del núcleo, 32/32 de concentración (incluidas las 8 de Theil agregadas en F4), 16/16 de medición y, al cerrar, «data/raw intacto (SHA-256 igual al inicial).»
    - Las mediciones de tiempo varían entre equipos. Las cifras de concentración y las pruebas no cambian.
 4. **`F4/F4_Comunicacion.ipynb`**
    - No limpia ni transforma: verifica que las tablas de F3 coinciden con su recálculo (8 controles) y las reproduce desde `data/raw` con código independiente (Gini por el área bajo la curva de Lorenz).
@@ -269,6 +269,7 @@ Las cifras exactas de cada figura están en [`docs/hallazgos_f4.csv`](docs/halla
 - El historial anterior tiene varias identidades por persona; `.mailmap` las unifica en `git log` y `git shortlog -sne`.
 - Las tareas se desarrollan en ramas propias (`f1-ajustes`, `f2-pipeline`, …) y se integran a `main` mediante Pull Request (#1 a #6); las correcciones menores posteriores se hicieron directamente sobre `main`.
 - En F3 todo cambio entra por pull request: los módulos de `src/` (`f3-pipeline`, `f3-concentracion`; PR #8 y #9) y el notebook (`f3-notebook-gustavo`, `F3-notebook-roberto`; PR #10 a #12).
+- Desde la Fase 4 **ningún cambio se sube directamente a `main`**, ni siquiera los ajustes finales: todo entra por pull request revisado por otro integrante, y cada integrante desarrolla una parte del código de F4 en su propia rama (descomposición, figuras y tabla de hallazgos).
 - En F4 cada integrante integra su componente por pull request: `f4-comunicacion` (Francisco Correa Soto, PR #14), `f4-figuras-principales` (Gustavo Aloy Angella, PR #15), `f4-figuras-complementarias` y `f4-notebook` (Roberto Gaubert Urbina, PR #16 y #17) y `f4-cierre` (PR #18). Los cambios por fase, con su commit, están en [`docs/changelog.md`](docs/changelog.md).
 - No se versionan `.venv/`, las cachés de Python, `.env` ni la carpeta `material/` con el material de clase.
 - Los notebooks se versionan **con sus salidas**, que sirven como evidencia de ejecución.
