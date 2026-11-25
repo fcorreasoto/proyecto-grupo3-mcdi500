@@ -107,6 +107,10 @@ class IndiceGini(MedidaConcentracion):
 
     Costo O(n log n) por el ordenamiento y O(n) de memoria. La definición por pares,
     Σᵢ Σⱼ |xᵢ − xⱼ| / (2 n² x̄), da el mismo valor en O(n²); medicion.py compara ambas.
+
+    Σ(i · xᵢ) se calcula con `(rangos * x).sum()` y no con `np.dot`: np.dot delega en OpenBLAS, que
+    sobre ~10.000 elementos reparte el producto en hilos, y dentro de un kernel de Jupyter despertarlos
+    cuesta milisegundos (2,4 ms frente a 0,2 ms sobre el inventario completo; F3 sección 7.2).
     """
 
     etiqueta = "gini"
@@ -114,8 +118,8 @@ class IndiceGini(MedidaConcentracion):
     def _calcular(self, valores):
         x = np.sort(valores)
         n = len(x)
-        rangos = np.arange(1, n + 1)
-        return float(2 * np.dot(rangos, x) / (n * x.sum()) - (n + 1) / n)
+        rangos = np.arange(1, n + 1, dtype=float)
+        return float(2 * (rangos * x).sum() / (n * x.sum()) - (n + 1) / n)
 
 
 class CurvaLorenz(MedidaConcentracion):
