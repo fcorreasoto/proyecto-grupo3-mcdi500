@@ -81,8 +81,8 @@ Las comprobaciones y pruebas también pueden ejecutarse desde la raíz:
 Resultado esperado
 ------------------
 - Los tres archivos regenerados coinciden byte a byte con los de F2.
-- 29/29 pruebas del núcleo POO.
-- 24/24 pruebas de concentración.
+- 31/31 pruebas del núcleo POO (incluye las clases base abstractas con abc).
+- 32/32 pruebas de concentración (24 de F3 y 8 del índice de Theil agregadas en F4).
 - 16/16 pruebas de medición y recursividad.
 - «data/raw intacto (SHA-256 igual al inicial).»
 

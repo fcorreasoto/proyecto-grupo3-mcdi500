@@ -33,6 +33,17 @@ Registro de cambios por fase, con el commit que los respalda y el motivo. Los ha
 - Redacción: «se concentra» y «se asocia»; el inventario como fotografía de 2022 con imágenes de
   distintos años. Figuras renumeradas (fig1–fig7) y 76 pruebas en el notebook F4.
 
+### Cierre de pendientes de F3 (observaciones del docente)
+- Clases base abstractas con `abc`: `Transformador`, `MedidaConcentracion`, `EstrategiaImputacion` y
+  `FiguraHallazgo` heredan de `ABC` y declaran sus métodos con `@abstractmethod` (commit `XXXXXXX`).
+  Las pruebas verifican que ni la base ni una clase hija incompleta se pueden instanciar (`TypeError`).
+- Medición del Gini sobre el inventario completo: los 2,99 ms de F3 no calzaban con los 0,05 ms sobre
+  8.000 glaciares. Causa: `np.dot` delegaba en OpenBLAS, que sobre vectores grandes usa hilos y,
+  dentro del kernel de Jupyter, despertarlos cuesta milisegundos. `IndiceGini` suma con
+  `(rangos * x).sum()` y ahora tarda 0,13 ms, coherente con n·log n (commit `XXXXXXX`).
+- `requirements.txt`: de 119 paquetes (`pip freeze`) a las 7 dependencias directas; verificado con un
+  entorno nuevo y la ejecución de F1 a F4 desde cero (commit `XXXXXXX`).
+
 ### Cambiado
 - `README.md`: F4 implementada, estructura, ejecución, pruebas y resultados de la fase (PR #18).
 - F1 reejecutado y sus metadatos actualizados antes de abrir las ramas de F4 (`c78b65c`).
@@ -68,3 +79,19 @@ Registro de cambios por fase, con el commit que los respalda y el motivo. Los ha
 - F1 y F2 ejecutados completos con sus salidas (`7c65f7b`); `pandas` faltaba en la celda de importaciones de F1 (`16f7562`).
 - Git convertía los saltos de línea de los CSV en Windows y la huella SHA-256 no coincidía (`1ef407b`).
 - Verificación de F1 y F2 en un segundo equipo con Windows (`a03f745`, Gustavo Aloy Angella, PR #7).
+
+---
+
+## Tabla comparativa: observaciones formativas y mejoras (apartado 27 del informe)
+
+> **Completar con las retroalimentaciones recibidas** (Formativa 1, Sumativa 1, Fase 3). Una fila por
+> observación, con el commit que la resuelve. Las dos primeras filas están confirmadas en el historial.
+
+| # | Observación recibida (fuente) | Acción de mejora | Commit | Impacto (modularidad · rendimiento · documentación) |
+|---|---|---|---|---|
+| 1 | Mapa conceptual (Formativa 1) | Mapa conceptual v2 y alineación del informe | `fcc0311` | Documentación: el informe y el mapa usan la misma estructura |
+| 2 | Commits no trazables por integrante | `.mailmap` y una rama por integrante con PR | `0334b4e` | Documentación: `git shortlog -sne` muestra 3 autores |
+| 3 | El Gini no se descompone entre grupos; usar Theil (sugerencias de la Fase 4) | `IndiceTheil` y `descomponer_theil`; figura 3 | `XXXXXXX` | Análisis: la clasificación da cuenta del 77,6 % de la desigualdad |
+| 4 | TODO (Sumativa 1) | | | |
+| 5 | TODO (Fase 3) | | | |
+| 6 | TODO | | | |
