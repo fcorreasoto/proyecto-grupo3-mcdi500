@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from matplotlib.patches import Patch
 from matplotlib.ticker import FuncFormatter, PercentFormatter
 
 import comunicacion as com
@@ -242,8 +243,8 @@ class FiguraComposicion(FiguraHallazgo):
 
     nombre = "fig2_composicion_clasificacion"
     objetivo = "OE4 · ¿Cambia la concentración según la clasificación del glaciar?"
-    grafico = "Barras apiladas al 100 % (número de glaciares frente a superficie)"
-    tamano = (10, 4.4)
+    grafico = "Barras pareadas: % de los glaciares y % de la superficie por clasificación"
+    tamano = (10, 5)
 
     def __init__(self, limpio, **kwargs):
         super().__init__(**kwargs)
@@ -255,8 +256,8 @@ class FiguraComposicion(FiguraHallazgo):
 
     def titulo(self):
         e = self._fila("GLACIAR EFLUENTE")
-        return (f"{com.miles(e['glaciares'])} glaciares efluentes, el {com.pct(e['pct_glaciares'])} del total, "
-                f"reúnen el {com.pct(e['pct_magnitud'])} de la superficie")
+        return (f"El {com.pct(e['pct_glaciares'])} de los glaciares, los efluentes, reúne el "
+                f"{com.pct(e['pct_magnitud'])} de la superficie glaciar del país")
 
     def evidencia(self):
         e, g = self._fila("GLACIAR EFLUENTE"), self._fila("GLACIARETE")
@@ -266,38 +267,88 @@ class FiguraComposicion(FiguraHallazgo):
 
     def _dibujar(self, figura):
         eje = figura.subplots()
-        filas = {"Número de glaciares\n(n = " + com.miles(self._tabla["glaciares"].sum()) + ")": "pct_glaciares",
-                 "Superficie glaciar\n(" + com.miles(self._total_km2) + " km²)": "pct_magnitud"}
-        posiciones = np.arange(len(filas))[::-1]
-        for y, (etiqueta, columna) in zip(posiciones, filas.items()):
-            izquierda = 0.0
-            for tipo, fila in self._tabla.iterrows():
-                ancho = fila[columna]
-                color = COLORES_TIPO.get(tipo, GRIS)
-                eje.barh(y, ancho, left=izquierda, color=color, edgecolor="white", height=0.62,
-                         label=nombre_tipo(tipo) if y == posiciones[0] else None)
-                if ancho >= 4:
-                    claro = color in (GRANATE, AZUL, COLORES_TIPO["GLACIAR DE MONTAÑA"])
-                    eje.text(izquierda + ancho / 2, y, com.pct(ancho), ha="center", va="center",
-                             fontsize=9, color="white" if claro else TINTA, fontweight="bold")
-                izquierda += ancho
-        eje.set_yticks(posiciones, list(filas))
+        tipos = list(self._tabla.index)
+        y = np.arange(len(tipos))
+        alto = 0.38
+        glaciares = eje.barh(y - alto / 2, self._tabla["pct_glaciares"], height=alto, color=NEUTRO,
+                             label=f"% de los glaciares (n = {com.miles(self._tabla['glaciares'].sum())})")
+        colores = [GRANATE if t == "GLACIAR EFLUENTE" else AZUL for t in tipos]
+        superficie = eje.barh(y + alto / 2, self._tabla["pct_magnitud"], height=alto, color=colores,
+                              label=f"% de la superficie ({com.miles(self._total_km2)} km²)")
+        for barras in (glaciares, superficie):
+            eje.bar_label(barras, labels=[com.pct(v) for v in barras.datavalues], padding=4, fontsize=9,
+                          color=TINTA)
+        eje.set_yticks(y, [nombre_tipo(t) for t in tipos])
+        eje.invert_yaxis()
+        eje.set_xlim(0, 80)
+        _formato_pct_eje(eje.xaxis)
+        eje.set_xlabel("Porcentaje del total nacional")
+        eje.tick_params(axis="y", length=0)
+        eje.legend(handles=[Patch(color=NEUTRO, label=glaciares.get_label()),
+                            Patch(color=AZUL, label=superficie.get_label()),
+                            Patch(color=GRANATE, label="% de la superficie de los efluentes (destacado)")],
+                   loc="lower right", fontsize=9)
+        eje.grid(axis="x", color=HIELO, lw=0.6)
+        g = self._fila("GLACIARETE")
+        eje.set_title(f"Arriba de cada par, su peso en número; abajo, en superficie. Los glaciaretes son el "
+                      f"{com.pct(g['pct_glaciares'])} de los glaciares y aportan el {com.pct(g['pct_magnitud'])}",
+                      color=GRIS, fontsize=9)
+
+
+class FiguraTheil(FiguraHallazgo):
+    """Acto 3 · Resolución: qué parte de la desigualdad se asocia a la clasificación y cuál a la región."""
+
+    nombre = "fig3_descomposicion_theil"
+    objetivo = "OE4 · ¿Qué parte de la concentración se asocia a la clasificación y cuál a la región?"
+    grafico = "Barras apiladas al 100 %: desigualdad entre y dentro de los grupos (descomposición de Theil)"
+    tamano = (10, 4.2)
+
+    def __init__(self, limpio, **kwargs):
+        super().__init__(**kwargs)
+        self._tabla = com.descomposicion_theil(limpio)
+
+    def titulo(self):
+        c, r = self._tabla.loc["Clasificación"], self._tabla.loc["Región"]
+        return (f"La clasificación da cuenta del {com.pct(c['pct_entre'])} de la desigualdad de la superficie; "
+                f"la región, solo del {com.pct(r['pct_entre'])}")
+
+    def evidencia(self):
+        t = self._tabla
+        plural = {"Clasificación": "clasificaciones", "Macrozona": "macrozonas", "Región": "regiones"}
+        partes = [f"entre {plural.get(n, n.lower())} {com.pct(f['pct_entre'])}" for n, f in t.iterrows()]
+        return f"Theil de la superficie {com.decimal(t['theil_total'].iloc[0])}; " + "; ".join(partes)
+
+    def _dibujar(self, figura):
+        eje = figura.subplots()
+        t = self._tabla
+        y = np.arange(len(t))
+        colores = [GRANATE if n == "Clasificación" else AZUL for n in t.index]
+        eje.barh(y, t["pct_entre"], color=colores, height=0.55, label="Entre los grupos")
+        eje.barh(y, t["pct_dentro"], left=t["pct_entre"], color=HIELO, height=0.55, label="Dentro de los grupos")
+        for i, (_, f) in enumerate(t.iterrows()):
+            eje.text(f["pct_entre"] + 1 if f["pct_entre"] < 12 else f["pct_entre"] / 2, i, com.pct(f["pct_entre"]),
+                     ha="left" if f["pct_entre"] < 12 else "center", va="center", fontsize=10, fontweight="bold",
+                     color=TINTA if f["pct_entre"] < 12 else "white")
+            eje.text(99, i, f"dentro: {com.pct(f['pct_dentro'])}", ha="right", va="center", fontsize=9.5, color=TINTA)
+        eje.set_yticks(y, [f"{n}\n({int(f['grupos'])} grupos)" for n, f in t.iterrows()])
+        eje.invert_yaxis()
         eje.set_xlim(0, 100)
         _formato_pct_eje(eje.xaxis)
-        eje.set_xlabel("Porcentaje del total")
-        eje.spines["left"].set_visible(False)
+        eje.set_xlabel("Porcentaje del índice de Theil de la superficie")
         eje.tick_params(axis="y", length=0)
-        eje.legend(ncols=5, loc="upper center", bbox_to_anchor=(0.5, -0.2), fontsize=8.5,
-                   title="Clasificación (ordenada por su aporte a la superficie)", title_fontsize=8.5)
-        g = self._fila("GLACIARETE")
-        eje.set_title(f"Los glaciaretes son el {com.pct(g['pct_glaciares'])} de los glaciares y aportan "
-                      f"solo el {com.pct(g['pct_magnitud'])} de la superficie", color=TINTA, fontsize=10)
+        eje.legend(handles=[Patch(color=AZUL, label="Entre los grupos (en granate, la clasificación)"),
+                            Patch(color=HIELO, label="Dentro de los grupos")],
+                   ncols=2, loc="upper center", bbox_to_anchor=(0.5, -0.22), fontsize=9)
+        eje.set_title(f"Índice de Theil de la superficie: {com.decimal(t['theil_total'].iloc[0])}, separado en desigualdad "
+                      "entre grupos y dentro de ellos (asociación, no causa)", color=GRIS, fontsize=9)
 
 
+# ====================================================================== figuras complementarias
 class FiguraTamanoPorTipo(FiguraHallazgo):
-    """Acto 3 · Resolución: gran parte de la concentración se explica por el tipo de glaciar."""
+    """Complementaria · Por qué los tipos difieren: cada uno ocupa su propio rango de tamaño."""
 
-    nombre = "fig3_tamano_por_clasificacion"
+    nombre = "fig4_tamano_por_clasificacion"
+    rol = "complementaria"
     objetivo = "OE4 · ¿Por qué cambia la concentración según la clasificación?"
     grafico = "Caja con puntos superpuestos, eje logarítmico, con el Gini de cada tipo"
     tamano = (10, 4.8)
@@ -356,11 +407,10 @@ class FiguraTamanoPorTipo(FiguraHallazgo):
                       color=GRIS, fontsize=9)
 
 
-# ====== figuras complementarias =======
 class FiguraRegiones(FiguraHallazgo):
     """Complementaria · Concentración geográfica: dos regiones reúnen casi toda la superficie."""
 
-    nombre = "fig4_superficie_por_region"
+    nombre = "fig5_superficie_por_region"
     rol = "complementaria"
     objetivo = "OE3 · ¿Qué tan concentrada está la superficie glaciar en pocas regiones?"
     grafico = "Barras horizontales ordenadas, con las dos mayores destacadas"
@@ -398,11 +448,11 @@ class FiguraRegiones(FiguraHallazgo):
 
 
 class FiguraVolumenDerivado(FiguraHallazgo):
-    """Complementaria · El volumen no es un hallazgo independiente: se calculó desde el área."""
+    """Complementaria · Magnitud secundaria: por qué el volumen está más concentrado que la superficie."""
 
-    nombre = "fig5_volumen_derivado"
+    nombre = "fig7_volumen_derivado"
     rol = "complementaria"
-    objetivo = "OE3 · ¿La concentración del volumen agrega información a la de la superficie?"
+    objetivo = "OE3 · ¿Por qué el volumen está más concentrado que la superficie?"
     grafico = "Dispersión log-log con recta de igualdad"
     tamano = (8, 6)
 
@@ -419,15 +469,18 @@ class FiguraVolumenDerivado(FiguraHallazgo):
         self._magnitudes = magnitudes.set_index("magnitud")
 
     def titulo(self):
-        return (f"El volumen calculado solo desde el área reproduce el publicado (correlación "
-                f"{com.decimal(self._correlacion_log, 3)}): su Gini de {com.decimal(self._magnitudes.loc['VOL_km3', 'gini'])} "
-                f"no es un hallazgo independiente")
+        m = self._magnitudes
+        veces = 10 ** con.EXPONENTE_VOLUMEN
+        return (f"El volumen se calculó desde el área con exponente {com.decimal(con.EXPONENTE_VOLUMEN)}: un glaciar 10 "
+                f"veces mayor tiene {veces:.0f} veces más volumen, y el Gini sube de "
+                f"{com.decimal(m.loc['AREA_KM2', 'gini'])} a {com.decimal(m.loc['VOL_km3', 'gini'])}")
 
     def evidencia(self):
         m = self._magnitudes
-        return (f"Correlación (log10) {com.decimal(self._correlacion_log, 4)}; 1 % mayor: "
-                f"{com.pct(m.loc['VOL_DESDE_AREA', 'pct_1%_mayores'])} desde el área y "
-                f"{com.pct(m.loc['VOL_km3', 'pct_1%_mayores'])} publicado")
+        return (f"Gini {com.decimal(m.loc['AREA_KM2', 'gini'])} (superficie) → {com.decimal(m.loc['VOL_km3', 'gini'])} "
+                f"(volumen); 1 % mayor {com.pct(m.loc['AREA_KM2', 'pct_1%_mayores'])} → "
+                f"{com.pct(m.loc['VOL_km3', 'pct_1%_mayores'])}; correlación (log10) con el volumen calculado solo "
+                f"desde el área {com.decimal(self._correlacion_log, 4)}")
 
     def _dibujar(self, figura):
         eje = figura.subplots()
@@ -448,8 +501,8 @@ class FiguraVolumenDerivado(FiguraHallazgo):
         for marca in leyenda.legend_handles:
             marca.set_alpha(1)
         eje.grid(color=HIELO, lw=0.6)
-        eje.set_title(f"Correlación de los logaritmos: {com.decimal(self._correlacion_log, 4)} · "
-                      "cada punto es un glaciar", color=GRIS, fontsize=9)
+        eje.set_title(f"Cada punto es un glaciar · correlación de los logaritmos: {com.decimal(self._correlacion_log, 4)}",
+                      color=GRIS, fontsize=9)
 
 
 class FiguraTipoPorMacrozona(FiguraHallazgo):
