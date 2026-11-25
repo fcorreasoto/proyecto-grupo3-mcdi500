@@ -45,8 +45,8 @@ def _construye(figura):
 def _pruebas_base(a):
     limpio = a["limpio"]
     return [
-        ("excepción", "La clase base no dibuja → NotImplementedError",
-         lambda: espera_error(NotImplementedError, fg.FiguraHallazgo().construir)),
+        ("excepción", "La clase base abstracta no se instancia → TypeError",
+         lambda: espera_error(TypeError, fg.FiguraHallazgo)),
         ("excepción", "Pedir la figura antes de construirla → RuntimeError",
          lambda: espera_error(RuntimeError, lambda: fg.FiguraComposicion(limpio).figura)),
         ("límite", "tabla devuelve una copia: modificarla no altera la figura",

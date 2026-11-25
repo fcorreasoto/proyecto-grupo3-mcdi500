@@ -12,7 +12,7 @@ independiente. `comparar_magnitudes` lo demuestra: el volumen calculado solo con
 reproduce la concentración del volumen del inventario.
 
 Diseño (mismo contrato que transformadores.py):
-- `MedidaConcentracion`: clase base con el método plantilla `calcular`, que valida una sola vez
+- `MedidaConcentracion`: clase base abstracta (`abc.ABC`) con el método plantilla `calcular`, que valida una sola vez
   y delega en `_calcular`.
 - `ParticipacionMayores`, `IndiceGini`, `CurvaLorenz` e `IndiceTheil` (F4): clases hijas (herencia).
 - `descomponer_theil` (F4): separa la desigualdad en una parte entre grupos y otra dentro de ellos,
@@ -21,6 +21,8 @@ Diseño (mismo contrato que transformadores.py):
   agregar una medida nueva no modifica esta clase.
 - El estado interno lleva guion bajo y se lee mediante propiedades (encapsulamiento).
 """
+
+from abc import ABC, abstractmethod
 
 import numpy as np
 import pandas as pd
@@ -31,9 +33,12 @@ EXPONENTE_VOLUMEN = 1.357         # 1 (área) + 0,357 (espesor de Chen y Ohmura)
 FACTOR_HIELO = {"GLACIAR ROCOSO": 0.60}   # fracción de hielo; resto de clasificaciones = 1
 
 
-# medidas
-class MedidaConcentracion:
-    """Clase base: el contrato común de toda medida de concentración. No se usa directamente."""
+# ============================================================================ medidas
+class MedidaConcentracion(ABC):
+    """Clase base abstracta: el contrato común de toda medida de concentración.
+
+    `_calcular` es `@abstractmethod`: ni la base ni una medida incompleta se pueden instanciar.
+    """
 
     etiqueta = "sin definir"
 
@@ -53,6 +58,7 @@ class MedidaConcentracion:
             raise ValueError(f"{self.etiqueta}: el total es cero")
         return self._calcular(arreglo)
 
+    @abstractmethod
     def _calcular(self, valores):
         """Recibe un arreglo ya validado. Lo implementa cada clase hija."""
         raise NotImplementedError(f"{type(self).__name__} debe implementar _calcular()")
@@ -150,7 +156,7 @@ class IndiceTheil(MedidaConcentracion):
         return float(np.mean(np.where(r > 0, r * np.log(np.where(r > 0, r, 1.0)), 0.0)))
 
 
-# análisis
+# ============================================================================= análisis
 class AnalisisConcentracion:
     """Aplica una lista de medidas a una magnitud (AREA_KM2 o VOL_km3), total y por grupo."""
 
@@ -205,7 +211,7 @@ class AnalisisConcentracion:
         return tabla
 
 
-#  descomposición de la desigualdad
+# ====================================================== descomposición de la desigualdad
 def descomponer_theil(df, grupo, magnitud="AREA_KM2"):
     """Separa el Theil total en una parte entre grupos y otra dentro de los grupos.
 
@@ -237,7 +243,7 @@ def descomponer_theil(df, grupo, magnitud="AREA_KM2"):
             "pct_entre": float(100 * entre / total), "pct_dentro": float(100 * dentro / total)}
 
 
-# relación área → volumen
+# ============================================================= relación área → volumen
 def volumen_desde_area(df):
     """Volumen calculado SOLO con la superficie: 0,0285 · AREA^1,357 · factor de hielo."""
     factor = df["CLASIFICA"].astype(str).map(FACTOR_HIELO).fillna(1.0)

@@ -15,6 +15,8 @@ Los pasos aprenden del conjunto con `ajustar` y lo aplican con `transformar`. En
 reproduce F2; la separación deja los pasos listos para un esquema entrenamiento/prueba en F4.
 """
 
+from abc import ABC, abstractmethod
+
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import RobustScaler
@@ -24,8 +26,12 @@ import limpieza as lim
 import utilidades as utl
 
 
-class Transformador:
-    """Clase base: el contrato común de todos los pasos. No se usa directamente."""
+class Transformador(ABC):
+    """Clase base abstracta: el contrato común de todos los pasos.
+
+    Hereda de `abc.ABC` y declara `aprender` y `aplicar` como `@abstractmethod`: Python impide
+    instanciarla y también instanciar una clase hija que no implemente ambos métodos (TypeError).
+    """
 
     def __init__(self, columnas=()):
         self._columnas = tuple(columnas)   # columnas que el paso necesita en la entrada
@@ -79,10 +85,12 @@ class Transformador:
             raise KeyError(f"{self.nombre}: faltan las columnas {faltan}")
 
     # ------------------------------------------------ lo que cada clase hija implementa
+    @abstractmethod
     def aprender(self, df):
         """Devuelve el diccionario de parámetros. Lo implementa cada clase hija."""
         raise NotImplementedError(f"{self.nombre} debe implementar aprender()")
 
+    @abstractmethod
     def aplicar(self, df):
         """Transforma `df` (ya copiado) y lo devuelve. Lo implementa cada clase hija."""
         raise NotImplementedError(f"{self.nombre} debe implementar aplicar()")

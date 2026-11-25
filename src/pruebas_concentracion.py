@@ -88,8 +88,8 @@ def pruebas():
         ("excepción", "Valores que suman cero → ValueError", lambda: espera_error(ValueError, con.IndiceGini().calcular, [0, 0])),
         ("excepción", "Grupo inexistente → KeyError",
          lambda: espera_error(KeyError, con.AnalisisConcentracion(df, "AREA_KM2", _medidas()).por_grupo, "COMUNA")),
-        ("excepción", "Clase base sin _calcular → NotImplementedError",
-         lambda: espera_error(NotImplementedError, con.MedidaConcentracion().calcular, [1, 2])),
+        ("excepción", "La clase base abstracta no se instancia → TypeError",
+         lambda: espera_error(TypeError, con.MedidaConcentracion)),
         # ------------------------------------------------- cifras de control (inventario)
         ("control", "Superficie: 1 % mayor = 71,5 %, 10 % mayor = 91,1 %, Gini = 0,937",
          lambda: prueba((lambda r: [round(r[m.etiqueta], 1) for m in _medidas()[:2]] == [71.5, 91.1]

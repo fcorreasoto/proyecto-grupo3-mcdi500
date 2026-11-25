@@ -11,13 +11,18 @@ Cada estrategia separa lo que aprende (`ajustar`) de lo que aplica (`estimar`), 
 transformadores: lo aprendido queda en atributos internos y solo se lee mediante `parametros`.
 """
 
+from abc import ABC, abstractmethod
+
 import pandas as pd
 
 import utilidades as utl
 
 
-class EstrategiaImputacion:
-    """Contrato común: aprender un valor de reemplazo y estimarlo para cada fila."""
+class EstrategiaImputacion(ABC):
+    """Clase base abstracta: aprender un valor de reemplazo y estimarlo para cada fila.
+
+    `_aprender` y `_estimar` son `@abstractmethod`: una estrategia incompleta no se puede instanciar.
+    """
 
     etiqueta = "sin definir"
 
@@ -42,9 +47,11 @@ class EstrategiaImputacion:
             raise RuntimeError(f"{self.etiqueta}: hay que ajustar antes de estimar")
         return self._estimar(df, columna)
 
+    @abstractmethod
     def _aprender(self, df, columna):
         raise NotImplementedError("Cada estrategia debe implementar _aprender()")
 
+    @abstractmethod
     def _estimar(self, df, columna):
         raise NotImplementedError("Cada estrategia debe implementar _estimar()")
 

@@ -18,6 +18,7 @@ termina (título, anotaciones, fuente). El color tiene función: GRANATE marca e
 """
 
 import textwrap
+from abc import ABC, abstractmethod
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -108,8 +109,8 @@ def formato_eje_km2(eje):
 
 
 # ========================================================================= clase base
-class FiguraHallazgo:
-    """Contrato común de las figuras del informe. No se usa directamente.
+class FiguraHallazgo(ABC):
+    """Contrato común de las figuras del informe. Clase abstracta (`abc.ABC`): no se instancia.
 
     Atributos de clase que define cada hija:
       nombre    archivo de salida (sin extensión) y clave en hallazgos_f4.csv
@@ -142,13 +143,16 @@ class FiguraHallazgo:
         return figura
 
     # ------------------------------------------------------- lo que implementa cada hija
+    @abstractmethod
     def _dibujar(self, figura):
         raise NotImplementedError(f"{type(self).__name__} debe implementar _dibujar()")
 
+    @abstractmethod
     def titulo(self):
         """El hallazgo, con la cifra que lo respalda (no el tema del gráfico)."""
         raise NotImplementedError(f"{type(self).__name__} debe implementar titulo()")
 
+    @abstractmethod
     def evidencia(self):
         """Las cifras exactas detrás del título, para docs/hallazgos_f4.csv."""
         raise NotImplementedError(f"{type(self).__name__} debe implementar evidencia()")
