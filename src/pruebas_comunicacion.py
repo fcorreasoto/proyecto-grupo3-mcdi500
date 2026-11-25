@@ -39,7 +39,7 @@ def pruebas():
     limpio, modelo = a["limpio"], a["modelo"]
     juguete = _juguete()
     return [
-        # ------------------------------------------------------------------ casos normales
+        #  casos normales
         ("normal", "El contrato con F3 se cumple en todos los controles",
          lambda: prueba(com.verificar_contrato(a)["ok"].all())),
         ("normal", "composicion: % de glaciares y % de superficie suman 100",
@@ -57,6 +57,10 @@ def pruebas():
              juguete["TIPO"].to_numpy(), juguete["AREA_KM2"].to_numpy()))),
         ("normal", "revertir_robusto es la inversa exacta del escalamiento",
          lambda: prueba(np.allclose(com.revertir_robusto((np.array([1.0, 3.0, 5.0]) - 3) / 2, 3, 2), [1, 3, 5]))),
+        ("normal", "descomposicion_theil: entre + dentro = 100 % y ordenada de mayor a menor % entre",
+         lambda: prueba((lambda t: np.allclose(t["pct_entre"] + t["pct_dentro"], 100)
+                         and t["pct_entre"].is_monotonic_decreasing and t.index[0] == "Clasificación")(
+             com.descomposicion_theil(limpio)))),
         ("normal", "Formato castellano: pct, miles y decimal",
          lambda: prueba(com.pct(71.525) == "71,5 %" and com.miles(26180) == "26.180" and com.decimal(0.93731) == "0,937")),
         # ------------------------------------------------------------------- casos límite

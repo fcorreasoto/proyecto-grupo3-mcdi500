@@ -10,7 +10,8 @@ La Fase 4 NO vuelve a limpiar ni a transformar. Este módulo:
    (glaciares_limpio, en km² y con categorías legibles) son dos versiones del mismo dato
    (`copia_interpretable`). La verificación independiente se hace contra data/raw en el notebook.
 4. Construye las tablas que alimentan cada figura (`composicion`, `participacion_cruzada`,
-   `gini_por_grupo`) y da formato castellano a las cifras (`pct`, `miles`, `decimal`).
+   `gini_por_grupo`, `descomposicion_theil`) y da formato castellano a las cifras (`pct`, `miles`,
+   `decimal`).
 
 Las figuras viven en src/figuras.py: este módulo prepara datos y no dibuja (alta cohesión).
 """
@@ -39,7 +40,7 @@ PREFIJO_REGION = "OH_REG_"           # columnas one-hot de REGION en glaciares_m
 TOLERANCIA = 1e-9
 
 
-# ===================================================================== carga y contrato
+# carga y contrato
 def cargar_artefactos(carpeta):
     """Lee los artefactos de F2 y F3 desde `carpeta` (data/processed).
 
@@ -126,7 +127,7 @@ def verificar_contrato(artefactos):
     return pd.DataFrame(filas, columns=["control", "ok", "detalle"])
 
 
-# ======================================================= dos versiones del mismo dato
+# dos versiones del mismo dato
 def parametros_robustos(serie):
     """Mediana e IQR de `serie`: los parámetros que RobustScaler aprendió en F2 (cuartiles 25–75)."""
     serie = pd.Series(serie, dtype=float)
@@ -182,7 +183,7 @@ def copia_interpretable(modelo, referencia_log_area):
     })
 
 
-# ===================================================================== tablas para graficar
+#  tablas para graficar
 def _validar_columnas(df, columnas):
     faltan = [c for c in columnas if c not in df.columns]
     if faltan:
@@ -228,6 +229,21 @@ def gini_por_grupo(df, grupo, magnitud="AREA_KM2"):
     return tabla
 
 
+AGRUPACIONES_THEIL = {"CLASIFICA": "Clasificación", "MZON_GLAC": "Macrozona", "REGION": "Región"}
+
+
+def descomposicion_theil(df, agrupaciones=None, magnitud="AREA_KM2"):
+    """Una fila por agrupación con el Theil total y el % entre y dentro de los grupos.
+
+    Ordenada de mayor a menor % entre grupos: la primera fila es la agrupación que da cuenta de
+    más desigualdad. `agrupaciones` = {columna: nombre legible}.
+    """
+    agrupaciones = agrupaciones or AGRUPACIONES_THEIL
+    filas = [{"agrupacion": nombre, **con.descomponer_theil(df, columna, magnitud)}
+             for columna, nombre in agrupaciones.items()]
+    return pd.DataFrame(filas).sort_values("pct_entre", ascending=False).set_index("agrupacion")
+
+
 def participacion_por_grupo_bucle(grupos, valores):
     """% del total por grupo recorriendo fila a fila en Python. O(n) en el intérprete.
 
@@ -253,7 +269,7 @@ def participacion_por_grupo_bincount(grupos, valores):
     return pd.Series(100 * sumas / sumas.sum(), index=etiquetas).sort_index()
 
 
-# ===================================================================== formato y persistencia
+# formato y persistencia
 def pct(valor, decimales=1):
     """Porcentaje (ya en escala 0–100) con coma decimal: 71.52 → '71,5 %'."""
     return f"{valor:.{decimales}f} %".replace(".", ",")

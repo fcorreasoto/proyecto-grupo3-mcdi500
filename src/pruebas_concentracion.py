@@ -104,7 +104,33 @@ def pruebas():
                          and t.loc["VOL_km3", _medidas()[0].etiqueta].round(1) == t.loc["VOL_DESDE_AREA", _medidas()[0].etiqueta].round(1)
                          and t.loc["VOL_km3", "gini"] > t.loc["AREA_KM2", "gini"])(
              con.comparar_magnitudes(df, _medidas()).set_index("magnitud")))),
+        # --------------------------------------- índice de Theil y su descomposición (F4)
+        ("normal", "Theil de [1, 1, 2] coincide con la fórmula escrita a mano",
+         lambda: prueba(np.isclose(con.IndiceTheil().calcular([1, 1, 2]),
+                                   np.mean([0.75 * np.log(0.75)] * 2 + [1.5 * np.log(1.5)])))),
+        ("normal", "Descomposición: entre + dentro = Theil total",
+         lambda: prueba((lambda d: np.isclose(d["entre"] + d["dentro"], d["theil_total"])
+                         and np.isclose(d["pct_entre"] + d["pct_dentro"], 100))(
+             con.descomponer_theil(_JUGUETE, "G", "M")))),
+        ("límite", "Theil de valores iguales = 0 y con un solo glaciar con todo = ln(n)",
+         lambda: prueba(np.isclose(con.IndiceTheil().calcular([4, 4, 4]), 0)
+                        and np.isclose(con.IndiceTheil().calcular([0, 0, 0, 9]), np.log(4)))),
+        ("límite", "Un solo grupo: todo es desigualdad dentro (entre = 0)",
+         lambda: prueba(np.isclose(con.descomponer_theil(_JUGUETE.assign(G="a"), "G", "M")["entre"], 0))),
+        ("límite", "Un grupo por glaciar: todo es desigualdad entre (dentro = 0)",
+         lambda: prueba(np.isclose(con.descomponer_theil(_JUGUETE.assign(G=list("pqrs")), "G", "M")["dentro"], 0))),
+        ("excepción", "Descomposición con un grupo inexistente → KeyError",
+         lambda: espera_error(KeyError, con.descomponer_theil, _JUGUETE, "COMUNA", "M")),
+        ("excepción", "Theil con valores negativos → ValueError",
+         lambda: espera_error(ValueError, con.IndiceTheil().calcular, [1, -1, 2])),
+        ("control", "Theil de la superficie = 3,793; la clasificación da cuenta del 77,6 % y la región del 5,7 %",
+         lambda: prueba(round(con.IndiceTheil().calcular(df["AREA_KM2"]), 3) == 3.793
+                        and round(con.descomponer_theil(df, "CLASIFICA")["pct_entre"], 1) == 77.6
+                        and round(con.descomponer_theil(df, "REGION")["pct_entre"], 1) == 5.7)),
     ]
+
+
+_JUGUETE = pd.DataFrame({"G": ["a", "a", "b", "b"], "M": [1.0, 3.0, 10.0, 30.0]})
 
 
 if __name__ == "__main__":
