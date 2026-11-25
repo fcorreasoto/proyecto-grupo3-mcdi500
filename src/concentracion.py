@@ -14,7 +14,9 @@ reproduce la concentración del volumen del inventario.
 Diseño (mismo contrato que transformadores.py):
 - `MedidaConcentracion`: clase base con el método plantilla `calcular`, que valida una sola vez
   y delega en `_calcular`.
-- `ParticipacionMayores`, `IndiceGini` y `CurvaLorenz`: clases hijas (herencia).
+- `ParticipacionMayores`, `IndiceGini`, `CurvaLorenz` e `IndiceTheil` (F4): clases hijas (herencia).
+- `descomponer_theil` (F4): separa la desigualdad en una parte entre grupos y otra dentro de ellos,
+  algo que el Gini no permite hacer de forma exacta.
 - `AnalisisConcentracion` aplica cualquier lista de medidas sin preguntar su tipo (polimorfismo);
   agregar una medida nueva no modifica esta clase.
 - El estado interno lleva guion bajo y se lee mediante propiedades (encapsulamiento).
@@ -29,7 +31,7 @@ EXPONENTE_VOLUMEN = 1.357         # 1 (área) + 0,357 (espesor de Chen y Ohmura)
 FACTOR_HIELO = {"GLACIAR ROCOSO": 0.60}   # fracción de hielo; resto de clasificaciones = 1
 
 
-# ============================================================================ medidas
+# medidas
 class MedidaConcentracion:
     """Clase base: el contrato común de toda medida de concentración. No se usa directamente."""
 
@@ -132,7 +134,23 @@ class CurvaLorenz(MedidaConcentracion):
         return pd.DataFrame({"prop_glaciares": proporcion[posiciones], "prop_magnitud": acumulada[posiciones]})
 
 
-# ============================================================================= análisis
+class IndiceTheil(MedidaConcentracion):
+    """Índice de Theil T: 0 = todos iguales; ln(n) = un glaciar concentra todo.
+
+        T = (1/n) · Σ (xᵢ/μ) · ln(xᵢ/μ),    con 0 · ln 0 = 0
+
+    A diferencia del Gini, se descompone exactamente en una parte ENTRE grupos y otra DENTRO de
+    los grupos (ver `descomponer_theil`). Costo O(n) en tiempo y memoria.
+    """
+
+    etiqueta = "theil"
+
+    def _calcular(self, valores):
+        r = valores / valores.mean()
+        return float(np.mean(np.where(r > 0, r * np.log(np.where(r > 0, r, 1.0)), 0.0)))
+
+
+# análisis
 class AnalisisConcentracion:
     """Aplica una lista de medidas a una magnitud (AREA_KM2 o VOL_km3), total y por grupo."""
 
@@ -187,7 +205,39 @@ class AnalisisConcentracion:
         return tabla
 
 
-# ============================================================= relación área → volumen
+#  descomposición de la desigualdad
+def descomponer_theil(df, grupo, magnitud="AREA_KM2"):
+    """Separa el Theil total en una parte entre grupos y otra dentro de los grupos.
+
+        T = T_entre + T_dentro
+        T_entre  = Σ_g s_g · ln(μ_g / μ)        (desigualdad si cada glaciar tuviera la media de su grupo)
+        T_dentro = Σ_g s_g · T_g                (desigualdad dentro de cada grupo, ponderada)
+
+    donde s_g es la fracción de la magnitud total que aporta el grupo g y μ_g su media. `pct_entre`
+    es la parte de la desigualdad total de la que da cuenta el agrupamiento: una medida de asociación,
+    no de causa.
+
+    Lanza KeyError si falta la columna y ValueError (vía IndiceTheil) si la magnitud no es válida.
+    """
+    faltan = [c for c in (grupo, magnitud) if c not in df.columns]
+    if faltan:
+        raise KeyError(f"Columnas inexistentes: {faltan}")
+    theil = IndiceTheil()
+    valores = df[magnitud].to_numpy(dtype=float)
+    total, media, suma = theil.calcular(valores), valores.mean(), valores.sum()
+    entre = dentro = 0.0
+    for _, sub in df.groupby(grupo, observed=True)[magnitud]:
+        v = sub.to_numpy(dtype=float)
+        s_g = v.sum() / suma
+        if s_g > 0:
+            entre += s_g * np.log(v.mean() / media)
+            dentro += s_g * theil.calcular(v)
+    return {"grupo": grupo, "grupos": int(df[grupo].nunique()), "theil_total": total,
+            "entre": float(entre), "dentro": float(dentro),
+            "pct_entre": float(100 * entre / total), "pct_dentro": float(100 * dentro / total)}
+
+
+# relación área → volumen
 def volumen_desde_area(df):
     """Volumen calculado SOLO con la superficie: 0,0285 · AREA^1,357 · factor de hielo."""
     factor = df["CLASIFICA"].astype(str).map(FACTOR_HIELO).fillna(1.0)
